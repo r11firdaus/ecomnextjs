@@ -6,7 +6,7 @@ export function unauthPage(context) {
     
         if (cookie.token) {
             context.res.writeHead(302, {
-                location: '/post'
+                location: '/barang'
             }).end();
         }
         return resolve('unauthorized')
@@ -22,7 +22,8 @@ export function authPage(context) {
             }).end();
         }
         return resolve({
-            token: cookie.token
+            token: cookie.token,
+            id_user: cookie.id_user
         });
     })
 }

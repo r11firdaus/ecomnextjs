@@ -2,8 +2,14 @@ import { useState } from "react";
 import Link from 'next/link'
 
 export default function index() {
-    const [fields, setfields] = useState({ email: '', password: '' })
-    const [status, setstatus] = useState('not login')
+    const [fields, setfields] = useState({
+        email_user: '',
+        password_user: '',
+        nama_user: '',
+        telepon_user: ''
+    })
+
+    const [status, setstatus] = useState('')
 
     const fieldsHandler = e => {
         // coba cara lain    
@@ -17,6 +23,9 @@ export default function index() {
 
     const registerHandler = async e => {
         e.preventDefault();
+        if (fields.email_user === '' && fields.password_user === '' && fields.nama_user === '' && fields.alamat_user === '' && fields.telepon_user) {
+            alert('isi semua data')
+        }
         const registerReq = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
@@ -32,14 +41,16 @@ export default function index() {
     }
 
     return (
-        <div className="main">
-            <h1 className="title">Register Page</h1>
-            <form onSubmit={registerHandler}>
-                <input type='email' name='email' onChange={fieldsHandler} placeholder='Email' /><br />
-                <input type='password' name='password' onChange={fieldsHandler} placeholder='Password' /><br />
+        <div style={{padding: '20px'}}>
+            <h4 className="title" style={{margin: '20px auto 50px 10px'}}>Register</h4>
+            <form className="form-control" style={{maxWidth: '500px', margin: '0 auto'}} onSubmit={registerHandler}>
+                <input type='email' name='email_user' onChange={fieldsHandler} placeholder='Email' required /><br />
+                <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' required /><br />
+                <input type='text' name='nama_user' onChange={fieldsHandler} placeholder='Nama' required /><br />
+                <input type='number' name='telepon_user' onChange={fieldsHandler} placeholder='No Telepon' required /><br />
                 <button type='submit'>Register</button>
             </form>
-            <p>already have an account ? <Link href="/login">Login Here</Link></p>
+            <p style={{textAlign: 'center'}}>already have an account ? <Link href="/login">Login Here</Link></p>
             <p>{status}</p>
         </div>
     )

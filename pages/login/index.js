@@ -11,8 +11,8 @@ export async function getServerSideProps(context) {
 }
 
 export default function index() {
-    const [fields, setfields] = useState({email: '', password: ''})
-    const [status, setstatus] = useState('')
+    const [fields, setfields] = useState({email_user: '', password_user: ''})
+    const [status, setstatus] = useState(true)
 
     const fieldsHandler = e => {
         const name = e.target.getAttribute('name');
@@ -32,22 +32,30 @@ export default function index() {
             },
             body: JSON.stringify(fields)
         })
-        if(!loginReq.ok) return setstatus(`${loginReq.status} ${loginReq.statusText}`)
+        if(!loginReq.ok) return setstatus(false)
         const loginRes = await loginReq.json()
         Cookie.set('token', loginRes.token)
+        Cookie.set('id_user', loginRes.id_user)
         setstatus('success, redirecting...')
-        Router.push('/posts')
+        Router.push('/barang')
+    }
+
+    const alert = () => {
+        return ( !status &&
+            <p class="alert alert-danger">Email atau Password salah</p>
+        )
     }
 
     return (
-        <div className="main">
-            <h1 className="title">Login Page</h1>
-            <form onSubmit={loginHandler} style={{width: '95%'}}>
-                <input type='email' name='email' onChange={fieldsHandler} placeholder='Email' /><br />
-                <input type='password' name='password' onChange={fieldsHandler} placeholder='Password' /><br />
+        <div style={{padding: '20px 10px'}}>
+            <h4 style={{margin: '20px, auto'}}>Login</h4>
+            {alert()}
+            <form className="form-control" onSubmit={loginHandler} style={{maxWidth: '500px', margin: '0 auto'}}>
+                <input type='email' name='email_user' onChange={fieldsHandler} placeholder='Email' /><br />
+                <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' /><br />
                 <button type='submit'>Login</button>
             </form>
-            <p>Don't have account ? <Link href="/register">Register Here</Link></p>
+            <p style={{textAlign: 'center'}}>Don't have account ? <Link href="/register">Register Here</Link></p>
             <p>{status}</p>
         </div>
     )
