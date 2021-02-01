@@ -5,12 +5,12 @@ import jwt from 'jsonwebtoken';
 const handler = async (req, res) => {
     if(req.method !== 'POST') return res.status(405).end();
 
-    const {email, password} = req.body;
+    const {email_user, password_user} = req.body;
 
-    const chkUser = await db('users').where({email}).first();
+    const chkUser = await db('tb_user').where({email_user}).first();
     if(!chkUser) return res.status(401).end();
 
-    const chkPassword = await bcrypt.compare(password, chkUser.password);
+    const chkPassword = await bcrypt.compare(password_user, chkUser.password_user);
     if(!chkPassword) return res.status(401).end();
 
     const token = jwt.sign({
@@ -23,7 +23,11 @@ const handler = async (req, res) => {
     res.status(200);
     res.json({
         message: 'Login Success',
-        token
+        data: {
+            email_user,
+            token,
+            id_user: chkUser.id_user
+        }
     });
 
 }

@@ -11,7 +11,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function index() {
-    const [fields, setfields] = useState({email: '', password: ''})
+    const [fields, setfields] = useState({email_user: '', password_user: ''})
     const [status, setstatus] = useState('')
 
     const fieldsHandler = e => {
@@ -34,17 +34,18 @@ export default function index() {
         })
         if(!loginReq.ok) return setstatus(`${loginReq.status} ${loginReq.statusText}`)
         const loginRes = await loginReq.json()
-        Cookie.set('token', loginRes.token)
+        Cookie.set('token', loginRes.data.token)
+        Cookie.set('id_user', loginRes.data.id_user)
         setstatus('success, redirecting...')
-        Router.push('/posts')
+        Router.push('/')
     }
 
     return (
         <div className="main">
             <h1 className="title">Login Page</h1>
             <form onSubmit={loginHandler} style={{width: '95%'}}>
-                <input type='email' name='email' onChange={fieldsHandler} placeholder='Email' /><br />
-                <input type='password' name='password' onChange={fieldsHandler} placeholder='Password' /><br />
+                <input type='email' name='email_user' onChange={fieldsHandler} placeholder='Email' /><br />
+                <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' /><br />
                 <button type='submit'>Login</button>
             </form>
             <p>Don't have account ? <Link href="/register">Register Here</Link></p>
