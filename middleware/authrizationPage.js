@@ -22,7 +22,8 @@ export function authPage(context) {
             }).end();
         }
         return resolve({
-            token: cookie.token
+            token: cookie.token,
+            id_user: cookie.id_user
         });
     })
 }
