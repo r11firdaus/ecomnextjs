@@ -1,15 +1,14 @@
 import { memo, useEffect, useState } from "react"
+import { getReq } from "../../function/API"
 
 const Saldo = props => {
     const [data, setdata] = useState({})
 
-    useEffect(() => {
-        props.id_user && props.token &&
-            fetch(`http://localhost:3000/api/user/${props.id_user}`, {
-                headers: {
-                    'Authorization': `Bearer ${props.token} apirezajwallin`
-                }
-            }).then(res => res.json()).then(json => setdata(json.data))
+    useEffect(async() => {
+        if (props.id_user && props.token) {
+            const {res} = await getReq('user', props.id_user, props.token)
+            setdata(res)
+        }
 
     }, [])
     return (<>

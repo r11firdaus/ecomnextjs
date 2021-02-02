@@ -10,10 +10,7 @@ const Nav = (props) => {
         const getId = Cookie.get("id_user")
         getId && setid_user(getId)
     }, [])
-    const logoutHandler = e => {
-        Cookie.remove("token");
-        Router.replace('/login')
-    }
+    
     return (
         <>
             <div style={{ display: 'flex',padding: '10px' }}>

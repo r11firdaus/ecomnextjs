@@ -32,7 +32,7 @@ export default function index() {
             },
             body: JSON.stringify(fields)
         })
-        if(!loginReq.ok) return setstatus(`${loginReq.status} ${loginReq.statusText}`)
+        if(!loginReq.ok) return setstatus(false)
         const loginRes = await loginReq.json()
         Cookie.set('token', loginRes.data.token)
         Cookie.set('id_user', loginRes.data.id_user)
@@ -48,7 +48,7 @@ export default function index() {
                 <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' /><br />
                 <button type='submit'>Login</button>
             </form>
-            <p>Don't have account ? <Link href="/register">Register Here</Link></p>
+            <p style={{textAlign: 'center'}}>Don't have account ? <Link href="/register">Register Here</Link></p>
             <p>{status}</p>
         </div>
     )

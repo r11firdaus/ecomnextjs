@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { memo, useEffect, useState } from "react"
 import Cookie from 'js-cookie'
+import { getReq } from "../../function/API"
 
 const ListPesan = () => {
     const [data, setdata] = useState([])
@@ -9,13 +10,8 @@ const ListPesan = () => {
     useEffect(async () => {
         const getId = Cookie.get('id_user')
         if (getId) setid(getId)
-        const req = await fetch(`/api/user`, {
-            headers: {
-                'Authorization': `no no apirezajwallin`
-            }
-        })
-        const res = await req.json()
-        setdata(res.data)
+        const {res} = await getReq('user', '', '')
+        setdata(res)
     }, [])
 
     return (<>

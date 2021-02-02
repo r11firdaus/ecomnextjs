@@ -1,7 +1,20 @@
-import Nav from '../components/nav'
+import Nav from "../components/nav";
+// import Saldo from "../components/saldo";
+// import PromoBanner from "../components/promoBanner";
+// import TilesMenu from "../components/tilesMenu";
+import { memo } from "react";
 
-export default function Home() {
+const Home = () => {
+
   return (<>
-    <Nav />
-    </>)
+    <Nav type="home" title="Jwallin" />
+
+    {/* <Saldo />
+    
+    <PromoBanner />
+
+    <TilesMenu />     */}
+  </>)
 }
+
+export default memo(Home)

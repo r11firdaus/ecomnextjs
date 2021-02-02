@@ -1,17 +1,14 @@
 import { memo, useEffect, useState } from "react"
 import Cookie from 'js-cookie'
 import Router from "next/router"
+import { getReq } from "../../function/API"
 
 const DetailProfile = props => {
     const [data, setdata] = useState({})
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/api/user/${props.id_user}`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            }).then(res => res.json()).then(json => setdata(json.data))
-
+    useEffect(async() => {
+        const {res} = await getReq('user', props.id_user, '')
+        setdata(res)
     }, [])
 
     const logoutHandler = () => {

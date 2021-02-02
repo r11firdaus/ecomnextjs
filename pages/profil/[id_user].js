@@ -4,6 +4,7 @@ import Nav from '../../components/nav'
 import ListBarang from '../../components/listBarang'
 import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
+import Link from 'next/link'
 
 export const getServerSideProps = async ctx => {
     // id_user_Req = halaman profil user yg dituju
@@ -12,7 +13,7 @@ export const getServerSideProps = async ctx => {
     let id_userIn = null
     let tokenIn = null
     const cookie = cookies(ctx)
-    const {id_user} = ctx.query;
+    const { id_user } = ctx.query;
     if (cookie.id_user === id_user && cookie.token) {
         id_userIn = cookie.id_user
         tokenIn = cookie.token
@@ -28,10 +29,16 @@ export const getServerSideProps = async ctx => {
 
 const index = props => {
     return (<>
-    <Nav title="Profile" id_user={props.id_userMe} />
-    <Saldo id_user={props.id_userMe} token={props.token} />
-    <DetailProfile id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
-    <ListBarang id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
+        <Nav title="Profile" id_user={props.id_userMe} />
+        <Saldo id_user={props.id_userMe} token={props.token} />
+        <DetailProfile id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
+        {
+            props.id_userMe !== null &&
+            <div style={{ paddingLeft: '10px' }}>
+                <Link href="/barang/create">+ Tambah Barang</Link>
+            </div>
+        }
+        <ListBarang id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
     </>)
 }
 

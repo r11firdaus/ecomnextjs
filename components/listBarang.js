@@ -1,33 +1,28 @@
+import Router from "next/router";
 import { memo, useEffect, useState } from "react"
+import { getReq } from "../function/API";
 
 const ListBarang = props => {
     const [data, setdata] = useState([])
     useEffect(async() => {
         let req;
         if (props.id_user) {
-            req = await fetch(`http://localhost:3000/api/barang/user/${props.id_user}`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            })            
+            const {res} = await getReq('barang/user', props.id_user, props.token)
+            setdata(res)
         }
         else if (props.nama_subcategory) {
-            req = await fetch(`http://localhost:3000/api/barang/subcategory/${props.nama_subcategory}`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            })  
+            const {res} = await getReq('barang/subcategory', props.nama_subcategory, '')
+            setdata(res)
         } else {
-            req = await fetch(`http://localhost:3000/api/barang/`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            })
-        }
-
-        const res = await req.json()
-        setdata(res.data)
+            const {res} = await getReq('barang', '', '')
+            setdata(res)
+        }        
     }, [])
+
+    const updateHandler = (e, id) => {
+        e.preventDefault()
+        Router.push(`/barang/update/${id}`)
+    }
 
     return (<>
         <div className="row" style={{display: 'flex', padding: '0'}}>
@@ -44,7 +39,11 @@ const ListBarang = props => {
                                     <button className="button-small button-outline" style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}>Add to Favorite</button>
                                 </div> :
                                 <div className="card-action" >
-                                    <button className="button-small button-primary" style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}>Update</button>
+                                    <button
+                                        className="button-small button-primary"
+                                        style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}
+                                        onClick={e => updateHandler(e, data.id_barang)}
+                                    >Update</button>
                                     <button className="button-small button-outline" style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}>Delete</button>
                                 </div>
                             }

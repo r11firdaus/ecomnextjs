@@ -1,22 +1,17 @@
 import { memo, useEffect, useState } from "react"
 import Link from 'next/link'
+import { getReq } from "../function/API"
 
 const ListCategory = props => {
     const [data, setdata] = useState([])
     useEffect(async () => {
-        const req = props.nama_category ?
-            await fetch(`http://localhost:3000/api/barang/category/${props.nama_category}`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            }) :
-            await fetch(`http://localhost:3000/api/barang/`, {
-                headers: {
-                    'Authorization': `no no apirezajwallin`
-                }
-            })
-        const res = await req.json()
-        setdata(res.data)
+        if (props.nama_category) {
+            const {res} = await getReq('barang/category',props.nama_category, '')
+            setdata(res)
+        } else {
+            const {res} = await getReq('barang', '', '')
+            setdata(res)
+        }
     }, [])
 
     return (<>
