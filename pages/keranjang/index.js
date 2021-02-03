@@ -17,8 +17,8 @@ export const getServerSideProps = async ctx => {
 const index = props => {
     return (<>
         <Nav />
-        <Cart />
-        <Cart />
+        <br />
+        <Cart id_userMe={props.id_userMe} token={props.token} />
     </>)
 }
 

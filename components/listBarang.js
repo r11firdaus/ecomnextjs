@@ -25,6 +25,7 @@ const ListBarang = props => {
     }
 
     return (<>
+    {console.log(data)}
         <div className="row" style={{display: 'flex', padding: '0'}}>
             {
                 data.map(data => {
@@ -33,7 +34,7 @@ const ListBarang = props => {
                             <p><strong>{data.nama_barang}</strong></p>
                             <p>{data.harga_barang}</p>
                             {
-                                props.id_userMe != data.id_user ?
+                                props.id_userMe != data.id_seller ?
                                 <div className="card-action" >
                                     <button className="button-small button-primary" style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}>Add to Cart</button>
                                     <button className="button-small button-outline" style={{fontSize: '10px', padding: '0', margin: '3px auto', width: '100%'}}>Add to Favorite</button>

@@ -11,7 +11,7 @@ const handler = async (req, res) => {
 
     const {id_user} = req.query 
     
-    const reqBarangUser = await db('tb_barang').where({id_user})
+    const reqBarangUser = await db('tb_barang').where({'id_seller':id_user})
 
     res.status(200);
     res.json({data: reqBarangUser})
