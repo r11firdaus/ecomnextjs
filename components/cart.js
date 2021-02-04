@@ -5,25 +5,29 @@ const Cart = (props) => {
     const [cart, setcart] = useState([])
     const [jml, setjml] = useState(0)
     let arr = []
+    let totSeller = 0
 
     useEffect(async () => {
         const { res } = await getReq('cart', props.id_userMe, props.token)
         setcart(res)
     }, [])
 
-
     const sellerClick = (e, id) => {
         const parentVal = e.target.checked
         const child = document.getElementsByName(id)
-        let total = 0
         for (let i = 0; i < child.length; i++) {
             child[i].checked = parentVal
-            total = total + parseInt(child[i].accessKey)
-            // if (child[i].checked) total = total + parseInt(child[i].accessKey)
-            // else setjml(jml - total)
+            totSeller = parseInt(child[i].accessKey)
         }
-        if (parentVal) setjml(jml + total)
-        else setjml(jml - total)
+        
+        const childName = document.getElementsByTagName('input')
+        let boxchk = []
+        for (let i = 0; i < childName.length; i++) {
+            boxchk.push(childName[i].checked)
+        }
+        if (parentVal) setjml(jml + totSeller)
+        else setjml(jml - totSeller)
+        boxchk.includes(true) ? null : setjml(0)
     }
 
     const childClick = (e, total, harga, id) => {
@@ -39,7 +43,9 @@ const Cart = (props) => {
         let hasil = total * harga
         if (childVal) {
             setjml(jml + hasil)
-        } else (setjml(jml - hasil))
+        } else {
+            setjml(jml - hasil)
+        }
     }
 
     const nextHandler = e => {
