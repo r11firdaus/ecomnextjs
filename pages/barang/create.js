@@ -3,6 +3,7 @@ import FormBarang from '../../components/formBarang'
 import Nav from '../../components/nav'
 import {authPage} from '../../middleware/authrizationPage'
 import cookies from 'next-cookies';
+import BottomNav from '../../components/bottomNav';
 
 export const getServerSideProps = async ctx => {
     const {token} = await authPage(ctx)
@@ -22,10 +23,13 @@ const index = props => {
 
     return (<>
         <Nav />
-        <FormBarang
-            id_userMe = {props.id_userMe}
-            token = {props.token}
-        />
+        <div style ={{margin: '4rem 0'}}>
+            <FormBarang
+                id_userMe = {props.id_userMe}
+                token = {props.token}
+            />
+        </div>
+        <BottomNav />
     </>)
 }
 

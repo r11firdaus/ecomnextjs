@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import ListPesan from '../../components/pesan'
 import Nav from '../../components/nav'
+import BottomNav from '../../components/bottomNav';
 
 export const getServerSideProps = async ctx => {
 
@@ -14,8 +15,10 @@ export const getServerSideProps = async ctx => {
 const Pesan  = () => {
     return (<>
     <Nav />
-
-    <ListPesan />
+    <div style ={{margin: '4rem 0'}}>
+        <ListPesan />
+    </div>
+    <BottomNav hal="pesan" />
     </>)
 }
 

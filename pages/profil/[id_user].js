@@ -5,6 +5,7 @@ import ListBarang from '../../components/listBarang'
 import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
 import Link from 'next/link'
+import BottomNav from '../../components/bottomNav';
 
 export const getServerSideProps = async ctx => {
     // id_user_Req = halaman profil user yg dituju
@@ -30,15 +31,18 @@ export const getServerSideProps = async ctx => {
 const index = props => {
     return (<>
         <Nav title="Profile" id_user={props.id_userMe} />
-        <Saldo id_user={props.id_userMe} token={props.token} />
-        <DetailProfile id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
-        {
-            props.id_userMe !== null &&
-            <div style={{ paddingLeft: '10px' }}>
-                <Link href="/barang/create">+ Tambah Barang</Link>
-            </div>
-        }
-        <ListBarang id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
+        <div style ={{margin: '4rem 0'}}>
+            <Saldo id_user={props.id_userMe} token={props.token} />
+            <DetailProfile id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
+            {
+                props.id_userMe !== null &&
+                <div style={{ paddingLeft: '10px' }}>
+                    <Link href="/barang/create">+ Tambah Barang</Link>
+                </div>
+            }
+            <ListBarang id_user={props.id_user_Req} token={props.token} id_userMe={props.id_userMe} />
+        </div>
+        <BottomNav hal="profil" />
     </>)
 }
 

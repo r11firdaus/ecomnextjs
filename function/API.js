@@ -11,6 +11,17 @@ export const getReq = (path, id, token) => {
     })
 }
 
+export const deleteReq = (path, id, token) => {
+    return new Promise ((resolve, reject) => {
+        fetch(`${domain}/api/${path}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token} ${apiKey}`
+            }
+        }).then(res => res.json()).then(json => resolve({res: json}))
+    })
+}
+
 export const putReq = (path, id, token, data) => {
     return new Promise ((resolve, reject) => {
         fetch(`${domain}/api/${path}/${id}`, {

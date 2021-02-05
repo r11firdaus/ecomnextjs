@@ -16,8 +16,9 @@ const Cart = (props) => {
         const parentVal = e.target.checked
         const child = document.getElementsByName(id)
         for (let i = 0; i < child.length; i++) {
-            child[i].checked = parentVal
+            child[i].checked === true && setjml(jml - child[i].accessKey)
             totSeller = parseInt(child[i].accessKey)
+            child[i].checked = parentVal
         }
         
         const childName = document.getElementsByTagName('input')
@@ -26,8 +27,10 @@ const Cart = (props) => {
             boxchk.push(childName[i].checked)
         }
         if (parentVal) setjml(jml + totSeller)
-        else setjml(jml - totSeller)
-        boxchk.includes(true) ? null : setjml(0)
+        else {
+            boxchk.includes(true) ? setjml(jml - totSeller) : setjml(0)
+        }
+        console.log(totSeller)
     }
 
     const childClick = (e, total, harga, id) => {
@@ -41,10 +44,18 @@ const Cart = (props) => {
         }
         if (chk.includes(false)) parent.checked = false
         let hasil = total * harga
+
+
+        const childName = document.getElementsByTagName('input')
+        let boxchk = []
+        for (let i = 0; i < childName.length; i++) {
+            boxchk.push(childName[i].checked)
+        }
+            
         if (childVal) {
             setjml(jml + hasil)
         } else {
-            setjml(jml - hasil)
+            boxchk.includes(true) ? setjml(jml - hasil) : setjml(0)
         }
     }
 
@@ -109,7 +120,7 @@ const Cart = (props) => {
             }
         </div>
 
-        <div style={{height: '4rem', bottom: '0', width: '100%', borderTop: '1px solid grey', position: 'fixed', background: 'white'}}>
+        <div style={{height: '4rem', bottom: '0', width: '100%', borderTop: '1px solid green', position: 'fixed', background: 'white'}}>
             <div className="float-left" style={{margin: '6px 10px'}}>
                 <h6 style={{ fontSize: '12px', margin: '0'}}>Total: </h6>
                 <h6 style={{ fontSize: '15px', marginTop: '-13px'}}>Rp. {jml}</h6>
