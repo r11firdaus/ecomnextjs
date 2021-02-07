@@ -23,7 +23,7 @@ const optionBtnBarang = (props) => {
     }
 
     return (<>
-        <div className="card-action" >
+        <div className="card-action" style={props.detail&&{display: 'flex'}} >
             <button
                 className="button-small button-primary"
                 style={style.button}
@@ -36,17 +36,14 @@ const optionBtnBarang = (props) => {
             >{props.add ? '+ To Favourite' : 'Delete'}</button>
         </div>
 
-        <div class="modal-mask" style={{display: modal.show ? 'block':'none'}}>
-            <div class="modal" style={{display: modal.show ? 'block':'none'}}>
-                <div class="modal-head">
-                    <p class="modal-title">Modal Example</p>
-                </div>
-                <div class="modal-body">
+        <div className="modal-mask" style={{display: modal.show ? 'block':'none'}}>
+            <div className="modal" style={{display: modal.show ? 'block':'none'}}>
+                <div className="modal-body">
                     <p>Delete '{modal.nama} ?'</p>
                 </div>
-                <div class="modal-footer">
-                    <button class="button-primary button-small" onClick={e=>deleteHandler(e)}>Delete</button>
-                    <button class="button-primary-outline button-small" onClick={e=>setmodal({...modal,show: false})}>Cancel</button>
+                <div className="modal-footer">
+                    <button className="button-primary button-small" onClick={e=>deleteHandler(e)}>Delete</button>
+                    <button className="button-primary-outline button-small" onClick={e=>setmodal({...modal,show: false})}>Cancel</button>
                 </div>
             </div>
         </div>
@@ -58,8 +55,8 @@ export default memo(optionBtnBarang)
 const style = {
     button: {
         fontSize: '10px',
-        padding: '0',
-        margin: '3px auto',
+        padding: '0 5px',
+        margin: '3px',
         width: '100%'
     }
 }

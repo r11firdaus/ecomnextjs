@@ -4,7 +4,7 @@ import Nav from '../../components/nav'
 import cookies from 'next-cookies';
 
 export const getServerSideProps = async ctx => {
-    let id_userIn = null
+    let id_userIn;
     const cookie = cookies(ctx)
     if (cookie.id_user) id_userIn = cookie.id_user
 
