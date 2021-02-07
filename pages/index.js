@@ -1,8 +1,8 @@
 import Nav from "../components/nav";
 import BottomNav from "../components/bottomNav";
 import Saldo from "../components//profil/saldo";
-// import PromoBanner from "../components/promoBanner";
-// import TilesMenu from "../components/tilesMenu";
+import PromoBanner from "../components/home/promoBanner";
+import TilesMenu from "../components/home/tilesMenu";
 import { memo } from "react";
 import cookies from 'next-cookies'
 
@@ -29,13 +29,10 @@ const Home = (props) => {
 
   return (<>
     <Nav type="home" title="Jwallin" />
-    <div style={{margin: '4rem 0'}}>
+    <div style={{margin: '4.2rem 0'}}>
+      <PromoBanner />
       <Saldo id_user={props.id_userMe} token={props.token} />
-      
-      {/* <PromoBanner />
-
-      <TilesMenu />     */}
-
+      <TilesMenu />    
     </div>
     <BottomNav hal="home" />
   </>)
