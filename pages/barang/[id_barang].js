@@ -3,12 +3,14 @@ import { getReq } from '../../function/API';
 import Nav from '../../components/nav'
 import OptionBtnBarang from '../../components/optionBtnBarang'
 import Head from 'next/head'
+import { ChatDots } from 'react-bootstrap-icons';
+import Link from 'next/link';
 
 export const getServerSideProps = async ctx => {
     const {id_barang} = ctx.query;
-    let id_userMe;
-    let token;
-    let data;
+    let id_userMe = null
+    let token = null
+    let data = null
     const cookie = cookies(ctx)
 
     if (cookie.id_user && cookie.token) {
@@ -52,6 +54,13 @@ const index = (props) => {
         </div>
         
         <div style={{bottom: '0', position: 'fixed', width: '100%', padding: '10px 5px', borderTop: '1px  rgba(224,224,224,1) solid', background: 'white'}}>
+            {
+                props.id_userMe != props.data.id_seller &&
+                <div className="float-left" style={{border: '1px solid grey', padding: '0', borderRadius: '5px'}}>
+                    <Link href="/"><ChatDots size={20} style={{margin: '6px 10px 0 10px'}} /></Link>
+                </div>
+            }
+
             <div className="float-right">
                 {
                     props.id_userMe == props.data.id_seller ?

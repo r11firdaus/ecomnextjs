@@ -7,7 +7,7 @@ import BottomNav from '../../components/bottomNav';
 export const getServerSideProps = async ctx => {
     const {nama_subcategory} = ctx.query;
     let id_userIn = null
-    let token;
+    let token = null
     const cookie = cookies(ctx)
     if (cookie.id_user && cookie.token) {
         id_userIn = cookie.id_user

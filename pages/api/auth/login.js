@@ -14,8 +14,8 @@ const handler = async (req, res) => {
     if(!chkPassword) return res.status(401).end();
 
     const token = jwt.sign({
-        id: chkUser.id,
-        email: chkUser.email
+        username: chkUser.username,
+        email_user: chkUser.email_user
     }, process.env.JWT_SECRET, {
         expiresIn: '1d'
     })
@@ -26,10 +26,9 @@ const handler = async (req, res) => {
         data: {
             email_user,
             token,
-            id_user: chkUser.id_user
+            username: chkUser.username
         }
     });
-
 }
 
 export default handler;

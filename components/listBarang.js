@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { memo, useEffect, useState } from "react"
 import { getReq } from "../function/API";
-// import OptionBtnBarang from "./optionBtnBarang";
+import Image from 'next/image'
 
 const ListBarang = props => {
     const [data, setdata] = useState([])
@@ -29,23 +29,25 @@ const ListBarang = props => {
                                 className="card float-left"
                                 style={{ margin: '0', width: '50%', padding: '2px', cursor: 'pointer' }}
                             >
-                                <div style={{ aspectRatio: '16/9', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: 'auto' }}>
-                                    Foto Produk
-                                </div>
+                                <Image
+                                    height={'100%'}
+                                    width={'100%'}
+                                    // src={data.gambar_barang}
+                                    src="/../public/404.png"
+                                    style={{ aspectRatio: '16/9', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: '0 auto' }}
+                                />
 
-                                <div style={{margin: '10px'}}>
+                                <div style={{ margin: '10px' }}>
                                     <p style={{ margin: '0' }}>{data.nama_barang}</p>
                                     <strong>{data.harga_barang}</strong>
                                     <div style={{ display: 'flex' }}>
-                                        <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Sold: 200 | </p>
-                                        <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: 4.8/5</p>
+                                        <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Sold: {data.terjual_barang} | </p>
+                                        {data.terjual_barang > 0 ?
+                                            <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: {data.rating_barang}/5</p> :
+                                            <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: no data</p>
+                                        }
                                     </div>
                                     <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Cimahi</p>
-                                    {/* {
-                                        props.id_userMe == data.id_seller ?
-                                        <OptionBtnBarang data={data} id_userMe={props.id_userMe} token={props.token} />:
-                                        <OptionBtnBarang add data={data} id_userMe={props.id_userMe} token={props.token} />
-                                    } */}
                                 </div>
                             </div>
                         </Link>

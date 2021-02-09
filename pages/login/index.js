@@ -35,7 +35,8 @@ export default function index() {
         if(!loginReq.ok) return setstatus(false)
         const loginRes = await loginReq.json()
         Cookie.set('token', loginRes.data.token)
-        Cookie.set('id_user', loginRes.data.id_user)
+        Cookie.set('username', loginRes.data.username)
+        Cookie.set('username', loginRes.data.id_user)
         setstatus('success, redirecting...')
         Router.push('/')
     }

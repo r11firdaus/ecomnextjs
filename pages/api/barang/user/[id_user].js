@@ -11,7 +11,20 @@ const handler = async (req, res) => {
 
     const {id_user} = req.query 
     
-    const reqBarangUser = await db('tb_barang').where({'id_seller':id_user})
+    const reqBarangUser = await db('tb_barang')
+    .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+    .select(
+        'tb_barang.id_barang',
+        'tb_barang.id_seller',
+        'tb_barang.nama_barang',
+        'tb_barang.gambar_barang',
+        'tb_barang.harga_barang',
+        'tb_barang.terjual_barang',
+        'tb_barang.rating_barang',
+        'tb_user.nama_user',
+        'tb_user.kota_user',
+    )
+    .where({'id_seller':id_user})
 
     res.status(200);
     res.json({data: reqBarangUser})

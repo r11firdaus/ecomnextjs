@@ -17,6 +17,11 @@ const DetailProfile = props => {
         Router.push("/login")
     }
 
+    const editHandler = (e, id) => {
+        e.preventDefault()
+        Router.push(`/profil/edit/`)
+    }
+
     return (<>
         {
             data.id_user &&
@@ -30,6 +35,7 @@ const DetailProfile = props => {
                     <div className="card-action float-right">
                         <button
                             className="button-small button-primary"
+                            onClick={e => editHandler(e, data.id_userMe)}
                         >Edit</button>
                         <button
                             className="button-small button-primary-text"
