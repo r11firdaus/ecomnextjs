@@ -20,13 +20,16 @@ const handler = async (req, res) => {
         expiresIn: '1d'
     })
 
+    console.log(chkUser)
+
     res.status(200);
     res.json({
         message: 'Login Success',
         data: {
             email_user,
             token,
-            username: chkUser.username
+            username: chkUser.username,
+            id_user: chkUser.id_user,
         }
     });
 }

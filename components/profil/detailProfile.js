@@ -7,7 +7,7 @@ const DetailProfile = props => {
     const [data, setdata] = useState({})
 
     useEffect(async() => {
-        const {res} = await getReq('user', props.id_user, '')
+        const {res} = await getReq('user', props.id_userReq, '')
         setdata(res)
     }, [])
 

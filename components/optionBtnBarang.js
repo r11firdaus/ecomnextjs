@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { memo, useState } from "react";
-import { deleteReq } from "../function/API";
+import { deleteReq, getReq, postReq } from "../function/API";
+import Cookie from 'js-cookie'
 
 const optionBtnBarang = (props) => {
     const [modal, setmodal] = useState({show:false, id: 0, nama: ''})
@@ -22,12 +23,34 @@ const optionBtnBarang = (props) => {
         Router.reload()
     }
 
+    const addToCartHandler = async (e, id) => {
+        e.preventDefault();
+        const iduser = Cookie.get('id_user')
+        const tokenuser = Cookie.get('token')
+        if (!iduser | !tokenuser) Router.push('/login')
+
+        const {res} = await getReq('barang', id, '')
+        if (res.stok_barang > 0) {
+            let already = false
+            await getReq('cart', iduser, tokenuser)
+            .then(res => res.res.map(data => {
+                if (id == data.id_barang) already = true
+            }))
+            already ? alert('already added') :
+            await postReq('cart/add', tokenuser, {
+                id_user: iduser,
+                id_barang: id,
+                total: 1
+            }).then(res)
+        }
+    }
+
     return (<>
         <div className="card-action" style={props.detail&&{display: 'flex'}} >
             <button
                 className="button-small button-primary"
                 style={style.button}
-                onClick={props.add ? (e) => null : (e) => updateHandler(e, myprops.id_barang)}
+                onClick={props.add ? (e) => addToCartHandler(e, myprops.id_barang) : (e) => updateHandler(e, myprops.id_barang)}
             >{props.add ? '+ To Cart' : 'Update'}</button>
             <button
                 className="button-small button-outline"

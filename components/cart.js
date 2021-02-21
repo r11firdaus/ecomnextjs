@@ -5,32 +5,42 @@ const Cart = (props) => {
     const [cart, setcart] = useState([])
     const [jml, setjml] = useState(0)
     let arr = []
-    let totSeller = 0
+    let totchk = 0
 
     useEffect(async () => {
         const { res } = await getReq('cart', props.id_userMe, props.token)
         setcart(res)
     }, [])
 
-    const sellerClick = (e, id) => {
+    const sellerClick = async (e, id) => {
         const parentVal = e.target.checked
         const child = document.getElementsByName(id)
+        let tot = 0
         for (let i = 0; i < child.length; i++) {
-            child[i].checked === true && setjml(jml - child[i].accessKey)
-            totSeller = parseInt(child[i].accessKey)
+            tot += parseInt(child[i].accessKey)
+            if(child[i].checked) totchk -= parseInt(child[i].accessKey)
             child[i].checked = parentVal
         }
-        
-        const childName = document.getElementsByTagName('input')
-        let boxchk = []
-        for (let i = 0; i < childName.length; i++) {
-            boxchk.push(childName[i].checked)
-        }
-        if (parentVal) setjml(jml + totSeller)
+        if (parentVal) setjml(jml+tot)
         else {
-            boxchk.includes(true) ? setjml(jml - totSeller) : setjml(0)
+            setjml(jml-totchk-tot)
+            
+            // let totnew = tot-totchk
+            // console.log(totchk)
         }
-        console.log(totSeller)
+        
+        
+        
+        // const childName = document.getElementsByTagName('input')
+        // let boxchk = []
+        // for (let i = 0; i < childName.length; i++) {
+        //     boxchk.push(childName[i].checked)
+        // }
+        // if (parentVal) setjml(jml + totSeller)
+        // else {
+        //     boxchk.includes(true) ? setjml(jml - totSeller) : setjml(0)
+        // }
+        // console.log(totSeller)
     }
 
     const childClick = (e, total, harga, id) => {
@@ -53,9 +63,12 @@ const Cart = (props) => {
         }
             
         if (childVal) {
-            setjml(jml + hasil)
-        } else {
-            boxchk.includes(true) ? setjml(jml - hasil) : setjml(0)
+            totchk += jml + hasil
+            setjml(totchk)
+        }
+        else {
+            // boxchk.includes(true) ? setjml(jml - hasil) : setjml(0)
+            boxchk.includes(true) && setjml(jml - hasil)
         }
     }
 

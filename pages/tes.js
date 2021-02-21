@@ -1,13 +1,11 @@
 import { memo, useEffect, useState } from "react";
-import { getReq } from '../../function/API';
-import Nav from '../../components/nav';
-import BottomNav from '../../components/bottomNav';
+import { getReq } from '../function/API';
 import Link from 'next/link';
 import cookie from 'js-cookie';
 import io from "socket.io-client";
 const socket = io("http://localhost:3001/");
 
-const index = () => {
+const tes = () => {
     const [person, setperson] = useState([])
 
     useEffect(async () => {
@@ -23,17 +21,15 @@ const index = () => {
 
     return (
         <>
-            <Nav />
-            <ul id="messages" style={{margin: '3.75rem 0'}}>
+            <ul id="messages">
                 {
                     person.map(per => (
-                        <Link href={`/pesan/${per.id_chat}`} key={per.id_chat}><li>{per.nama_user}</li></Link>
+                        <Link href={`/tes/${per.id_chat}`} key={per.id_chat}><li>{per.nama_user}</li></Link>
                     ))
                 }
             </ul>
-            <BottomNav hal="pesan" />
         </>
     )
 }
 
-export default memo(index)
+export default memo(tes)

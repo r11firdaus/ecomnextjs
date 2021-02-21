@@ -32,6 +32,7 @@ const EditUser = props => {
         const newField = {
             email_user: field.email_user,
             password_user: field.password_user,
+            username: field.username,
             nama_user,
             alamat_user,
             kecamatan_user,

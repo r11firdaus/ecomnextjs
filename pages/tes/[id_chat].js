@@ -46,7 +46,7 @@ const index = (props) => {
     });
     
     useEffect(async () => {
-        Router.replace(`/pesan/${props.id_chat}`);
+        Router.replace(`/tes/${props.id_chat}`);
         window.scrollTo(0, document.body.scrollHeight);
 
         let id_user2 = []

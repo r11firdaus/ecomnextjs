@@ -57,7 +57,7 @@ const index = (props) => {
             {
                 props.id_userMe != props.data.id_seller &&
                 <div className="float-left" style={{border: '1px solid grey', padding: '0', borderRadius: '5px'}}>
-                    <Link href="/"><ChatDots size={20} style={{margin: '6px 10px 0 10px'}} /></Link>
+                    <Link href={`/pesan/${props.id_userMe}$${props.data.id_seller}`}><ChatDots size={20} style={{margin: '6px 10px 0 10px'}} /></Link>
                 </div>
             }
 
