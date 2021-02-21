@@ -10,7 +10,7 @@ const handler = async (req, res) => {
     const reqChat = await db('tb_message')
     .join('tb_user', 'tb_user.id_user', 'tb_message.id_user')
     .select("*")
-    .where({'tb_message.id_chat': id_chat })
+    .where({'tb_message.id_chat': id_chat }).orderBy('id_message')
 
     res.status(200);
     res.json({data: reqChat})

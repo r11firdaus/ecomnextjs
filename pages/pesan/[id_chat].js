@@ -36,8 +36,7 @@ export const getServerSideProps = async (ctx) => {
 const index = (props) => {
     const [person, setperson] = useState(props.result)
     const [lawan, setlawan] = useState('')
-    const pisahIdUser = props.id_chat.split('$')
-
+    
     socket.on('chat message', async (msg, id) => {
         if (props.id_chat === id) {
             const { res } = await getReq('chat/with', props.id_chat, props.token)
@@ -48,8 +47,9 @@ const index = (props) => {
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
         window.scrollTo(0, document.body.scrollHeight);
-
+        
         let id_user2 = []
+        const pisahIdUser = props.id_chat.split('$')
         await pisahIdUser.map(id => {
             id != props.id_userMe && id_user2.push(id)
         })

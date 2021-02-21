@@ -16,7 +16,6 @@ const FormPesan = (props) => {
                 })
                 input.value = '';
                 socket.emit('chat message', input.value, props.id_chat);
-                window.scrollTo(0, document.body.scrollHeight);
             }
         } else {
             // buat id_chat baru lalu kirim message

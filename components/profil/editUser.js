@@ -40,7 +40,7 @@ const EditUser = props => {
             provinsi_user,
             telepon_user,
         }
-        await putReq('user/update', props.id_userMe, props.token, newField).then(res => console.log(res))
+        await putReq('user/update', props.id_userMe, props.token, newField).then(res => null)
         Router.back()
     }
 
