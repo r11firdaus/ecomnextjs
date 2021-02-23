@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { deleteReq, getReq, postReq } from "../function/API";
 import Cookie from 'js-cookie'
 
@@ -17,11 +17,11 @@ const optionBtnBarang = (props) => {
         setmodal({show: true, id, nama})
     }
 
-    const deleteHandler = async (e) => {
-        e.preventDefault()
-        const {res} = await deleteReq('barang/delete', modal.id, props.token)
-        Router.reload()
-    }
+    // const deleteHandler = async (e) => {
+    //     e.preventDefault()
+    //     const {res} = await deleteReq('barang/delete', modal.id, props.token)
+    //     Router.reload()
+    // }
 
     const addToCartHandler = async (e, id) => {
         e.preventDefault();

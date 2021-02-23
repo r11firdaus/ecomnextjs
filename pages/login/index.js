@@ -42,9 +42,9 @@ export default function index() {
     }
 
     return (
-        <div className="main">
-            <h1 className="title">Login Page</h1>
-            <form onSubmit={loginHandler} style={{width: '95%'}}>
+        <div className="container" style={{padding: '10px'}}>
+            <h4 className="title">Jwallin</h4>
+            <form onSubmit={loginHandler}>
                 <input type='email' name='email_user' onChange={fieldsHandler} placeholder='Email' /><br />
                 <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' /><br />
                 <button type='submit'>Login</button>

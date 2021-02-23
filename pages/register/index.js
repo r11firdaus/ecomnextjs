@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Link from 'next/link'
+import Router from "next/router";
 
 export default function index() {
     const [fields, setfields] = useState({ email: '', password: '' })
-    const [status, setstatus] = useState('not login')
+    const [status, setstatus] = useState('')
 
     const fieldsHandler = e => {
         // coba cara lain    
@@ -25,15 +26,18 @@ export default function index() {
             },
             body: JSON.stringify(fields)
         })
-        if (registerReq.ok) return setstatus(`${registerReq.status}`);
+        if (registerReq.ok) {
+            setstatus(`${registerReq.status}`);
+            await registerReq.json()
+            setstatus('success')
+            Router.push('/login')
+        }
 
-        const registerRes = await registerReq.json()
-        setstatus('success')
     }
 
     return (
-        <div className="main">
-            <h1 className="title">Register Page</h1>
+        <div className="container" style={{padding: '10px'}}>
+        <h4 className="title">Jwallin</h4>
             <form onSubmit={registerHandler}>
                 <input type='email' name='email' onChange={fieldsHandler} placeholder='Email' /><br />
                 <input type='password' name='password' onChange={fieldsHandler} placeholder='Password' /><br />

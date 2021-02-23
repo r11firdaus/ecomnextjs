@@ -27,9 +27,9 @@ const ListBarang = props => {
                         <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
                             <div
                                 className="card float-left"
-                                style={{ margin: '0', width: '50%', padding: '2px', cursor: 'pointer' }}
+                                style={{ margin: '0', width: '50%', padding: '2px', cursor: 'pointer'}}
                             >
-                                <div style={{width: '100%', justifyItems: 'center'}}>
+                                <div style={{width: '100px', margin: '0 auto'}}>
                                     <Image
                                         height={'100%'}
                                         width={'100%'}

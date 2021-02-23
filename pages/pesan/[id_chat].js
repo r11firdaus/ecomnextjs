@@ -35,7 +35,7 @@ export const getServerSideProps = async (ctx) => {
 
 const index = (props) => {
     const [person, setperson] = useState(props.result)
-    const [lawan, setlawan] = useState('')
+    const [lawan, setlawan] = useState({nama_user: '', id_user: 0})
     
     socket.on('chat message', async (msg, id) => {
         if (props.id_chat === id) {
@@ -54,16 +54,16 @@ const index = (props) => {
             id != props.id_userMe && id_user2.push(id)
         })
         const {res} = await getReq('user', id_user2[0], props.token)
-        setlawan(res.nama_user)
+        setlawan(res)
         // buat fungsi 'pesan dibaca'
     }, [])
 
     return (<>
         <div style={styles.header}>
-            <strong>{lawan}</strong>
+            <strong>{lawan.nama_user && lawan.nama_user}</strong>
         </div>
         <Bubble person={person} id_userMe={props.id_userMe} />
-        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} />
+        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawan.id_user} />
     </>)
 }
 

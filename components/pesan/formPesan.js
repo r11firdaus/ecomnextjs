@@ -12,10 +12,12 @@ const FormPesan = (props) => {
                 await postReq('chat/message/create', props.token, {
                     id_chat: props.id_chat,
                     id_user: props.id_userMe,
-                    message: input.value
+                    receiver_user: props.lawan,
+                    message: input.value,
+                    status_message: 'unread'
                 })
                 input.value = '';
-                socket.emit('chat message', input.value, props.id_chat);
+                socket.emit('chat message', input.value, props.id_chat, props.lawan);
             }
         } else {
             // buat id_chat baru lalu kirim message
@@ -30,26 +32,29 @@ const FormPesan = (props) => {
                 await postReq('chat/message/create', props.token, {
                     id_chat: props.id_chat,
                     id_user: props.id_userMe,
-                    message: input.value
+                    receiver_user: props.lawan,
+                    message: input.value,
+                    status_message: 'unread'
                 })
                 input.value = '';
                 socket.emit('chat message', input.value, props.id_chat);
             }
         }
     }
+
     return (<>
         <form id="form" onSubmit={e => sendHandler(e)}>
-                <input id="input" autoComplete="off" />
-                <button>Send</button>
+            <input id="input" autoComplete="off" />
+            <button>Send</button>
         </form>
         <style jsx>
-        {`
+            {`
             #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
             #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
             #input:focus { outline: none; }
             #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
         `}
-    </style>
+        </style>
     </>)
 }
 
