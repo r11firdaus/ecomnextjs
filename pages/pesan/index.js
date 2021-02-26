@@ -16,7 +16,6 @@ const index = () => {
 
         const { res } = await getReq('chat', id_user, token)
         setperson(res)
-        console.log(res)
 
         // buat fungsi 'pesan dibaca'
     }, [])

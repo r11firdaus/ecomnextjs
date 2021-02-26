@@ -16,8 +16,8 @@ const FormPesan = (props) => {
                     message: input.value,
                     status_message: 'unread'
                 })
+                socket.emit('chat message', input.value, props.id_chat, props.lawan, props.id_userMe);
                 input.value = '';
-                socket.emit('chat message', input.value, props.id_chat, props.lawan);
             }
         } else {
             // buat id_chat baru lalu kirim message
@@ -36,8 +36,8 @@ const FormPesan = (props) => {
                     message: input.value,
                     status_message: 'unread'
                 })
+                socket.emit('chat message', input.value, props.id_chat, props.lawan, props.id_userMe);
                 input.value = '';
-                socket.emit('chat message', input.value, props.id_chat);
             }
         }
     }
