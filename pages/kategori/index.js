@@ -1,15 +1,13 @@
 import { memo } from 'react'
 import ListCategory from '../../components/listCategory'
-import Nav from '../../components/nav'
-import BottomNav from '../../components/bottomNav';
+import Nav2 from '../../components/navigasi/nav2'
 
 const index  = props => {
     return (<>
-    <Nav />
+    <Nav2 title="Category" />
     <div style ={{margin: '4rem 0'}}>
         <ListCategory />
     </div>
-    <BottomNav />
     </>)
 }
 

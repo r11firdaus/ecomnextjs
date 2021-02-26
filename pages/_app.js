@@ -17,7 +17,6 @@ function MyApp({ Component, pageProps }) {
     socket.on('chat message', async (msg, id_chat, receiver_user, sender) => {
       if (receiver_user == id_user) {
         const { res } = await getReq('user', sender, '')
-        dispatch({type: 'UNREAD_MESSAGE', payload: unreadMessage + 1})
 
         if (!Notification) console.log('Browser tidak mendukung notifikasi')
         if (Notification.permission !== "granted") Notification.requestPermission();

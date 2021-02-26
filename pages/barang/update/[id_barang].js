@@ -1,9 +1,8 @@
 import { memo } from 'react'
 import FormBarang from '../../../components/formBarang'
-import Nav from '../../../components/nav'
+import Nav2 from '../../../components/navigasi/nav2'
 import {authPage} from '../../../middleware/authrizationPage'
 import cookies from 'next-cookies';
-import BottomNav from '../../../components/bottomNav';
 
 export const getServerSideProps = async ctx => {
     const {id_barang} = ctx.query
@@ -24,7 +23,7 @@ export const getServerSideProps = async ctx => {
 const index = props => {
 
     return (<>
-        <Nav />
+        <Nav2 />
         <div style ={{margin: '4rem 0'}}>
             <FormBarang
                 id_barang = {props.id_barang}
@@ -32,7 +31,6 @@ const index = props => {
                 token = {props.token}
             />
         </div>
-        <BottomNav />
     </>)
 }
 

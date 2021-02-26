@@ -53,8 +53,6 @@ const EditUser = props => {
         const res = await req.json()
         setkota(res.kota_kabupaten)
         const city = document.getElementById('kota_user')
-        const kecamatan = document.getElementById('kecamatan_user')
-        setkecamatan([])
         city.disabled = false
     }
 

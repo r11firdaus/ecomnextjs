@@ -1,6 +1,7 @@
 const initialState = {
   unreadMessage: 0,
-  notification: 5
+  notification: 0,
+  id_user: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         notification: action.payload
+      }
+    case 'ID_USER':
+      return {
+        ...state,
+        id_user: action.payload
       }
     default:
       return state

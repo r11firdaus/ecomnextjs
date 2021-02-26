@@ -1,6 +1,6 @@
 import cookies from 'next-cookies'
 import { getReq } from '../../function/API';
-import Nav from '../../components/nav'
+import Nav from '../../components/navigasi/nav'
 import OptionBtnBarang from '../../components/optionBtnBarang'
 import Head from 'next/head'
 import { ChatDots } from 'react-bootstrap-icons';

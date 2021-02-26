@@ -35,7 +35,7 @@ const ListBarang = props => {
                                         width={'100%'}
                                         alt={`gambar ${data.nama_barang}`}
                                         // src={data.gambar_barang}
-                                        src="/../public/404.png"
+                                        src="/../public/vercel.svg"
                                     />
                                 </div>
 

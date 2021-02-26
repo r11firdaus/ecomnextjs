@@ -1,11 +1,11 @@
 import { memo } from 'react'
 import DetailProfile from '../../components/profil/detailProfile'
-import Nav from '../../components/nav'
+import Nav from '../../components/navigasi/nav'
 import ListBarang from '../../components/listBarang'
 import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
 import Link from 'next/link'
-import BottomNav from '../../components/bottomNav';
+import BottomNav from '../../components/navigasi/bottomNav';
 
 export const getServerSideProps = async ctx => {
     let usernameMe = null
@@ -35,7 +35,7 @@ export const getServerSideProps = async ctx => {
 
 const index = props => {
     return (<>
-        <Nav title="Profile" id_userReq={props.id_userReq} />
+        <Nav title="Profile" />
         <div style ={{margin: '4rem 0'}}>
             <Saldo id_userMe={props.id_userMe} token={props.token} />
             <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />

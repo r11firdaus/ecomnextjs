@@ -1,9 +1,8 @@
 import { memo } from 'react'
 import FormBarang from '../../components/formBarang'
-import Nav from '../../components/nav'
+import Nav2 from '../../components/navigasi/nav2'
 import {authPage} from '../../middleware/authrizationPage'
 import cookies from 'next-cookies';
-import BottomNav from '../../components/bottomNav';
 
 export const getServerSideProps = async ctx => {
     const {token} = await authPage(ctx)
@@ -22,14 +21,13 @@ export const getServerSideProps = async ctx => {
 const index = props => {
 
     return (<>
-        <Nav />
+        <Nav2 title = 'Create Barang' />
         <div style ={{margin: '4rem 0'}}>
             <FormBarang
                 id_userMe = {props.id_userMe}
                 token = {props.token}
             />
         </div>
-        <BottomNav />
     </>)
 }
 

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import { getReq } from '../../function/API';
-import Nav from '../../components/nav';
-import BottomNav from '../../components/bottomNav';
+import Nav2 from '../../components/navigasi/nav2';
+import BottomNav from '../../components/navigasi/bottomNav';
 import Link from 'next/link';
 import cookie from 'js-cookie';
 import io from "socket.io-client";
@@ -22,7 +22,7 @@ const index = () => {
 
     return (
         <>
-            <Nav />
+            <Nav2 title="Messages" />
             <ul id="messages" style={{margin: '3.75rem 0'}}>
                 {
                     person.map(per => (

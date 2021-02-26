@@ -6,6 +6,7 @@ import Router from "next/router";
 import FormPesan from "../../components/pesan/formPesan";
 import io from "socket.io-client";
 import Bubble from "../../components/pesan/bubble";
+import Nav2 from "../../components/navigasi/nav2";
 const socket = io("http://localhost:3001/");
 
 export const getServerSideProps = async (ctx) => {
@@ -59,9 +60,9 @@ const index = (props) => {
     }, [])
 
     return (<>
-        <div style={styles.header}>
-            <strong>{lawan.nama_user && lawan.nama_user}</strong>
-        </div>
+        <Nav2 title={lawan.nama_user && lawan.nama_user}>
+            <Link href={`/profil/${lawan.id_user}`} />
+        </Nav2>
         <Bubble person={person} id_userMe={props.id_userMe} />
         <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawan.id_user} />
     </>)
