@@ -1,5 +1,5 @@
-import db from '../../../../lib/db';
-import authorization from '../../../../middleware/authorization'
+import db from '../../../../../lib/db';
+import authorization from '../../../../../middleware/authorization'
 
 const handler = async (req, res) => {
     if (req.method !== 'GET') return res.status(405).end();

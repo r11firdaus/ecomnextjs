@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { getReq } from '../../function/API';
+import { getReq, putReq } from '../../function/API';
 import { authPage } from '../../middleware/authrizationPage'
 import Link from 'next/link';
 import Router from "next/router";
@@ -57,6 +57,9 @@ const index = (props) => {
         const {res} = await getReq('user', id_user2[0], props.token)
         setlawan(res)
         // buat fungsi 'pesan dibaca'
+        await putReq('chat/message/read', props.id_userMe, props.token, {
+            id_chat: props.id_chat
+        }).then(res => null)
     }, [])
 
     return (<>
@@ -66,18 +69,6 @@ const index = (props) => {
         <Bubble person={person} id_userMe={props.id_userMe} />
         <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawan.id_user} />
     </>)
-}
-
-const styles = {
-    header: {
-        display: 'flex',
-        padding: '10px',
-        position: 'fixed',
-        width: '100%',
-        height: '3rem',
-        background: 'white',
-        borderBottom: '1px grey solid'
-    },    
 }
 
 export default memo(index)

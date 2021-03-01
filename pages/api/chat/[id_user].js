@@ -9,14 +9,12 @@ const handler = async (req, res) => {
 
     const reqMsg = await db('tb_chat')
         .join('tb_user', 'tb_user.id_user', 'tb_chat.id_user1')
-        // .select('tb_user.nama_user, tb_user.id_user', 'tb_chat.id_chat')
-        .select('*')
+        .select('tb_user.nama_user', 'tb_user.id_user', 'tb_chat.id_chat')
         .where({ 'tb_chat.id_user2': id_user })
 
     const reqMsg2 = await db('tb_chat')
         .join('tb_user', 'tb_user.id_user', 'tb_chat.id_user2')
-        // .select('tb_user.nama_user, tb_user.id_user', 'tb_chat.id_chat')
-        .select('*')
+        .select('tb_user.nama_user', 'tb_user.id_user', 'tb_chat.id_chat')
         .where({ 'tb_chat.id_user1': id_user })
 
     let result = []

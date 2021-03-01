@@ -18,7 +18,7 @@ const BottomNav = (props) => {
         getId && dispatch({ type: 'ID_USER', payload: getId})
 
         socket.on('loadDB', async () => {
-            const {res} = await getReq('chat/unread', id_user, token)
+            const {res} = await getReq('chat/message/unread', id_user, token)
             dispatch({ type: 'UNREAD_MESSAGE', payload: res.length })
 
             await getReq('notification', id_user, token).then(res => {
