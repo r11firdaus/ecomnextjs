@@ -1,12 +1,13 @@
 const domain = 'http://localhost:3000'
 const apiKey = 'apirezajwallin'
 
-export const getReq = (path, id, token) => {
+export const getReq = (path, id, token, data) => {
+    let newData = !data | '' ? '' : `+${data}`
     return new Promise ((resolve, reject) => {
-        fetch(`${domain}/api/${path}/${id}`, {
+        fetch(`${domain}/api/${path}/${id}${newData}`, {
             headers: {
                 'Authorization': `Bearer ${token} ${apiKey}`
-            }
+            },
         }).then(res => res.json()).then(json => resolve({res: json.data}))
     })
 }

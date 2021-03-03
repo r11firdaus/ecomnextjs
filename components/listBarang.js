@@ -5,13 +5,16 @@ import Image from 'next/image'
 
 const ListBarang = props => {
     const [data, setdata] = useState([])
+    const [sort, setsort] = useState('')
+    const [cod, setcod] = useState(false)
+
     useEffect(async () => {
         if (props.id_userReq) {
-            const { res } = await getReq('barang/user', props.id_userReq, props.token)
+            const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
             setdata(res)
         }
         else if (props.nama_subcategory) {
-            const { res } = await getReq('barang/subcategory', props.nama_subcategory, '')
+            const { res } = await getReq('barang/subcategory', props.nama_subcategory, '', sort)
             setdata(res)
         } else {
             const { res } = await getReq('barang', '', '')
@@ -19,8 +22,30 @@ const ListBarang = props => {
         }
     }, [])
 
+    const hargaHandler = async () => {
+        sort === '' && setsort('lowest')
+        sort === 'lowest' && setsort('highest')
+        sort === 'highest' && setsort('')
+        
+        const { res } = await getReq('barang/subcategory', props.nama_subcategory, '', sort)
+        setdata(res)
+    }
+
     return (<>
+    {console.log(sort)}
         <div className="row" style={{ display: 'flex', padding: '5px' }}>
+            <div className="col" style={{display: 'flex', justifyContent: 'space-around'}}>
+                <p
+                    style={{borderBottom: sort !== '' && '1px solid green', margin: '5px', cursor: 'pointer'}}
+                    onClick={() => hargaHandler()}
+                >Harga {sort === 'highest' ? '+' : '-'}
+                </p>
+                <p
+                    style={{borderBottom: cod && '1px solid green', margin: '5px', cursor: 'pointer'}}
+                    onClick={() => setcod(!cod)}
+                >COD
+                </p>
+            </div>
             {
                 data.map(data => {
                     return (
@@ -48,7 +73,7 @@ const ListBarang = props => {
                                                 <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Sold: {data.terjual_barang} | </p>
                                                 <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: {data.rating_barang}/5</p>
                                             </> :
-                                            <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: no data</p>
+                                            <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: {data.rating_barang}/5</p>
                                         }
                                     </div>
                                     <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Cimahi</p>
@@ -63,7 +88,3 @@ const ListBarang = props => {
 }
 
 export default memo(ListBarang)
-
-// Keterangan
-// props.is_user = meminta data barang sesuai id_user
-// props.is_userMe = user yg login
