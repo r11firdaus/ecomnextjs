@@ -22,7 +22,10 @@ const handler = async (req, res) => {
         if (sort === 'lowest') sortReq = ['harga_barang', 'desc']
         if (sort === 'highest') sortReq = ['harga_barang', 'asc']
 
-        let reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory}).orderBy(sortReq[0],sortReq[1])
+        let reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+        .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+        .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
+        .orderBy(sortReq[0],sortReq[1])
         res.json({data: reqBarang})
     } else res.json({data: []})
 }
