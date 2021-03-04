@@ -41,7 +41,7 @@ const TilesMenu = () => {
             {
                 dummy.map(data => (
                     <Link href={`/${data.url}`} key={data.id}>
-                        <div className="float-left" style={{minWidth: '25%', margin: '15px 0', cursor: 'pointer', color: 'green'}}>
+                        <div className="float-left" style={{minWidth: '25%', margin: '15px 0', cursor: 'pointer', color: '#854442'}}>
                             <p style={{margin: '0', textAlign: 'center'}}>{data.icon}</p>
                             <p style={{margin: '0', textAlign: 'center', fontSize: '12px'}}>{data.name}</p>
                         </div>

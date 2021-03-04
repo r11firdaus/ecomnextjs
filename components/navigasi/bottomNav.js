@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react"
 import Link from 'next/link'
 import Cookie from 'js-cookie'
-import { Bell, BellFill, BoxArrowInLeft, Chat, ChatFill, House, HouseFill, Person, PersonFill } from "react-bootstrap-icons"
+import { BellFill, BoxArrowInLeft, ChatFill, HouseFill,  PersonFill } from "react-bootstrap-icons"
 import { useSelector } from "react-redux"
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
@@ -34,14 +34,14 @@ const BottomNav = (props) => {
     return (<>
         <div className="navbar-wrapper">
             {props.hal == 'home' ?
-                <HouseFill color="green" /> :
-                <Link href="/"><House /></Link>
+                <HouseFill color="#4b3832" /> :
+                <Link href="/"><HouseFill color="#be9b7b" /></Link>
             }
             {props.hal == 'notifikasi' ?
-                <BellFill color="green" /> :
+                <BellFill color="#4b3832" /> :
                 <Link href="/notifikasi">
                     <div style={{ display: 'flex' }}>
-                        <Bell />
+                        <BellFill color="#be9b7b" />
                         {notification > 0 &&
                             <div className="baloon-new">
                                 <p className="txt-baloon">{notification}</p>
@@ -51,10 +51,10 @@ const BottomNav = (props) => {
                 </Link>
             }
             {props.hal == 'pesan' ?
-                <ChatFill color="green" /> :
+                <ChatFill color="#4b3832" /> :
                 <Link href="/pesan">
                     <div style={{ display: 'flex' }}>
-                        <Chat />
+                        <ChatFill color="#be9b7b" />
                         {unreadMessage > 0 &&
                             <div className="baloon-new">
                                 <p className="txt-baloon">{unreadMessage}</p>
@@ -66,9 +66,9 @@ const BottomNav = (props) => {
             {
                 id_user !== null ?
                     props.hal == 'profil' ?
-                        <PersonFill size={20} color="green" /> :
-                        <Link href={`/profil/${id_user}`}><Person size={20} /></Link> :
-                    <Link href="/login"><BoxArrowInLeft /></Link>
+                        <PersonFill size={20} color="#4b3832" /> :
+                        <Link href={`/profil/${id_user}`}><PersonFill size={20} color="#be9b7b" /></Link> :
+                    <Link href="/login"><BoxArrowInLeft color="#be9b7b" /></Link>
 
             }
         </div>

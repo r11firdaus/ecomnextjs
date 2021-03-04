@@ -20,7 +20,7 @@ const Bubble = (props) => {
 const styles = {
     userMe: {
         maxWidth: '70%',
-        backgroundColor: 'green',
+        backgroundColor: '#be9b7b',
         padding: '10px',
         margin: '10px',
         color: 'white'

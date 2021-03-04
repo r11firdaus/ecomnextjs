@@ -16,7 +16,7 @@ const handler = async (req, res) => {
     res.status(200);
     const reqSubCategory = await db('tb_subcategory').where({'nama_subcategory': pisah[0]}).first()
 
-    // if (reqSubCategory) {
+    if (reqSubCategory) {
         let sortReq = ['','']
         if (sort === '') sortReq = ['rating_barang', 'desc']
         if (sort === 'lowest') sortReq = ['harga_barang', 'desc']
@@ -24,7 +24,7 @@ const handler = async (req, res) => {
 
         let reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory}).orderBy(sortReq[0],sortReq[1])
         res.json({data: reqBarang})
-    // } else res.json({data: []})
+    } else res.json({data: []})
 }
 
 export default handler

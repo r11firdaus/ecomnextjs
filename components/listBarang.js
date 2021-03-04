@@ -8,7 +8,11 @@ const ListBarang = props => {
     const [sort, setsort] = useState('')
     const [cod, setcod] = useState(false)
 
-    useEffect(async () => {
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = async () => {
         if (props.id_userReq) {
             const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
             setdata(res)
@@ -20,20 +24,17 @@ const ListBarang = props => {
             const { res } = await getReq('barang', '', '')
             setdata(res)
         }
-    }, [])
-
-    const hargaHandler = async () => {
-        sort === '' && setsort('lowest')
-        sort === 'lowest' && setsort('highest')
-        sort === 'highest' && setsort('')
-        
-        const { res } = await getReq('barang/subcategory', props.nama_subcategory, '', sort)
-        setdata(res)
     }
 
-    return (<>
-    {console.log(sort)}
-        <div className="row" style={{ display: 'flex', padding: '5px' }}>
+    const hargaHandler = async () => {
+        sort === 'highest' && setsort('')
+        sort === 'lowest' && setsort('highest')
+        sort === '' && setsort('lowest')
+        
+        getData()
+    }
+
+    const FilterHandler = () => (
             <div className="col" style={{display: 'flex', justifyContent: 'space-around'}}>
                 <p
                     style={{borderBottom: sort !== '' && '1px solid green', margin: '5px', cursor: 'pointer'}}
@@ -46,6 +47,11 @@ const ListBarang = props => {
                 >COD
                 </p>
             </div>
+    )
+
+    return (<>
+        <div className="row" style={{ display: 'flex', padding: '5px' }}>
+            <FilterHandler />
             {
                 data.map(data => {
                     return (
@@ -70,13 +76,13 @@ const ListBarang = props => {
                                     <div style={{ display: 'flex' }}>
                                         {data.terjual_barang > 0 ?
                                             <>
-                                                <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Sold: {data.terjual_barang} | </p>
-                                                <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: {data.rating_barang}/5</p>
+                                                <p className="detail-mini">Sold: {data.terjual_barang} | </p>
+                                                <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
                                             </> :
-                                            <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Ratings: {data.rating_barang}/5</p>
+                                            <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
                                         }
                                     </div>
-                                    <p style={{ margin: '0 5px 0 0', fontSize: '12px' }}>Cimahi</p>
+                                    <p className="detail-mini">{data.nama_user} | {data.kota_user}</p>
                                 </div>
                             </div>
                         </Link>
@@ -84,6 +90,9 @@ const ListBarang = props => {
                 })
             }
         </div>
+        <style jsx>{`
+        .detail-mini {margin: 0 5px 0 0; font-size: 12px;}
+        `}</style>
     </>)
 }
 
