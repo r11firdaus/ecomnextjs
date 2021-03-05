@@ -1,7 +1,7 @@
 import { memo } from "react";
 import io from "socket.io-client";
 import { postReq } from "../../function/API";
-const socket = io("http://localhost:3001/");
+const socket = io("https://jwallin.herokuapp.com/");
 
 const FormPesan = (props) => {
     const sendHandler = async e => {

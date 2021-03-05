@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {authPage} from '../../middleware/authrizationPage'
 import io from 'socket.io-client'
 import { useDispatch, useSelector } from "react-redux";
-const socket = io('http://localhost:3001')
+const socket = io('https://jwallin.herokuapp.com/')
 
 export const getServerSideProps = async ctx => {
     const {id_user, token} = await authPage(ctx)

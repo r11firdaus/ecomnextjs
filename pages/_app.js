@@ -6,7 +6,7 @@ import io from "socket.io-client";
 import Link from 'next/link';
 import { Provider } from 'react-redux';
 import store from '../function/context/store';
-const socket = io("http://localhost:3001/");
+const socket = io("https://jwallin.herokuapp.com/");
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {

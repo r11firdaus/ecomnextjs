@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { getReq } from "../../function/API";
-const socket = io("http://localhost:3001/");
+const socket = io("https://jwallin.herokuapp.com/");
 
 const BottomNav = (props) => {
     const { unreadMessage, notification, id_user } = useSelector(state => state)

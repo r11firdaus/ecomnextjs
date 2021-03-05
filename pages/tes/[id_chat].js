@@ -6,7 +6,7 @@ import Router from "next/router";
 import FormPesan from "../../components/pesan/formPesan";
 import io from "socket.io-client";
 import Bubble from "../../components/pesan/bubble";
-const socket = io("http://localhost:3001/");
+const socket = io("https://jwallin.herokuapp.com/");
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)

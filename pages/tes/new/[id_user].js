@@ -4,7 +4,7 @@ import { authPage } from '../../../middleware/authrizationPage'
 import Link from 'next/link';
 import io from "socket.io-client";
 import Router from "next/router";
-const socket = io("http://localhost:3001/");
+const socket = io("https://jwallin.herokuapp.com/");
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
