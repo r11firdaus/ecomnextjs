@@ -26,7 +26,7 @@ const handler = async (req, res) => {
         'tb_user.nama_user',
         'tb_user.kota_user',
     )
-    .where({'id_seller':pisah[0]}).orderBy(sortReq[0],sortReq[1])
+    .where({'id_seller':sortReq[2]}).orderBy(sortReq[0],sortReq[1])
 
     res.status(200);
     res.json({data: reqBarangUser})
