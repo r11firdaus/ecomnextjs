@@ -1,10 +1,10 @@
 const domain = 'http://localhost:3000'
 const apiKey = 'apirezajwallin'
 
-export const getReq = (path, id, token, data) => {
-    let newData = !data | '' ? '' : `+${data}`
+export const getReq = (path, id, token, sort) => {
+    let newsort = !sort | '' ? '' : `+sort${sort}`
     return new Promise ((resolve, reject) => {
-        fetch(`${domain}/api/${path}/${id}${newData}`, {
+        fetch(`${domain}/api/${path}/${id}${newsort}`, {
             headers: {
                 'Authorization': `Bearer ${token} ${apiKey}`
             },

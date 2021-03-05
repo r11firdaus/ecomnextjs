@@ -2,58 +2,14 @@ import Link from "next/link";
 import { memo, useEffect, useState } from "react"
 import { getReq } from "../function/API";
 import Image from 'next/image'
+import FilterHandler from "./pencarian/filterHandler";
 
 const ListBarang = props => {
-    const [data, setdata] = useState([])
-    const [sort, setsort] = useState('')
-    const [cod, setcod] = useState(false)
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        if (props.id_userReq) {
-            const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
-            setdata(res)
-        }
-        else if (props.nama_subcategory) {
-            const { res } = await getReq('barang/subcategory', props.nama_subcategory, '', sort)
-            setdata(res)
-        } else {
-            const { res } = await getReq('barang', '', '')
-            setdata(res)
-        }
-    }
-
-    const hargaHandler = async () => {
-        sort === 'highest' && setsort('')
-        sort === 'lowest' && setsort('highest')
-        sort === '' && setsort('lowest')
-        
-        getData()
-    }
-
-    const FilterHandler = () => (
-            <div className="col" style={{display: 'flex', justifyContent: 'space-around'}}>
-                <p
-                    style={{borderBottom: sort !== '' && '1px solid green', margin: '5px', cursor: 'pointer'}}
-                    onClick={() => hargaHandler()}
-                >Harga {sort === 'highest' ? '+' : '-'}
-                </p>
-                <p
-                    style={{borderBottom: cod && '1px solid green', margin: '5px', cursor: 'pointer'}}
-                    onClick={() => setcod(!cod)}
-                >COD
-                </p>
-            </div>
-    )
-
     return (<>
         <div className="row" style={{ display: 'flex', padding: '5px' }}>
             <FilterHandler />
             {
-                data.map(data => {
+                props.data.map(data => {
                     return (
                         <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
                             <div

@@ -1,4 +1,5 @@
 import db from '../../../../lib/db'
+import { sort } from '../../../../middleware/sort';
 
 const handler = async (req, res) => {
     if (req.method !== 'GET') res.status(405).end();
@@ -10,15 +11,7 @@ const handler = async (req, res) => {
     if (!authKey || authKey !== process.env.API_KEY) res.status(401).end()
 
     const {id_user} = req.query
-
-    const pisah = id_user.split('+')
-    let sort = pisah[1] ? pisah[1] : ''
-    
-    let sortReq = ['','']
-    
-    if (sort === '') sortReq = ['rating_barang', 'desc']
-    if (sort === 'lowest') sortReq = ['harga_barang', 'desc']
-    if (sort === 'highest') sortReq = ['harga_barang', 'asc']
+    const {sortReq} = await sort(id_user)
 
     const reqBarangUser = await db('tb_barang')
     .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')

@@ -1,7 +1,9 @@
 const initialState = {
   unreadMessage: 0,
   notification: 0,
-  id_user: null
+  id_user: null,
+  sort: '',
+  cod: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +22,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         id_user: action.payload
+      }
+    case 'CHANGE_SORT':
+      return {
+        ...state,
+        sort: action.payload
+      }
+    case 'CHANGE_COD':
+      return {
+        ...state,
+        sort: action.payload
       }
     default:
       return state

@@ -1,4 +1,5 @@
 import db from '../../../../lib/db'
+import { sort } from '../../../../middleware/sort';
 
 const handler = async (req, res) => {
     if (req.method !== 'GET') res.status(405).end()
@@ -10,19 +11,13 @@ const handler = async (req, res) => {
     if(!authKey || authKey !== process.env.API_KEY) res.status(401).end()
 
     const {nama_subcategory} = req.query
-    const pisah = nama_subcategory.split('+')
-    let sort = pisah[1] ? pisah[1] : ''
-    
-    res.status(200);
+    const pisah = nama_subcategory.split('+sort')
     const reqSubCategory = await db('tb_subcategory').where({'nama_subcategory': pisah[0]}).first()
-
+        
+    res.status(200);
     if (reqSubCategory) {
-        let sortReq = ['','']
-        if (sort === '') sortReq = ['rating_barang', 'desc']
-        if (sort === 'lowest') sortReq = ['harga_barang', 'desc']
-        if (sort === 'highest') sortReq = ['harga_barang', 'asc']
-
-        let reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+        const {sortReq} = await sort(nama_subcategory)
+        const reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
         .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
         .orderBy(sortReq[0],sortReq[1])
