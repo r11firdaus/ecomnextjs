@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 import BottomNav from '../../components/navigasi/bottomNav'
-import Nav2 from '../../components/navigasi/Nav2'
+import Nav2 from '../../components/navigasi/nav2'
 import { getReq } from '../../function/API'
 import cookie from 'js-cookie'
 const index = () => {
