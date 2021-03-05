@@ -12,7 +12,7 @@ const BottomNav = (props) => {
     const { unreadMessage, notification, id_user } = useSelector(state => state)
     const dispatch = useDispatch();
     
-    useEffect(async () => {
+    useEffect(() => {
         const getId = Cookie.get("id_user")
         const token = Cookie.get("token")
         getId && dispatch({ type: 'ID_USER', payload: getId})
@@ -26,10 +26,10 @@ const BottomNav = (props) => {
             })
         })
 
-        socket.on('chat message', async (msg, id_chat, receiver_user, sender) => {
+        socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
             if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
         })
-    }, [id_user])
+    }, [])
 
     return (<>
         <div className="navbar-wrapper">

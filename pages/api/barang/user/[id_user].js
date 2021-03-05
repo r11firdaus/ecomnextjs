@@ -11,6 +11,7 @@ const handler = async (req, res) => {
     if (!authKey || authKey !== process.env.API_KEY) res.status(401).end()
 
     const {id_user} = req.query
+    const pisah = id_user.split('+sort')
     const {sortReq} = await sort(id_user)
 
     const reqBarangUser = await db('tb_barang')
@@ -26,7 +27,7 @@ const handler = async (req, res) => {
         'tb_user.nama_user',
         'tb_user.kota_user',
     )
-    .where({'id_seller':sortReq[2]}).orderBy(sortReq[0],sortReq[1])
+    .where({'id_seller':pisah[0]}).orderBy(sortReq[0],sortReq[1])
 
     res.status(200);
     res.json({data: reqBarangUser})

@@ -3,7 +3,7 @@ export const sort = (key) => {
         const pisah = key.split('+sort')
         let sort = pisah[1] ? pisah[1] : ''
         
-        let sortReq = ['','',pisah[0]]
+        let sortReq = ['','']
         
         if (sort === '') sortReq = ['rating_barang', 'desc']
         if (sort === 'lowest') sortReq = ['harga_barang', 'asc']
