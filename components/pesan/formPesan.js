@@ -5,7 +5,7 @@ import { socket } from '../../function/socket'
 const FormPesan = (props) => {
     const sendHandler = async e => {
         e.preventDefault()
-        const input = document.getElementById('input');
+        const input = document.getElementById('msg-input');
         if (props.person.length > 0) {
             if (input.value) {
                 await postReq('chat/message/create', props.token, {
@@ -43,14 +43,14 @@ const FormPesan = (props) => {
 
     return (<>
         <form id="form" onSubmit={e => sendHandler(e)}>
-            <input className="msg-input" autoComplete="off" />
+            <input id="msg-input" autoComplete="off" />
             <button>Send</button>
         </form>
         <style jsx>
             {`
             #form { background: white; padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-            .msg-input { border: 1px solid #4b3832; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-            .msg-input { outline: none; }
+            #msg-input { border: 1px solid #4b3832; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+            #msg-input { outline: none; }
             #form > button { background: #333; border: none; padding: 0 1rem; border-radius: 3px; outline: none; color: #fff; }
         `}
         </style>
