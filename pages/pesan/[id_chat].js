@@ -4,10 +4,9 @@ import { authPage } from '../../middleware/authrizationPage'
 import Link from 'next/link';
 import Router from "next/router";
 import FormPesan from "../../components/pesan/formPesan";
-import io from "socket.io-client";
 import Bubble from "../../components/pesan/bubble";
 import Nav2 from "../../components/navigasi/nav2";
-const socket = io("https://jwallin.herokuapp.com/");
+import { socket } from "../../function/socket";
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)

@@ -20,10 +20,10 @@ const index = () => {
         {notif.length > 0 &&
             <div style={{margin: '3.4rem 0'}}>
                 {notif.map(noti => {
-                    // noti.judul_notification dibuat max 20 char
+                    // noti.judul_notification dibuat mationx 20 char
                     // noti.isi_notification dibuat max 100 char
                     return (<>
-                        <div className="card" key={noti.id_notifrecord} style={{padding: '10px'}}>
+                        <div className="card" key={noti.id_notification} style={{padding: '10px'}}>
                             <h6>{noti.judul_notification}</h6>
                             <p>{noti.isi_notification}</p>
                             <p>{noti.waktu_notification}</p>

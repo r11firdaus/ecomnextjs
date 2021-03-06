@@ -6,7 +6,7 @@ export function unauthPage(context) {
     
         if (cookie.token) {
             context.res.writeHead(302, {
-                location: '/barang'
+                location: '/'
             }).end();
         }
         return resolve('unauthorized')

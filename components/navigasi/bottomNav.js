@@ -3,10 +3,9 @@ import Link from 'next/link'
 import Cookie from 'js-cookie'
 import { BellFill, BoxArrowInLeft, ChatFill, HouseFill,  PersonFill } from "react-bootstrap-icons"
 import { useSelector } from "react-redux"
-import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { getReq } from "../../function/API";
-const socket = io("https://jwallin.herokuapp.com/");
+import { socket } from "../../function/socket"
 
 const BottomNav = (props) => {
     const { unreadMessage, notification, id_user } = useSelector(state => state)
@@ -14,11 +13,13 @@ const BottomNav = (props) => {
     
     useEffect(() => {
         const getId = Cookie.get("id_user")
+        if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId})
+    }, [])
+    
+    useEffect(() => {        
         const token = Cookie.get("token")
-        getId && dispatch({ type: 'ID_USER', payload: getId})
-
         socket.on('loadDB', async () => {
-            if (id_user !== null | undefined) {
+            if (id_user !== null) {
                 const {res} = await getReq('chat/message/unread', id_user, token)
                 dispatch({ type: 'UNREAD_MESSAGE', payload: res.length })
     
@@ -27,11 +28,11 @@ const BottomNav = (props) => {
                 })
             }
         })
-
+    
         socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
             if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
         })
-    }, [])
+    }, [id_user])
 
     return (<>
         <div className="navbar-wrapper">

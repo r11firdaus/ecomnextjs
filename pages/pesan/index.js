@@ -4,9 +4,8 @@ import Nav2 from '../../components/navigasi/nav2';
 import BottomNav from '../../components/navigasi/bottomNav';
 import Link from 'next/link';
 import {authPage} from '../../middleware/authrizationPage'
-import io from 'socket.io-client'
 import { useDispatch, useSelector } from "react-redux";
-const socket = io('https://jwallin.herokuapp.com/')
+import { socket } from "../../function/socket";
 
 export const getServerSideProps = async ctx => {
     const {id_user, token} = await authPage(ctx)
