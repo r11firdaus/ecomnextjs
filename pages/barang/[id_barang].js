@@ -40,7 +40,7 @@ const index = (props) => {
         <Nav />
 
         <div style={{margin: '4rem 0'}}>
-            <div style={{aspectRatio: '16/9', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: 'auto'}}>for image preview</div>
+            <div style={{height: '30%', width: '100%', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: 'auto'}}>for image preview</div>
 
             <div style={{margin: '10px'}}>
                 <strong>Rp.{props.data.harga_barang}</strong>

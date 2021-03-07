@@ -38,10 +38,12 @@ export const getServerSideProps = async ctx => {
 const index = props => {
     const [data, setdata] = useState([])
     const {sort, cod} = useSelector(state => state)
+
     useEffect(async () => {
         const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
         setdata(res)
     }, [sort, cod])
+    
     return (<>
         <Nav title="Profile" />
         <div style ={{margin: '4rem 0'}}>

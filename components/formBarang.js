@@ -32,8 +32,8 @@ const FormBarang = props => {
         const id_subcategory = document.getElementById('id_subcategory').value
         const newField = {nama_barang, harga_barang, stok_barang, id_subcategory, id_seller: props.id_userMe}
         props.id_barang ?
-        await putReq('barang/update', props.id_barang, props.token, newField).then(res => console.log(res)):
-        await postReq('barang/create', props.token, newField).then(res => console.log(res))
+        await putReq('barang/update', props.id_barang, props.token, newField).then(res => null):
+        await postReq('barang/create', props.token, newField).then(res => null)
         Router.push(`/profil/${props.id_userMe}`)
     }
 

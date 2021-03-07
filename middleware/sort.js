@@ -6,8 +6,8 @@ export const sort = (key) => {
         let sortReq = ['','']
         
         if (sort === '') sortReq = ['rating_barang', 'desc']
-        if (sort === 'lowest') sortReq = ['harga_barang', 'asc']
-        if (sort === 'highest') sortReq = ['harga_barang', 'desc']
+        else if (sort === 'lowest') sortReq = ['harga_barang', 'asc']
+        else if (sort === 'highest') sortReq = ['harga_barang', 'desc']
         return resolve({sortReq})
     })
 }

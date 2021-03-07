@@ -9,15 +9,14 @@ const handler = async (req, res) => {
 
     const reqBarang = await db('tb_cart')
     .join('tb_barang', 'tb_barang.id_barang', 'tb_cart.id_barang')
-    .select('*')
+    .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+    .select('tb_user.nama_user', 'tb_user.kota_user',
+    'tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.stok_barang', 'tb_barang.id_seller',
+    'tb_cart.id_cart', 'tb_cart.total', 'tb_cart.checked')
     .where({'tb_cart.id_user': id_user }).orderBy('id_seller','desc')
 
-
     res.status(200);
-    if (!reqBarang) res.json({data: []});
-    res.json({
-        data: reqBarang,
-    });
+    res.json({data: reqBarang});
 }
 
 export default handler;

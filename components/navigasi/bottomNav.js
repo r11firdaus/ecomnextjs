@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react"
 import Link from 'next/link'
 import Cookie from 'js-cookie'
-import { BellFill, BoxArrowInLeft, ChatFill, HouseFill,  PersonFill } from "react-bootstrap-icons"
+import { BellFill, BoxArrowInLeft, ChatFill, HouseFill, PersonFill } from "react-bootstrap-icons"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux";
 import { getReq } from "../../function/API";
@@ -10,25 +10,27 @@ import { socket } from "../../function/socket"
 const BottomNav = (props) => {
     const { unreadMessage, notification, id_user } = useSelector(state => state)
     const dispatch = useDispatch();
-    
+
+    const loadDB = async (id, token) => {
+        const { res } = await getReq('chat/message/unread', id, token)
+        dispatch({ type: 'UNREAD_MESSAGE', payload: res.length })
+
+        await getReq('notification', id, token).then(res => {
+            dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.res.length })
+        })
+    }
+
     useEffect(() => {
         const getId = Cookie.get("id_user")
-        if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId})
-    }, [])
-    
-    useEffect(() => {        
         const token = Cookie.get("token")
-        socket.on('loadDB', async () => {
-            if (id_user !== null) {
-                const {res} = await getReq('chat/message/unread', id_user, token)
-                dispatch({ type: 'UNREAD_MESSAGE', payload: res.length })
-    
-                await getReq('notification', id_user, token).then(res => {
-                    dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.res.length })
-                })
-            }
+        if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId })
+
+        if (id_user !== null && token) loadDB(id_user, token)
+
+        socket.on('loadDB', () => {
+            if (id_user !== null && token) loadDB(id_user, token)
         })
-    
+
         socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
             if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
         })

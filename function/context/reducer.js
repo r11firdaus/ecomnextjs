@@ -3,7 +3,9 @@ const initialState = {
   notification: 0,
   id_user: null,
   sort: '',
-  cod: false
+  cod: false,
+  loading: false,
+  cart: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +34,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         sort: action.payload
+      }
+    case 'CHANGE_LOADING':
+      return {
+        ...state,
+        loading: action.payload
+      }
+    case 'CART':
+      return {
+        ...state,
+        cart: action.payload
       }
     default:
       return state
