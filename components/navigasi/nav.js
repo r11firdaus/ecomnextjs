@@ -37,7 +37,7 @@ const Nav = () => {
 
     return (
         <>
-            <div style={{ padding: '10px', position: 'fixed', width: '100%', background: 'white' }}>
+            <div style={{ padding: '10px', position: 'fixed', width: '100%', background: 'white', display: 'flex' }}>
                 <Link href="/"><h6 className="float-left" style={{flex:'1', margin: '5px 0', cursor: 'pointer'}}>Jwallin</h6></Link>
                 <div className="float-right" style={{flex:'2', display: 'flex'}}>
                     <form style={{flex:'1'}} onSubmit={e=>searchHandler(e)}>
