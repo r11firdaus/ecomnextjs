@@ -16,12 +16,13 @@ const ListBarang = props => {
                                 className="card float-left"
                                 style={{ margin: '0', width: '50%', padding: '2px', cursor: 'pointer'}}
                             >
-                                <div style={{width: '100px', margin: '0 auto', position: 'static'}}>
+                                <div style={{width: '100px', margin: '0 auto', display: 'relative'}}>
                                     <Image
                                         objectPosition="unset"
                                         height={'100%'}
                                         width={'100%'}
                                         alt={`gambar ${data.nama_barang}`}
+                                        className="img-thumb"
                                         // src={data.gambar_barang}
                                         src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
                                     />

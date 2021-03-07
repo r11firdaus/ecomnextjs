@@ -5,6 +5,7 @@ import OptionBtnBarang from '../../components/optionBtnBarang'
 import Head from 'next/head'
 import { ChatDots } from 'react-bootstrap-icons';
 import Link from 'next/link';
+import Image from 'next/image'
 
 export const getServerSideProps = async ctx => {
     const {id_barang} = ctx.query;
@@ -41,6 +42,15 @@ const index = (props) => {
 
         <div style={{margin: '4rem 0'}}>
             <div style={{height: '30%', width: '100%', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: 'auto'}}>for image preview</div>
+            <Image
+                objectPosition="unset"
+                height={'100%'}
+                width={'100%'}
+                alt={`gambar ${props.data.nama_barang}`}
+                className="img-thumb"
+                // src={data.gambar_barang}
+                src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
+            />
 
             <div style={{margin: '10px'}}>
                 <strong>Rp.{props.data.harga_barang}</strong>
