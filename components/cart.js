@@ -40,17 +40,23 @@ const Cart = (props) => {
     const childClick = (index, value) => {
         const checked = parseInt(value)
         const newItems = [...cart]; // clone the array
+        // const id_seller = newItems[index]['id_seller']
+        // const seller = document.getElementById(id_seller)
+
         if (newItems[index]['stok_barang'] != 0) {
             if (checked == "1") { // if checked true
                 newItems[index]['checked'] = "0"
                 setall(false)
             } else {
                 newItems[index]['checked'] = "1" // set the new value
-                let chkall = []
-                newItems.map(item => {
-                    chkall.push(item.checked)
-                })
-                if (!chkall.includes("0"|0)) setall(true)
+                for (let i = 0; i < newItems.length; i++) {
+                    if (newItems[i].checked == "0") {
+                        setall(false)
+                        break;
+                    } else {
+                        setall(true)
+                    }
+                }
             }
             setcart(newItems); // set new state
         }
@@ -62,11 +68,8 @@ const Cart = (props) => {
         let maxQty = newItems[index]['stok_barang'];
 
         if (newItems[index]['stok_barang'] != 0) {
-            if (action == 'more') {
-                newItems[index]['total'] = currentQty < maxQty && currentQty + 1;
-            } else if (action == 'less') {
-                newItems[index]['total'] = currentQty > 1 && currentQty - 1;
-            }
+            if (action == 'more' && currentQty < maxQty) newItems[index]['total'] = currentQty + 1;
+            else if (action == 'less' && currentQty > 1) newItems[index]['total'] = currentQty - 1;
         }
 
         setcart(newItems); // set new state
@@ -99,7 +102,7 @@ const Cart = (props) => {
                             arr.includes(item.id_seller) ? null : arr.push(item.id_seller) &&
                                 <>
                                     <div style={{ display: 'flex' }}>
-                                        {/* <input type="checkbox" id={item.id_seller} onClick={(e) => sellerClick(e, item.id_seller)} style={{ marginTop: '3px' }} /> */}
+                                        <input type="checkbox" id={item.id_seller} style={{ marginTop: '3px' }} />
                                         <div style={{ display: "flex" }}>
                                             <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={() => Router.push(`/profil/${item.id_seller}`)}>{item.nama_user}&nbsp;</p>
                                             <strong style={{ fontSize: '13px' }}>|&nbsp;{item.kota_user}</strong><br />
@@ -112,11 +115,11 @@ const Cart = (props) => {
                             <input
                                 type="checkbox"
                                 onClick={() => childClick(i, item.checked)}
-                                style={{ marginTop: '18px' }}
+                                style={{ marginTop: '13px' }}
                                 checked={item.checked == "0" ? false:true}
                             />
                             <div>
-                                <a href="#" style={{ marginBottom: '-5px', fontSize: '13px' }}>{item.nama_barang}</a><br />
+                                <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={()=>Router.push(`/barang/${item.id_barang}`)}>{item.nama_barang}</p>
                                 <strong style={{ fontSize: '13px' }}>Rp. {item.harga_barang}</strong><br />
                             </div>
                         </div>

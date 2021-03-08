@@ -41,25 +41,27 @@ const index = (props) => {
         <Nav />
 
         <div style={{margin: '4rem 0'}}>
-            <div style={{height: '30%', width: '100%', maxHeight: '500px', maxWidth: '500px', border: '1px solid grey', margin: 'auto'}}>for image preview</div>
-            <Image
-                objectPosition="unset"
-                height={'100%'}
-                width={'100%'}
-                alt={`gambar ${props.data.nama_barang}`}
-                className="img-thumb"
-                // src={data.gambar_barang}
-                src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
-            />
-
+            <div style={{minHeight: '300px', width: '100%', maxHeight: '500px', maxWidth: '700px', border: '1px solid grey', margin: 'auto'}}>
+                <Image
+                    height={'100%'}
+                    width={'100%'}
+                    alt={`gambar ${props.data.nama_barang}`}
+                    className="img-thumb"
+                    src={props.data.gambar_barang ? props.data.gambar_barang : '/../../img.png'}
+                />
+            </div>
             <div style={{margin: '10px'}}>
-                <strong>Rp.{props.data.harga_barang}</strong>
                 <p style={{margin: '0'}}>{props.data.nama_barang}</p>
+                <strong>Rp.{props.data.harga_barang}</strong>
                 <p style={{margin: '0', fontSize: '14px'}}>Stok: {props.data.stok_barang}</p>
                 <div style={{display: 'flex'}}>
                     <p style={{margin: '0 5px 0 0', fontSize: '12px'}}>Sold: 200 | </p>
                     <p style={{margin: '0 5px 0 0', fontSize: '12px'}}>Ratings: 4.8/5</p>
                 </div>
+            </div>
+            <div style={{margin: '10px'}}>
+                <strong>Deskripsi</strong>
+                <p>{props.deskripsi_barang}</p>
             </div>
         </div>
         

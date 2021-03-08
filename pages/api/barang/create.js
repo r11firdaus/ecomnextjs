@@ -5,14 +5,18 @@ const handler = async (req, res) => {
     if (req.method !== 'POST') return res.status(405).end();
     await authorization(req, res)
 
-    const {id_seller, nama_barang, harga_barang, stok_barang, id_subcategory} = req.body;
+    const {id_seller, nama_barang, harga_barang, stok_barang, id_subcategory, berat_barang, gambar_barang, status_barang, deskripsi_barang} = req.body;
 
-    const create = await db('tb_barang').insert({
+    await db('tb_barang').insert({
         id_seller,
         nama_barang,
         harga_barang,
         stok_barang,
-        id_subcategory
+        id_subcategory,
+        berat_barang,
+        gambar_barang,
+        status_barang,
+        deskripsi_barang
     });
     
     res.status(200);

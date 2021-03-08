@@ -2,19 +2,15 @@ import { memo } from 'react'
 import FormBarang from '../../../components/formBarang'
 import Nav2 from '../../../components/navigasi/nav2'
 import {authPage} from '../../../middleware/authrizationPage'
-import cookies from 'next-cookies';
 
 export const getServerSideProps = async ctx => {
     const {id_barang} = ctx.query
-    const {token} = await authPage(ctx)
-    const cookie = cookies(ctx)
-    let id_userMe;
-    if(cookie.id_user) id_userMe = cookie.id_user
+    const {token, id_user} = await authPage(ctx)
 
     return {
         props : {
             id_barang,
-            id_userMe,
+            id_userMe: id_user,
             token
         }
     }
@@ -23,7 +19,7 @@ export const getServerSideProps = async ctx => {
 const index = props => {
 
     return (<>
-        <Nav2 />
+        <Nav2 title="Update Barang"/>
         <div style ={{margin: '4rem 0'}}>
             <FormBarang
                 id_barang = {props.id_barang}

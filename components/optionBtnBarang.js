@@ -2,10 +2,13 @@ import Router from "next/router";
 import { memo, useCallback, useState } from "react";
 import { deleteReq, getReq, postReq } from "../function/API";
 import Cookie from 'js-cookie'
+import { useDispatch, useSelector } from "react-redux";
 
 const optionBtnBarang = (props) => {
-    const [modal, setmodal] = useState({show:false, id: 0, nama: ''})
+    const [modal, setmodal] = useState({ show: false, id: 0, nama: '', closeOnly: false })
     const myprops = props.data
+    const cart = useSelector(state => state.cart)
+    const dispatch = useDispatch()
 
     const updateHandler = (e, id) => {
         e.preventDefault()
@@ -13,15 +16,15 @@ const optionBtnBarang = (props) => {
     }
 
     const ask = (e, id, nama) => {
-        e.preventDefault()
-        setmodal({show: true, id, nama})
+        e !== '' && e.preventDefault()
+        id !== '' ? setmodal({ show: true, id, nama, closeOnly: false }) : setmodal({...modal, closeOnly: true, nama, show: true})
     }
 
-    // const deleteHandler = async (e) => {
-    //     e.preventDefault()
-    //     const {res} = await deleteReq('barang/delete', modal.id, props.token)
-    //     Router.reload()
-    // }
+    const deleteHandler = async (e) => {
+        e.preventDefault()
+        const {res} = await deleteReq('barang/delete', modal.id, props.token)
+        Router.reload()
+    }
 
     const addToCartHandler = async (e, id) => {
         e.preventDefault();
@@ -29,57 +32,60 @@ const optionBtnBarang = (props) => {
         const tokenuser = Cookie.get('token')
         if (!iduser | !tokenuser) Router.push('/login')
 
-        const {res} = await getReq('barang', id, '')
+        const { res } = await getReq('barang', id, '')
         if (res.stok_barang > 0) {
             let already = false
             await getReq('cart', iduser, tokenuser)
-            .then(res => res.res.map(data => {
-                if (id == data.id_barang) already = true
-            }))
-            already ? alert('already added') :
-            await postReq('cart/add', tokenuser, {
-                id_user: iduser,
-                id_barang: id,
-                total: 1
-            }).then(res)
-        }
+            .then(res => {
+                for (let i = 0; i < res.res.length; i++) {
+                    if (id == res.res[i].id_barang) {
+                        already = true
+                        break;
+                    }
+                }
+            })
+            if (already) ask('', '', 'Already Added!')
+            else {
+                await postReq('cart/add', tokenuser, {
+                    id_user: iduser,
+                    id_barang: id,
+                    total: 1,
+                    checked: 0
+                }).then(res => ask('', '', 'Added to Cart!'))
+                dispatch({type: 'CART', payload: cart + 1})
+            }
+        } else ask('', '', 'Out of stock!')
     }
 
-    return (<>
-        <div className="card-action" style={props.detail&&{display: 'flex'}} >
-            <button
-                className="button-small button-primary"
-                style={style.button}
-                onClick={props.add ? (e) => addToCartHandler(e, myprops.id_barang) : (e) => updateHandler(e, myprops.id_barang)}
-            >{props.add ? '+ To Cart' : 'Update'}</button>
-            <button
-                className="button-small button-outline"
-                style={style.button}
-                onClick={props.add ? (e) => null : (e) => ask(e, myprops.id_barang, myprops.nama_barang)}
-            >{props.add ? '+ To Favourite' : 'Delete'}</button>
-        </div>
-
-        <div className="modal-mask" style={{display: modal.show ? 'block':'none'}}>
-            <div className="modal" style={{display: modal.show ? 'block':'none'}}>
+    const modalComp = () => (
+        <div className="modal-mask" style={{ display: modal.show ? 'block' : 'none' }}>
+            <div className="modal" style={{ display: modal.show ? 'block' : 'none' }}>
                 <div className="modal-body">
-                    <p>Delete '{modal.nama} ?'</p>
+                    <p>{modal.nama}</p>
                 </div>
                 <div className="modal-footer">
-                    <button className="button-primary button-small" onClick={e=>deleteHandler(e)}>Delete</button>
-                    <button className="button-primary-outline button-small" onClick={e=>setmodal({...modal,show: false})}>Cancel</button>
+                    {!modal.closeOnly &&
+                        <button className="button-primary button-small mini-btn" onClick={e => deleteHandler(e)}>Delete</button>
+                    }
+                    <button className="button-primary-outline button-small mini-btn" onClick={e => setmodal({ ...modal, show: false })}>Close</button>
                 </div>
             </div>
         </div>
+    )
+
+    return (<>
+        <div className="card-action" style={props.detail && { display: 'flex' }} >
+            <button
+                className="button-small button-primary mini-btn"
+                onClick={props.add ? (e) => addToCartHandler(e, myprops.id_barang) : (e) => updateHandler(e, myprops.id_barang)}
+            >{props.add ? '+ To Cart' : 'Update'}</button>
+            <button
+                className="button-small button-outline mini-btn"
+                onClick={props.add ? (e) => null : (e) => ask(e, myprops.id_barang, `Delete ${myprops.nama_barang}?`)}
+            >{props.add ? '+ To Favourite' : 'Delete'}</button>
+        </div>
+        {modalComp()}
     </>)
 }
 
 export default memo(optionBtnBarang)
-
-const style = {
-    button: {
-        fontSize: '10px',
-        padding: '0 5px',
-        margin: '3px',
-        width: '100%'
-    }
-}
