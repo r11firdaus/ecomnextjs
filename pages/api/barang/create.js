@@ -16,7 +16,10 @@ const handler = async (req, res) => {
         berat_barang,
         gambar_barang,
         status_barang,
-        deskripsi_barang
+        deskripsi_barang,
+        terjual_barang: 0,
+        rating_barang: 0
+
     });
     
     res.status(200);

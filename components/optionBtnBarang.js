@@ -50,7 +50,6 @@ const optionBtnBarang = (props) => {
                     id_user: iduser,
                     id_barang: id,
                     total: 1,
-                    checked: 0
                 }).then(res => ask('', '', 'Added to Cart!'))
                 dispatch({type: 'CART', payload: cart + 1})
             }
