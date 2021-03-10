@@ -15,8 +15,8 @@ const DetailProfile = props => {
 
     const logoutHandler = () => {
         Cookie.remove('id_user')
-        dispatch({type: 'ID_USER', payload: null})
         Cookie.remove('token')
+        dispatch({type: 'ID_USER', payload: null})
         Router.push("/login")
     }
 

@@ -19,12 +19,9 @@ const handler = async (req, res) => {
         email_user,
         password_user: passwordHashed
     })
-    const registeredUser = await db('tb_user').where({id: register}).first();
+await db('tb_user').where({id: register}).first();
     res.status(200);
-    res.json({
-        message: 'User registration successfully',
-        data: registeredUser
-    })
+    res.json({message: 'User registration successfully'})
 }
 
 export default handler;

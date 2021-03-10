@@ -1,10 +1,12 @@
 import Router from "next/router"
+import Modal from './modal'
 import { memo, useEffect, useState } from "react"
 import { getReq } from '../function/API'
 
 const Cart = (props) => {
     const [cart, setcart] = useState([])
     const [all, setall] = useState(false)
+    const [modal, setmodal] = useState({show: false, message: '', cancelOnly: false})
     let arr = []
 
     useEffect(async () => {
@@ -18,45 +20,54 @@ const Cart = (props) => {
         setcart(newRes)
     }, [])
 
-    const selectHandlerAll = (value) => {
+    const selectHandlerAll = () => {
+        const seller = document.getElementsByName('sellerChk')
+        let sellers = Array.from(seller)
         const newItems = [...cart]; // clone the array 
         newItems.map((item, index) => {
             if (newItems[index]['stok_barang'] > 0) {
-                newItems[index]['checked'] = value == true ? 0 : 1; // set the new value 
+                newItems[index]['checked'] = all ? 0 : 1; // set the new value 
+            }
+        });
+        sellers.map(sell => sell.checked = !all)
+        setcart(newItems); // set new state
+        setall(!all) // true or false
+    }
+
+    const sellerClick = async (e, id) => {
+        const parentVal = e.target.checked
+        const newItems = [...cart]; // clone the array 
+
+        newItems.map((item, index) => {
+            if (newItems[index].stok_barang > 0 && newItems[index].id_seller == id) {
+                newItems[index].checked = parentVal ? 1 : 0; // set the new value 
             }
         });
         setcart(newItems); // set new state
-        setall(!value) // true or false
     }
-
-    // const sellerClick = async (e, id) => {
-    //     const parentVal = e.target.checked
-    //     const child = document.getElementsByName(id)
-    //     for (let i = 0; i < child.length; i++) {
-    //         child[i].checked = parentVal
-    //     }
-    // }
 
     const childClick = (index, value) => {
         const checked = parseInt(value)
         const newItems = [...cart]; // clone the array
-        // const id_seller = newItems[index]['id_seller']
-        // const seller = document.getElementById(id_seller)
+        const id_seller = newItems[index]['id_seller']
+        const seller = document.getElementById(id_seller)
 
         if (newItems[index]['stok_barang'] != 0) {
-            if (checked == "1") { // if checked true
-                newItems[index]['checked'] = "0"
+            if (checked == 1) { // if checked true
+                newItems[index]['checked'] = 0
+                seller.checked = false
                 setall(false)
             } else {
-                newItems[index]['checked'] = "1" // set the new value
+                newItems[index]['checked'] = 1 // set the new value
+                let chkAll = []
+                let chk = []
                 for (let i = 0; i < newItems.length; i++) {
-                    if (newItems[i].checked == "0") {
-                        setall(false)
-                        break;
-                    } else {
-                        setall(true)
-                    }
+                    chkAll.push(newItems[i].checked)
+                    newItems[i].id_seller == id_seller && chk.push(newItems[i].checked)
                 }
+                chkAll.includes(0) ? setall(false) : setall(true)
+                if (chk.includes(0)) seller.checked = false
+                else seller.checked = true
             }
             setcart(newItems); // set new state
         }
@@ -82,7 +93,6 @@ const Cart = (props) => {
         return 0;
     }
 
-
     const nextHandler = e => {
         e.preventDefault()
         const check = document.getElementsByTagName('input')
@@ -90,7 +100,7 @@ const Cart = (props) => {
         for (let i = 0; i < check.length; i++) {
             fill.push(check[i].checked)
         }
-        fill.includes(true) ? alert('lanjut !') : console.log('belum boleh')
+        fill.includes(true) ? alert('lanjut !') : setmodal({show: true, message: `Please choose 1 to continue.`, cancelOnly: true})
     }
 
     return (<>
@@ -102,7 +112,7 @@ const Cart = (props) => {
                             arr.includes(item.id_seller) ? null : arr.push(item.id_seller) &&
                                 <>
                                     <div style={{ display: 'flex' }}>
-                                        <input type="checkbox" id={item.id_seller} style={{ marginTop: '3px' }} />
+                                        <input type="checkbox" id={item.id_seller} name="sellerChk" style={{ marginTop: '3px' }} onClick={(e)=>sellerClick(e, item.id_seller)} />
                                         <div style={{ display: "flex" }}>
                                             <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={() => Router.push(`/profil/${item.id_seller}`)}>{item.nama_user}&nbsp;</p>
                                             <strong style={{ fontSize: '13px' }}>|&nbsp;{item.kota_user}</strong><br />
@@ -150,7 +160,7 @@ const Cart = (props) => {
                 <div style={{ display: 'flex' }}>
                     <input
                         type="checkbox"
-                        onClick={() => selectHandlerAll(all)}
+                        onClick={() => selectHandlerAll()}
                         style={{ marginTop: '23px' }}
                         checked={all}
                     />
@@ -163,6 +173,7 @@ const Cart = (props) => {
                 </div>
             </div>
         </div>
+        <Modal data={modal} />
     </>)
 }
 

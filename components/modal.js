@@ -1,22 +1,35 @@
+import { memo, useEffect, useState } from "react"
+
 const Modal = (props) => {
-    const [sh, setsh] = useState(initialState)
+    const [data, setdata] = useState({})
+    
+    useEffect(() => {
+        setdata(props.data)
+    }, [props.data])
+
     const close = (e) => {
         e.preventDefault()
-        document.getElementById('mask').style.display = 'none'
+        let newData = {...data, show: false}
+        setdata(newData)
     }
-    return (
-        <div className="modal-mask" id="mask" style={{ display: 'block'}}>
-            <div className="modal" style={{ display: 'block'}}>
-                <div className="modal-body">
-                    <p>{props.message}</p>
-                </div>
-                <div className="modal-footer">
-                    {props.action &&
-                        <button className="button-primary button-small" onClick={e => props.action(e)} style={style.button} >Delete</button>
-                    }
-                    <button className="button-primary-outline button-small" onClick={e => close(e)} style={style.button} >Close</button>
+
+    return (<>
+        {data.show && 
+            <div className="modal-mask" id="mask" style={{ display: 'block'}}>
+                <div className="modal" style={{ display: 'block'}}>
+                    <div className="modal-body">
+                        <p>{data.message}</p>
+                    </div>
+                    <div className="modal-footer">
+                        {!data.cancelOnly &&
+                            <button className="button-primary button-small mini-btn" onClick={data.function}>Delete</button>
+                        }
+                        <button className="button-primary-outline button-small mini-btn" onClick={e => close(e)}>Close</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        }
+    </>)
 }
+
+export default memo(Modal)

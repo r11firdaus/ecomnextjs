@@ -1,11 +1,12 @@
 import Router from "next/router";
-import { memo, useCallback, useState } from "react";
+import Modal from './modal'
+import { memo, useState } from "react";
 import { deleteReq, getReq, postReq } from "../function/API";
 import Cookie from 'js-cookie'
 import { useDispatch, useSelector } from "react-redux";
 
 const optionBtnBarang = (props) => {
-    const [modal, setmodal] = useState({ show: false, id: 0, nama: '', closeOnly: false })
+    const [modal, setmodal] = useState({show: false, message: '', cancelOnly: false, function: null})
     const myprops = props.data
     const cart = useSelector(state => state.cart)
     const dispatch = useDispatch()
@@ -17,12 +18,14 @@ const optionBtnBarang = (props) => {
 
     const ask = (e, id, nama) => {
         e !== '' && e.preventDefault()
-        id !== '' ? setmodal({ show: true, id, nama, closeOnly: false }) : setmodal({...modal, closeOnly: true, nama, show: true})
+        if (id !== '') { //if has id to process
+            setmodal({show: true, message: `Delete ${nama}?`, cancelOnly: false, function: (e)=>deleteHandler(e, id)})
+        } else  setmodal({...modal, cancelOnly: true, message: nama, show: true})
     }
 
-    const deleteHandler = async (e) => {
+    const deleteHandler = async (e,id) => {
         e.preventDefault()
-        const {res} = await deleteReq('barang/delete', modal.id, props.token)
+        const {res} = await deleteReq('barang/delete', id, myprops.token)
         Router.reload()
     }
 
@@ -56,22 +59,6 @@ const optionBtnBarang = (props) => {
         } else ask('', '', 'Out of stock!')
     }
 
-    const modalComp = () => (
-        <div className="modal-mask" style={{ display: modal.show ? 'block' : 'none' }}>
-            <div className="modal" style={{ display: modal.show ? 'block' : 'none' }}>
-                <div className="modal-body">
-                    <p>{modal.nama}</p>
-                </div>
-                <div className="modal-footer">
-                    {!modal.closeOnly &&
-                        <button className="button-primary button-small mini-btn" onClick={e => deleteHandler(e)}>Delete</button>
-                    }
-                    <button className="button-primary-outline button-small mini-btn" onClick={e => setmodal({ ...modal, show: false })}>Close</button>
-                </div>
-            </div>
-        </div>
-    )
-
     return (<>
         <div className="card-action" style={props.detail && { display: 'flex' }} >
             <button
@@ -80,10 +67,10 @@ const optionBtnBarang = (props) => {
             >{props.add ? '+ To Cart' : 'Update'}</button>
             <button
                 className="button-small button-outline mini-btn"
-                onClick={props.add ? (e) => null : (e) => ask(e, myprops.id_barang, `Delete ${myprops.nama_barang}?`)}
+                onClick={props.add ? (e) => null : (e) => ask(e, myprops.id_barang, myprops.nama_barang)}
             >{props.add ? '+ To Favourite' : 'Delete'}</button>
         </div>
-        {modalComp()}
+        <Modal data={modal}/>
     </>)
 }
 
