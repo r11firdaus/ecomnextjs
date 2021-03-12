@@ -20,7 +20,7 @@ const dummy = [
 
 const PromoBanner = () => {
     return (<>
-        <div className="wrapper" style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px', height: window.innerHeight/3}}>
+        <div className="wrapper" style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px', height: '35%'}}>
             {
                 dummy.map(data => (
                     <div className="card float-left" style={{minWidth: '80%', margin: '0', padding: '5px', height: '100%'}} key={data.id}>

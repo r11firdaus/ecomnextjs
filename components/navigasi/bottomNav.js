@@ -23,7 +23,7 @@ const BottomNav = (props) => {
     useEffect(() => {
         const getId = Cookie.get("id_user")
         const token = Cookie.get("token")
-        if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId })
+        if (getId && id_user === null | undefined) dispatch({ type: 'ID_USER', payload: getId })
 
         if (id_user !== null && token) loadDB(id_user, token)
 
