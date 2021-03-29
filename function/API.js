@@ -1,5 +1,5 @@
-const domain = 'http://localhost:3000'
-// const domain = 'https://jwallin.vercel.app'
+// const domain = 'http://localhost:3000'
+const domain = 'https://jwallin.vercel.app'
 const apiKey = 'apirezajwallin'
 
 export const getReq = (path, id, token, sort) => {
