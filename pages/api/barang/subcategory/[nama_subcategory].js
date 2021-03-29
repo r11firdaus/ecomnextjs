@@ -17,10 +17,17 @@ const handler = async (req, res) => {
     res.status(200);
     if (reqSubCategory) {
         const {sortReq} = await sort(nama_subcategory)
-        const reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
-        .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
-        .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
-        .orderBy(sortReq[0],sortReq[1])
+        let reqBarang;
+        if (sortReq[0] !== null) {
+            reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+            .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+            .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
+            .orderBy(sortReq[0],sortReq[1])           
+        } else {
+            reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+            .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+            .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
+        }
         res.json({data: reqBarang})
     } else res.json({data: []})
 }

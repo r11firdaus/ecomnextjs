@@ -12,7 +12,7 @@ const handler = async (req, res) => {
     const {keyword} = req.query;
     const searchSplit = keyword.split('=')
     const searchSplitKey = searchSplit[1].split("+sort")
-    const [searchKey, searchSort] = [searchSplitKey[0], searchSplitKey[1]]
+    const [searchKey] = [searchSplitKey[0], searchSplitKey[1]]
     
     // gabungkan kata yg terpisah oleh underscore
     const searchGabung1 = searchKey.replace(/_/g, " ")
@@ -20,14 +20,25 @@ const handler = async (req, res) => {
     const percobaan = searchGabung2.toString()
 
     const {sortReq} = await sort(keyword)
-    
-    const searchBarang = await db('tb_barang')
-    .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
-    .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
-    .where('nama_barang', 'REGEXP', searchGabung1)
-    .orWhere('nama_barang', 'REGEXP', percobaan)
-    .orWhere('nama_subcategory', 'REGEXP', searchGabung1)
-    .orWhere('nama_subcategory', 'REGEXP', percobaan).orderBy(sortReq[0],sortReq[1])
+    let searchBarang;
+    if (sortReq[0] !== null) {
+        searchBarang = await db('tb_barang')
+        .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
+        .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+        .where('nama_barang', 'REGEXP', searchGabung1)
+        .orWhere('nama_barang', 'REGEXP', percobaan)
+        .orWhere('nama_subcategory', 'REGEXP', searchGabung1)
+        .orWhere('nama_subcategory', 'REGEXP', percobaan)
+        .orderBy(sortReq[0],sortReq[1])
+    } else {
+        searchBarang = await db('tb_barang')
+        .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
+        .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+        .where('nama_barang', 'REGEXP', searchGabung1)
+        .orWhere('nama_barang', 'REGEXP', percobaan)
+        .orWhere('nama_subcategory', 'REGEXP', searchGabung1)
+        .orWhere('nama_subcategory', 'REGEXP', percobaan)
+    }
     
     res.status(200);
     res.json({ data: searchBarang });

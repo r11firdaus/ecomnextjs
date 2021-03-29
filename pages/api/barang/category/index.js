@@ -9,9 +9,9 @@ const handler = async (req, res) => {
     const authKey = authSplit[2]
     if(authKey !== process.env.API_KEY) res.status(401).end()
 
-    const reqSubCategory = await db('tb_subcategory')
+    const reqcategory = await db('tb_category')
     res.status(200);
-    res.json({data: reqSubCategory})
+    res.json({data: reqcategory})
 }
 
 export default handler

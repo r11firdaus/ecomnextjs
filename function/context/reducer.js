@@ -2,10 +2,11 @@ const initialState = {
   unreadMessage: 0,
   notification: 0,
   id_user: null,
-  sort: '',
+  sort: 'relevance',
   cod: false,
   loading: false,
-  cart: 0
+  cart: 0,
+  modalFilter: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -44,6 +45,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: action.payload
+      }
+    case 'MODAL_FILTER':
+      return {
+        ...state,
+        modalFilter: action.payload
       }
     default:
       return state

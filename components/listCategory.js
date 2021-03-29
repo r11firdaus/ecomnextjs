@@ -9,7 +9,7 @@ const ListCategory = props => {
             const {res} = await getReq('barang/category',props.nama_category, '')
             setdata(res)
         } else {
-            const {res} = await getReq('barang', '', '')
+            const {res} = await getReq('barang/category', '', '')
             setdata(res)
         }
     }, [])
