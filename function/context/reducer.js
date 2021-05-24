@@ -6,7 +6,8 @@ const initialState = {
   cod: false,
   loading: false,
   cart: 0,
-  modalFilter: false
+  modalFilter: false,
+  dbConnection: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +51,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         modalFilter: action.payload
+      }
+    case 'DB_CONNECTION':
+      return {
+        ...state,
+        dbConnection: action.payload
       }
     default:
       return state

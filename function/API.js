@@ -8,7 +8,7 @@ export const getReq = (path, id, token, sort) => {
         fetch(`${domain}/api/${path}/${id}${newsort}`, {
             headers: {
                 'Authorization': `Bearer ${token} ${apiKey}`
-            },
+            }
         }).then(res => res.json()).then(json => resolve({res: json.data}))
     })
 }

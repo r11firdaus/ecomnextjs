@@ -16,7 +16,7 @@ const handler = async (req, res) => {
 
     res.status(200);
     res.json({
-        message: 'data updated',
+        message: 'Message readed',
     });
 }
 

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Router from "next/router";
 
 export default function index() {
-    const [fields, setfields] = useState({ email: '', password: '' })
+    const [fields, setfields] = useState({ email_user: '', password_user: '' })
     const [status, setstatus] = useState('')
 
     const fieldsHandler = e => {
@@ -28,7 +28,8 @@ export default function index() {
         })
         if (registerReq.ok) {
             setstatus(`${registerReq.status}`);
-            await registerReq.json()
+            const {res} = await registerReq.json()
+            console.log(res)
             setstatus('success')
             Router.push('/login')
         }
@@ -39,8 +40,8 @@ export default function index() {
         <div className="container" style={{padding: '10px'}}>
         <h4 className="title">Jwallin</h4>
             <form onSubmit={registerHandler}>
-                <input type='email' name='email' onChange={fieldsHandler} placeholder='Email' /><br />
-                <input type='password' name='password' onChange={fieldsHandler} placeholder='Password' /><br />
+                <input type='email' name='email_user' onChange={fieldsHandler} placeholder='Email' /><br />
+                <input type='password' name='password_user' onChange={fieldsHandler} placeholder='Password' /><br />
                 <button type='submit'>Register</button>
             </form>
             <p>already have an account ? <Link href="/login">Login Here</Link></p>

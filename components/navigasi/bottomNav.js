@@ -17,6 +17,7 @@ const BottomNav = (props) => {
 
         await getReq('notification', id, token).then(res => {
             dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.res.length })
+            // belum bikin function read status notification
         })
     }
 

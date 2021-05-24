@@ -1,5 +1,5 @@
 import Router from "next/router"
-import { memo, useEffect, useState } from "react"
+import { Fragment, memo, useEffect, useState } from "react"
 import { getReq, postReq, putReq } from "../function/API"
 
 const FormBarang = props => {
@@ -28,10 +28,10 @@ const FormBarang = props => {
         const berat_barang = document.getElementById('berat_barang').value
         const deskripsi_barang = document.getElementById('deskripsi_barang').value
         const gambar_barang = "https://chelseakrost.com/wp-content/uploads/2018/06/Deskripsiace_Emoji_ios10_large.png"
-        const newField = {deskripsi_barang, berat_barang, gambar_barang, status_barang, nama_barang, harga_barang, stok_barang, id_subcategory, id_seller: props.id_userMe}
+        const newField = { deskripsi_barang, berat_barang, gambar_barang, status_barang, nama_barang, harga_barang, stok_barang, id_subcategory, id_seller: props.id_userMe }
         props.id_barang ?
-        await putReq('barang/update', props.id_barang, props.token, newField).then(res => null):
-        await postReq('barang/create', props.token, newField).then(res => null)
+            await putReq('barang/update', props.id_barang, props.token, newField).then(res => null) :
+            await postReq('barang/create', props.token, newField).then(res => null)
         Router.push(`/profil/${props.id_userMe}`)
     }
 
@@ -45,24 +45,25 @@ const FormBarang = props => {
             <input type="number" defaultValue={field.berat_barang} id="berat_barang" placeholder="Berat Barang" required /><br />
             <p>Condition</p>
             <select id="status_barang" required>
-                <option value="New" defaultValue={field.status_barang == "New" && true}>New</option>
-                <option value="Second" defaultValue={field.status_barang == "Second" && true}>Second</option>
+                <option value={true} defaultValue={field.status_barang}>New</option>
+                <option value={false} defaultValue={field.status_barang}>Second</option>
             </select><br />
             <p>Price</p>
-            <input type="number" defaultValue={field.harga_barang} id="harga_barang" placeholder="Harga" required /><br />
+            <input type="number" min="1" defaultValue={field.harga_barang} id="harga_barang" placeholder="Harga" required /><br />
             <p>Stock</p>
-            <input type="number" defaultValue={field.stok_barang} id="stok_barang" placeholder="Stok" required /><br />
+            <input type="number" min="1" defaultValue={field.stok_barang} id="stok_barang" placeholder="Stok" required /><br />
             <p>Category</p>
             <select id="id_subcategory" required>
                 <option value="" defaultValue={field.nama_subcategory == '' ? true : false} disabled>Choose Category</option>
                 {
-                    namaSubCat.map(sub => (<>
-                        <option
-                            value={sub.id_subcategory}
-                            key={sub.id_subcategory}
-                            defaultValue={sub.nama_subcategory == field.nama_subcategory ? true : false}
-                        >{sub.nama_subcategory}</option>
-                    </>))
+                    namaSubCat.map((sub, index) => (
+                        <Fragment key={index}>
+                            <option
+                                value={sub.id_subcategory}
+                                defaultValue={sub.nama_subcategory == field.nama_subcategory ? true : false}
+                            >{sub.nama_subcategory}</option>
+                        </Fragment>)
+                    )
                 }
             </select><br />
             <button type='submit' className="show-modal button-primary">Proceed</button>

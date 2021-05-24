@@ -20,8 +20,6 @@ const handler = async (req, res) => {
         expiresIn: '1d'
     })
 
-    console.log(chkUser)
-
     res.status(200);
     res.json({
         message: 'Login Success',

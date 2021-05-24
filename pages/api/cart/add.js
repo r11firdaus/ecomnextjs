@@ -6,7 +6,7 @@ const handler = async (req, res) => {
     await authorization(req, res)
 
     const {id_user, id_barang, total} = req.body
-    const postCart = await db('tb_cart').insert({id_user, id_barang, total, checked: 0})
+    const postCart = await db('tb_cart').insert({id_user, id_barang, total, checked: false})
 
     res.status(200);
     if (!postCart) res.json({data: []});
