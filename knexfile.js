@@ -2,25 +2,25 @@
 
 module.exports = {
 
-  development: {
+  production: {
     client: 'postgresql',
     connection: {
         host: 'ec2-3-234-22-132.compute-1.amazonaws.com',
         user: 'uxffmfkaklwcjf',
         password: '1cd89e467753a7ee6c75f926615d03aa51f6a33430d8a45cb6138dc02e2ee91e',
         database: 'd6qj7n3mfqjn1d',
-        ssl: true
+        ssl: {rejectUnauthorized: false}
     }
   },
-  // development: {
-  //   client: 'postgresql',
-  //   connection: {
-  //       host: '127.0.0.1',
-  //       user: 'postgres',
-  //       password: '',
-  //       database: 'db_jwallin'
-  //   }
-  // },
+  development: {
+    client: 'postgresql',
+    connection: {
+        host: '127.0.0.1',
+        user: 'postgres',
+        password: '',
+        database: 'db_jwallin',
+    }
+  },
 
 //   staging: {
 //     client: 'postgresql',
