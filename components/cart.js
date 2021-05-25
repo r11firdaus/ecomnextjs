@@ -14,7 +14,7 @@ const Cart = (props) => {
         let newRes = [];
         await res.map(data => {
             if (data.total > data.stok_barang) data.total = data.stok_barang
-            if (data.total == 0) data.checked = 0
+            if (data.total == 0) data.checked = false
             newRes.push(data)
         })
         setcart(newRes)
@@ -26,7 +26,7 @@ const Cart = (props) => {
         const newItems = [...cart]; // clone the array 
         newItems.map((item, index) => {
             if (newItems[index]['stok_barang'] > 0) {
-                newItems[index]['checked'] = all ? 0 : 1; // set the new value 
+                newItems[index]['checked'] = !all // set the new value 
             }
         });
         sellers.map(sell => sell.checked = !all)
@@ -40,33 +40,32 @@ const Cart = (props) => {
 
         newItems.map((item, index) => {
             if (newItems[index].stok_barang > 0 && newItems[index].id_seller == id) {
-                newItems[index].checked = parentVal ? 1 : 0; // set the new value 
+                newItems[index].checked = parentVal; // set the new value 
             }
         });
         setcart(newItems); // set new state
     }
 
     const childClick = (index, value) => {
-        const checked = parseInt(value)
         const newItems = [...cart]; // clone the array
         const id_seller = newItems[index]['id_seller']
         const seller = document.getElementById(id_seller)
 
         if (newItems[index]['stok_barang'] != 0) {
-            if (checked == 1) { // if checked true
-                newItems[index]['checked'] = 0
+            if (value) { // if checked true
+                newItems[index]['checked'] = false
                 seller.checked = false
                 setall(false)
             } else {
-                newItems[index]['checked'] = 1 // set the new value
+                newItems[index]['checked'] = true // set the new value
                 let chkAll = []
                 let chk = []
                 for (let i = 0; i < newItems.length; i++) {
                     chkAll.push(newItems[i].checked)
                     newItems[i].id_seller == id_seller && chk.push(newItems[i].checked)
                 }
-                chkAll.includes(0) ? setall(false) : setall(true)
-                if (chk.includes(0)) seller.checked = false
+                chkAll.includes(false) ? setall(false) : setall(true)
+                if (chk.includes(false)) seller.checked = false
                 else seller.checked = true
             }
             setcart(newItems); // set new state
@@ -88,7 +87,7 @@ const Cart = (props) => {
 
     const subtotalPrice = () => {
         if (cart) {
-            return cart.reduce((sum, item) => sum + (item.checked == 1 ? item.total * item.harga_barang : 0), 0);
+            return cart.reduce((sum, item) => sum + (item.checked ? item.total * item.harga_barang : 0), 0);
         }
         return 0;
     }

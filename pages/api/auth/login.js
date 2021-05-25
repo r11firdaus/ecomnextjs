@@ -17,7 +17,7 @@ const handler = async (req, res) => {
         username: chkUser.username,
         email_user: chkUser.email_user
     }, process.env.JWT_SECRET, {
-        expiresIn: '1d'
+        // expiresIn: '1d'
     })
 
     res.status(200);
