@@ -11,12 +11,18 @@ const Nav = () => {
     const { id_user, cart } = useSelector(state => state)
     const dispatch = useDispatch();
     
-    useEffect(() => {
+    useEffect(async() => {
         const getId = Cookie.get("id_user")
+        const token = Cookie.get("token")
         if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId })
 
-        const cartLength = parseInt(localStorage.getItem('cart_length'));
-        dispatch({ type: 'CART', payload: cartLength && cartLength })
+        const cartLength = localStorage.getItem('cart_length');
+        if (cartLength) dispatch({ type: 'CART', payload: parseInt(cartLength) })
+        else {
+            const {res} = await getReq('cart', getId, token)
+            localStorage.setItem('cart_length', res.length)
+            dispatch({ type: 'CART', payload: res.length })
+        }
     }, [])
 
     const searchHandler = e => {

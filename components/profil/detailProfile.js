@@ -17,6 +17,10 @@ const DetailProfile = props => {
         Cookie.remove('id_user')
         Cookie.remove('token')
         dispatch({type: 'ID_USER', payload: null})
+        dispatch({type: 'CART', payload: 0})
+        localStorage.removeItem('cart_length')
+        localStorage.removeItem('unread_message')
+        localStorage.removeItem('unread_notification')
         Router.push("/login")
     }
 

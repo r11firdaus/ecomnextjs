@@ -13,19 +13,49 @@ const BottomNav = (props) => {
 
     useEffect(() => {
         const getId = Cookie.get("id_user")
-        if (getId === null | undefined) dispatch({ type: 'ID_USER', payload: getId })
+        const token = Cookie.get("token")
 
-        const unreadMsg = localStorage.getItem('unread_message');
-        dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMsg && parseInt(unreadMsg) })
+        socket.on('loadDB', () => {
+            if (getId !== null | undefined && token) getFromDB(getId, token, 'msg&notif')
+        })
 
-        const unreadNotif = localStorage.getItem('unread_notification');
-        dispatch({ type: 'UNREAD_NOTIFICATION', payload: parseInt(`${unreadNotif}`) })
+        if (getId === null | undefined) {
+            dispatch({ type: 'ID_USER', payload: getId })
 
+            const getLocalMsg = localStorage.getItem('unread_message');
+            if (getLocalMsg) dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocalMsg) })
+            else getFromDB(getId, token, 'message')
+
+            const getLocaNotif = localStorage.getItem('unread_message');
+            if (getLocaNotif) dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocaNotif) })
+            else getFromDB(getId, token, 'notification')
+        }
     }, [])
-    
+
+    const getFromDB = (id, token, type) => {
+        const getDBMsg = async () => {
+            const { res } = await getReq('chat/message/unread', id, token)
+            localStorage.setItem('unread_message', res.length);
+            dispatch({ type: 'UNREAD_MESSAGE', payload: res.length })
+        }
+        const getDBNotif = async () => {
+            const { res } = await getReq('notification', id, token)
+            localStorage.setItem('unread_notification', res.length);
+            dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.length })
+        }
+        if (type === 'message') getDBMsg()
+        if (type === 'notification') getDBNotif()
+        if (type === 'msg&notif') {
+            getDBMsg()
+            getDBNotif()
+        }
+    }
+
     socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
         if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
     })
+
+    // next => bikin socket.on('get notified')
 
     return (<>
         <div className="navbar-wrapper">
