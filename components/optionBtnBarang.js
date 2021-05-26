@@ -54,7 +54,9 @@ const optionBtnBarang = (props) => {
                     id_barang: id,
                     total: 1,
                 }).then(res => ask('', '', 'Added to Cart!'))
-                dispatch({type: 'CART', payload: cart + 1})
+                localStorage.setItem('cart_length', cart + 1)
+                const cartLength = parseInt(`${localStorage.getItem('cart_length')}`)
+                dispatch({type: 'CART', payload: cartLength})
             }
         } else ask('', '', 'Out of stock!')
     }

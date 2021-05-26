@@ -10,23 +10,14 @@ import Cookie from 'js-cookie'
 const Nav = () => {
     const { id_user, cart } = useSelector(state => state)
     const dispatch = useDispatch();
-
-    const loadDB = async (id, token) => {
-        const { res } = await getReq('cart', id, token)
-        dispatch({ type: 'CART', payload: res.length })
-    }
-
+    
     useEffect(() => {
         const getId = Cookie.get("id_user")
-        const token = Cookie.get("token")
         if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId })
 
-        if (id_user !== null && token) loadDB(id_user, token)
-
-        socket.on('loadDB', () => {
-            if (id_user !== null && token) loadDB(id_user, token)
-        })
-    }, [id_user])
+        const cartLength = parseInt(localStorage.getItem('cart_length'));
+        dispatch({ type: 'CART', payload: cartLength && cartLength })
+    }, [])
 
     const searchHandler = e => {
         e.preventDefault()

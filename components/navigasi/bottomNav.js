@@ -11,31 +11,21 @@ const BottomNav = (props) => {
     const { unreadMessage, notification, id_user } = useSelector(state => state)
     const dispatch = useDispatch();
 
-    const loadDB = async (id, token) => {
-        const { res } = await getReq('chat/message/unread', id, token)
-        localStorage.setItem('unread_message', res.length);
-        const unreadMsg = localStorage.getItem('unread_message');
-        dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMsg | res.length })
-
-        await getReq('notification', id, token).then(res => {
-            dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.res.length })
-            // belum bikin function read status notification
-        })
-    }
-
     useEffect(() => {
         const getId = Cookie.get("id_user")
-        const token = Cookie.get("token")
-        if (getId && id_user === null | undefined) dispatch({ type: 'ID_USER', payload: getId })
+        if (getId === null | undefined) dispatch({ type: 'ID_USER', payload: getId })
 
-        socket.on('loadDB', () => {
-            if (id_user !== null && token) loadDB(id_user, token)
-        })
+        const unreadMsg = localStorage.getItem('unread_message');
+        dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMsg && parseInt(unreadMsg) })
 
-        socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
-            if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
-        })
+        const unreadNotif = localStorage.getItem('unread_notification');
+        dispatch({ type: 'UNREAD_NOTIFICATION', payload: parseInt(`${unreadNotif}`) })
+
     }, [])
+    
+    socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
+        if (receiver_user == id_user) dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
+    })
 
     return (<>
         <div className="navbar-wrapper">

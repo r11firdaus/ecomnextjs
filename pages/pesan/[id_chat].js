@@ -20,9 +20,9 @@ export const getServerSideProps = async (ctx) => {
     else {
         id_chat = newId_chat
         await getReq('chat/with', id_chat, token)
-        .then(json => result = json.res)
+            .then(json => result = json.res)
     }
-    
+
     return {
         props: {
             id_userMe: id_user,
@@ -35,25 +35,31 @@ export const getServerSideProps = async (ctx) => {
 
 const index = (props) => {
     const [person, setperson] = useState(props.result)
-    const [lawan, setlawan] = useState({nama_user: '', id_user: 0})
-    
-    socket.on('chat message', async (msg, id) => {
-        if (props.id_chat === id) {
-            const { res } = await getReq('chat/with', props.id_chat, props.token)
-            setperson(res)
+    const [lawan, setlawan] = useState({ nama_user: '', id_user: 0 })
+
+    socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
+        if (props.id_chat === id_chat) {
+            let newPerson = [...person];
+            let newMsg = { id_user: sender, receiver_user, message }
+            newPerson.push(newMsg)
+            setperson(newPerson)
+            await putReq('chat/message/read', props.id_userMe, props.token, {
+                id_chat: props.id_chat
+            }).then(res => null)
         }
     });
-    
+
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
         window.scrollTo(0, document.body.scrollHeight);
-        
+
         let id_user2 = []
         const pisahIdUser = props.id_chat.split('$')
-        await pisahIdUser.map(id => {
-            id != props.id_userMe && id_user2.push(id)
-        })
-        const {res} = await getReq('user', id_user2[0], props.token)
+        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
+
+        await getReq('chat/with', props.id_chat, props.token).then(res => setperson(res.res))
+
+        const { res } = await getReq('user', id_user2[0], props.token)
         setlawan(res)
         // buat fungsi 'pesan dibaca'
         await putReq('chat/message/read', props.id_userMe, props.token, {

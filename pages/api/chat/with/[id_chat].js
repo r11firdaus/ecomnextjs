@@ -12,7 +12,6 @@ const handler = async (req, res) => {
     .select("*")
     .where({'tb_message.id_chat': id_chat }).orderBy('id_message')
 
-    console.log(reqChat)
     res.status(200);
     res.json({data: reqChat})
 }
