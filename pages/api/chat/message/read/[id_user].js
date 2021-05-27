@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     const {id_user} = req.query;
     const {id_chat} = req.body;
 
-    const putStatus = await db('tb_message').where({'receiver_user': id_user})
+    const putStatus = await db()('tb_message').where({'receiver_user': id_user})
     .where({id_chat}).where({'status_message': 'unread'})
     .update({
         status_message: 'read'

@@ -1,5 +1,6 @@
 import db from '../../../../lib/db'
 
+// cara baru => db('nama_table') jadi db()('nama_table')
 const handler = async (req, res) => {
     if (req.method !== 'GET') res.status(405).end()
     const {authorization} = req.headers;
@@ -12,9 +13,9 @@ const handler = async (req, res) => {
     const {nama_category} = req.query
     
     res.status(200);
-    const reqCategory = await db('tb_category').where({nama_category}).first()
+    const reqCategory = await db()('tb_category').where({nama_category}).first()
     if (reqCategory) {
-        const reqSubCategory = await db('tb_subcategory').where({id_category: reqCategory.id_category})
+        const reqSubCategory = await db()('tb_subcategory').where({id_category: reqCategory.id_category})
         res.json({data: reqSubCategory})
     } else res.json({data: []})
 }

@@ -1,4 +1,4 @@
-import db from '../../../lib/db'
+import db from '../../../lib/db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -7,7 +7,8 @@ const handler = async (req, res) => {
 
     const {email_user, password_user} = req.body;
 
-    const chkUser = await db('tb_user').where({email_user}).first();
+    // const chkUser = await db('tb_user').where({email_user}).first();
+    const chkUser = await db()('tb_user').where({email_user}).first();
     if(!chkUser) return res.status(401).end();
 
     const chkPassword = await bcrypt.compare(password_user, chkUser.password_user);

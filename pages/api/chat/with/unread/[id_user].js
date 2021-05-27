@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 
     const { id_user } = req.query;
 
-    const reqMsg = await db('tb_message')
+    const reqMsg = await db()('tb_message')
     .select('id_message')
     .where({'receiver_user':id_user})
     .where({'status_message': 'unread'})

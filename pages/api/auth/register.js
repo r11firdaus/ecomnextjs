@@ -8,7 +8,8 @@ const handler = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const passwordHashed = bcrypt.hashSync(password_user, salt);
 
-    const chkEmail = await db('tb_user').where({ email_user }).first()
+    // const chkEmail = await db('tb_user').where({ email_user }).first()
+    const chkEmail = await db()('tb_user').where({ email_user }).first()
 
     if (chkEmail) {
         res.json({ message: 'Email has been registered' })

@@ -28,7 +28,7 @@ const handler = async (req, res) => {
     let searchBarang;
 
     if (sortReq[0] !== null) {
-        searchBarang = await db('tb_barang')
+        searchBarang = await db()('tb_barang')
         .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
         .select('id_barang', 'nama_barang', 'harga_barang', 'stok_barang', 'gambar_barang', 'status_barang', 'rating_barang', 'nama_user', 'kota_user' )
@@ -40,7 +40,7 @@ const handler = async (req, res) => {
         })
         .orderBy(sortReq[0], sortReq[1])
     } else {
-        searchBarang = await db('tb_barang')
+        searchBarang = await db()('tb_barang')
         .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
         .select('id_barang', 'nama_barang', 'harga_barang', 'stok_barang', 'gambar_barang', 'status_barang', 'rating_barang', 'nama_user', 'kota_user' )

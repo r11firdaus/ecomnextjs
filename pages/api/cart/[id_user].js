@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 
     const {id_user} = req.query;
 
-    const reqBarang = await db('tb_cart')
+    const reqBarang = await db()('tb_cart')
     .join('tb_barang', 'tb_barang.id_barang', 'tb_cart.id_barang')
     .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
     .select('tb_user.nama_user', 'tb_user.kota_user',

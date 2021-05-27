@@ -9,7 +9,7 @@ const handler = async (req, res) => {
     // const authKey = authSplit[2]
     // if(!authKey || authKey !== process.env.API_KEY) res.status(401).end()
 
-    const reqUser = await db('tb_user')
+    const reqUser = await db()('tb_user')
 
     res.status(200);
     res.json({data: reqUser})

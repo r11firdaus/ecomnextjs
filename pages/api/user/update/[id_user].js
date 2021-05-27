@@ -17,7 +17,7 @@ const handler = async (req, res) => {
     } = req.body;
 
 
-    const update = await db('tb_user').where({ id_user }).update({
+    const update = await db()('tb_user').where({ id_user }).update({
         email_user,
         password_user,
         nama_user,

@@ -11,7 +11,7 @@ const handler = async (req, res) => {
 
     const {id_subcategory} = req.query
     
-    const reqSubCategory = await db('tb_subcategory').where({id_subcategory}).first()
+    const reqSubCategory = await db()('tb_subcategory').where({id_subcategory}).first()
     res.status(200);
     res.json({data: reqSubCategory})
 }

@@ -17,7 +17,7 @@ const handler = async (req, res) => {
         deskripsi_barang
     } = req.body;
 
-    await db('tb_barang').where({ id_barang }).update({
+    await db()('tb_barang').where({ id_barang }).update({
         nama_barang,
         harga_barang,
         stok_barang,

@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 
     const {id_chat, id_user, receiver_user, message, status_message} = req.body;
 
-    const create = await db('tb_message').insert({
+    const create = await db()('tb_message').insert({
         id_chat, id_user, receiver_user, message, status_message
     });
     

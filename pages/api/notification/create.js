@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 
     const { title, content } = req.body;
 
-    const reqNotif = await db('tb_notification').insert({
+    const reqNotif = await db()('tb_notification').insert({
         judul_notification: title,
         isi_notification: content,
     })

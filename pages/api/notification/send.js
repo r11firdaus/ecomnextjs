@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     const { id_notification, id_user } = req.body;
 
     const sendNotif = id_user.map(async id => {
-        await db('tb_notifrecord').insert({
+        await db()('tb_notifrecord').insert({
             id_notification,
             id_user: id,
         })

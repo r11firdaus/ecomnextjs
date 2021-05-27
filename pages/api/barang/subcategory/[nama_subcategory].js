@@ -12,19 +12,19 @@ const handler = async (req, res) => {
 
     const {nama_subcategory} = req.query
     const pisah = nama_subcategory.split('+sort')
-    const reqSubCategory = await db('tb_subcategory').where({'nama_subcategory': pisah[0]}).first()
+    const reqSubCategory = await db()('tb_subcategory').where({'nama_subcategory': pisah[0]}).first()
         
     res.status(200);
     if (reqSubCategory) {
         const {sortReq} = await sort(nama_subcategory)
         let reqBarang;
         if (sortReq[0] !== null) {
-            reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+            reqBarang = await db()('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
             .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
             .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
             .orderBy(sortReq[0],sortReq[1])           
         } else {
-            reqBarang = await db('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
+            reqBarang = await db()('tb_barang').where({id_subcategory: reqSubCategory.id_subcategory})
             .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
             .select('tb_barang.id_barang', 'tb_barang.nama_barang', 'tb_barang.harga_barang', 'tb_barang.rating_barang', 'tb_barang.terjual_barang', 'tb_user.nama_user', 'tb_user.kota_user')
         }

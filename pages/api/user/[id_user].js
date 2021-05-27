@@ -11,7 +11,7 @@ const handler = async (req, res) => {
 
     const {id_user} = req.query 
     
-    const reqUser = await db('tb_user').where({id_user}).first()
+    const reqUser = await db()('tb_user').where({id_user}).first()
 
     res.status(200);
     res.json({data: reqUser})

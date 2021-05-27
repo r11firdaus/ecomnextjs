@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 
     const {id_barang} = req.query;
 
-    await db('tb_barang').where({ id_barang }).del()
+    await db()('tb_barang').where({ id_barang }).del()
     
     res.status(200);
     res.json({message: 'data deleted'});
