@@ -43,10 +43,11 @@ const ModalFilter = () => {
                     <div className="modal-body">
                         <strong>Sort</strong>
                         {
-                            sortType.map(type => (
+                            sortType.map((type, index) => (
                                 <button
                                     className={`button-${selected == type.value ? 'primary' : 'outline-primary'} button-small mini-btn`}
                                     onClick={() => setselected(type.value)}
+                                    key={index}
                                 >{type.title}</button>
                             ))
                         }

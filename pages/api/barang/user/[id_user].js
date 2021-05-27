@@ -16,7 +16,7 @@ const handler = async (req, res) => {
 
     let reqBarangUser;
     if (sortReq[0] !== null) {
-        reqBarangUser = await db('tb_barang')
+        reqBarangUser = await db()('tb_barang')
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
         .select(
             'tb_barang.id_barang',
@@ -31,7 +31,7 @@ const handler = async (req, res) => {
         )
         .where({'id_seller':pisah[0]}).orderBy(sortReq[0],sortReq[1])
     } else {
-        reqBarangUser = await db('tb_barang')
+        reqBarangUser = await db()('tb_barang')
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
         .select(
             'tb_barang.id_barang',

@@ -23,11 +23,23 @@ const handler = async (req, res) => {
     // const searchGabung2 = searchKey.replace(/_/g, "|").trim()
     // const percobaan = searchGabung2.toString()
 
-    const { sortReq } = await sort(keyword)
+    // const { sortReq } = await sort(keyword)
 
     let searchBarang;
 
-    if (sortReq[0] !== null) {
+    // if (sortReq[0] !== null) {
+    //     searchBarang = await db()('tb_barang')
+    //     .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
+    //     .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
+    //     .select('id_barang', 'nama_barang', 'harga_barang', 'stok_barang', 'gambar_barang', 'status_barang', 'rating_barang', 'nama_user', 'kota_user' )
+    //     .where(function() {
+    //         this.where('nama_barang', 'ilike', `%${searchGabung1}%`)
+    //         arrKey.map(key => this.orWhere('nama_barang', 'ilike', `%${key}%`))
+    //         this.orWhere('nama_subcategory', 'ilike', `%${searchGabung1}%`)
+    //         arrKey.map(key => this.orWhere('nama_subcategory', 'ilike', `%${key}%`))
+    //     })
+    //     .orderBy(sortReq[0], sortReq[1])
+    // } else {
         searchBarang = await db()('tb_barang')
         .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
         .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
@@ -38,19 +50,7 @@ const handler = async (req, res) => {
             this.orWhere('nama_subcategory', 'ilike', `%${searchGabung1}%`)
             arrKey.map(key => this.orWhere('nama_subcategory', 'ilike', `%${key}%`))
         })
-        .orderBy(sortReq[0], sortReq[1])
-    } else {
-        searchBarang = await db()('tb_barang')
-        .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
-        .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
-        .select('id_barang', 'nama_barang', 'harga_barang', 'stok_barang', 'gambar_barang', 'status_barang', 'rating_barang', 'nama_user', 'kota_user' )
-        .where(function() {
-            this.where('nama_barang', 'ilike', `%${searchGabung1}%`)
-            arrKey.map(key => this.orWhere('nama_barang', 'ilike', `%${key}%`))
-            this.orWhere('nama_subcategory', 'ilike', `%${searchGabung1}%`)
-            arrKey.map(key => this.orWhere('nama_subcategory', 'ilike', `%${key}%`))
-        })
-    }
+    // }
 
     res.status(200);
     res.json({ data: searchBarang });

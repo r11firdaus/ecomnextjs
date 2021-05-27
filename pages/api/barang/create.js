@@ -17,7 +17,7 @@ const handler = async (req, res) => {
         deskripsi_barang
     } = req.body;
 
-    await db('tb_barang').insert({
+    await db()('tb_barang').insert({
         id_seller,
         nama_barang,
         harga_barang,

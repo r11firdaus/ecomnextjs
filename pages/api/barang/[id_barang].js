@@ -10,7 +10,7 @@ const handler = async (req, res) => {
 
     const {id_barang} = req.query;
 
-    const reqBarang = await db('tb_barang')
+    const reqBarang = await db()('tb_barang')
     .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
     .select('*')
     .where({'tb_barang.id_barang': id_barang }).first()
