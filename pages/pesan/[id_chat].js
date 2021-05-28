@@ -38,6 +38,8 @@ const index = (props) => {
     const [lawan, setlawan] = useState({ nama_user: '', id_user: 0 })
     const [msgLoad, setmsgLoad] = useState(false)
 
+    // sepertinya chat terlalu banyak menggunakan koneksi db, kurangi !
+
     socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
         if (props.id_chat === id_chat) {
             let newPerson = [...person];

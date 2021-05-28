@@ -11,8 +11,13 @@ const index = () => {
         const token = cookie.get('token')
 
         if (id_user && token) {
-            const { res } = await getReq('notification', id_user, token)
-            setnotif(res)
+            const localNotif = localStorage.getItem('notification');
+            if (localNotif) setnotif(JSON.parse(localNotif))
+            else {
+                const { res } = await getReq('notification', id_user, token)
+                localStorage.setItem('notification', JSON.stringify(res))
+                setnotif(res)
+            }
         }
     }, [])
 

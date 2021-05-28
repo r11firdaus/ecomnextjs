@@ -25,8 +25,8 @@ const BottomNav = (props) => {
             const getLocalMsg = localStorage.getItem('unread_message');
             getLocalMsg ? dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocalMsg) }) : getFromDB(getId, token, 'message')
 
-            const getLocaNotif = localStorage.getItem('unread_message');
-            getLocaNotif ? dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocaNotif) }) : getFromDB(getId, token, 'notification')
+            const getLocaNotif = localStorage.getItem('notification');
+            getLocaNotif ? dispatch({ type: 'UNREAD_NOTIFICATION', payload: JSON.parse(getLocaNotif).length }) : getFromDB(getId, token, 'notification')
         }
     }, [])
 
@@ -38,7 +38,7 @@ const BottomNav = (props) => {
         }
         const getDBNotif = async () => {
             const { res } = await getReq('notification', id, token)
-            localStorage.setItem('unread_notification', res.length);
+            localStorage.setItem('notification', JSON.stringify(res));
             dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.length })
         }
         if (type === 'message') getDBMsg()
