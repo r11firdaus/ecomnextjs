@@ -33,7 +33,19 @@ const ModalFilter = () => {
 
     const showResult = () => {
         dispatch({ type: 'CHANGE_SORT', payload: selected })
+        clearData()
         dispatch({ type: 'MODAL_FILTER', payload: false })
+    }
+    
+    const clearData = () => {
+        const barangUserLocal = localStorage.removeItem('barang_user_id');
+        const barangLocal = localStorage.removeItem('barang_user');
+        const subCategoryLocal = localStorage.getItem('nama_subcategory');
+        const barangSubCategoryLocal = localStorage.getItem('barang_subcategory');
+        barangUserLocal && barangUserLocal;
+        barangLocal && barangLocal;
+        subCategoryLocal && subCategoryLocal;
+        barangSubCategoryLocal && barangSubCategoryLocal;
     }
 
     return (<>

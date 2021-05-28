@@ -11,12 +11,14 @@ const EditUser = props => {
 
     useEffect(async () => {
         if (props.id_userMe && props.token) {
-            await getReq('user', props.id_userMe, props.token)
-                .then(async res => {
-                    await res.res.id_user == props.id_userMe ?
-                        setfield(res.res) : Router.back()
-                    setloaded(true)
-                })
+            const myData = localStorage.getItem('mydata');
+            if (myData) setfield(JSON.parse(myData))
+            else {
+                const {res} = await getReq('user', props.id_user, props.token)
+                res.id_user == props.id_userMe ? setfield(res) : Router.back()
+                localStorage.setItem('mydata', JSON.stringify(res))
+            }
+            setloaded(true)
         }
 
         const req = await fetch('https://dev.farizdotid.com/api/daerahindonesia/provinsi')
@@ -80,6 +82,7 @@ const EditUser = props => {
             telepon_user,
         }
         await putReq('user/update', props.id_userMe, props.token, newField).then(res => null)
+        localStorage.setItem('mydata', JSON.stringify({...newField, id_user: props.id_userMe}))
         Router.back()
     }
 

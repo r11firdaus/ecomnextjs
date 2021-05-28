@@ -13,6 +13,7 @@ const handler = async (req, res) => {
 
     res.status(200);
     res.json({data: reqUser})
+    res.end();
 }
 
 export default handler

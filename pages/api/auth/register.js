@@ -22,6 +22,7 @@ const handler = async (req, res) => {
     })
     res.status(200);
     res.json({ message: 'User registration successfully' })
+    res.end();
 }
 
 export default handler;

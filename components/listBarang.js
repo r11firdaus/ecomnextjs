@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { memo, useEffect, useState } from "react"
-import { getReq } from "../function/API";
+import { memo } from "react"
 import Image from 'next/image'
 import FilterHandler from "./pencarian/filterHandler";
 

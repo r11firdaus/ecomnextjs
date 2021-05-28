@@ -36,6 +36,7 @@ const handler = async (req, res) => {
     res.json({
         message: 'data created',
     });
+    res.end();
 }
 
 export default handler;

@@ -13,6 +13,7 @@ const handler = async (req, res) => {
     res.json({
         data: 'Success !'
     });
+    res.end();
 }
 
 export default handler;

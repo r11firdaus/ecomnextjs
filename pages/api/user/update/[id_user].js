@@ -32,6 +32,7 @@ const handler = async (req, res) => {
     res.json({
         message: 'data updated',
     });
+    res.end();
 }
 
 export default handler;

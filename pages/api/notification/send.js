@@ -16,6 +16,7 @@ const handler = async (req, res) => {
 
     res.status(200);
     res.json({ data: "Notification sent!" })
+    res.end();
 }
 
 export default handler;

@@ -32,6 +32,9 @@ const FormBarang = props => {
         props.id_barang ?
             await putReq('barang/update', props.id_barang, props.token, newField).then(res => null) :
             await postReq('barang/create', props.token, newField).then(res => null)
+
+        const barangUserId = localStorage.getItem('barang_user_id');
+        props.id_userMe == barangUserId && localStorage.removeItem('barang_user_id');
         Router.push(`/profil/${props.id_userMe}`)
     }
 

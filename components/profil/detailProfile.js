@@ -9,8 +9,19 @@ const DetailProfile = props => {
     const dispatch = useDispatch()
 
     useEffect(async() => {
-        const {res} = await getReq('user', props.id_userReq, '')
-        setdata(res)
+        const getId = Cookie.get('id_user');
+        if (props.id_userReq == getId) {
+            const myData = localStorage.getItem('mydata');
+            if (myData) setdata(JSON.parse(myData))
+            else {
+                const {res} = await getReq('user', props.id_user, props.token)
+                localStorage.setItem('mydata', JSON.stringify(res))
+                setdata(res)
+            }
+        } else {
+            const {res} = await getReq('user', props.id_userReq, '')
+            setdata(res)
+        }
     }, [])
 
     const logoutHandler = () => {
@@ -18,9 +29,7 @@ const DetailProfile = props => {
         Cookie.remove('token')
         dispatch({type: 'ID_USER', payload: null})
         dispatch({type: 'CART', payload: 0})
-        localStorage.removeItem('cart_length')
-        localStorage.removeItem('unread_message')
-        localStorage.removeItem('unread_notification')
+        localStorage.clear();
         Router.push("/login")
     }
 

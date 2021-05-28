@@ -11,6 +11,7 @@ const handler = async (req, res) => {
     
     res.status(200);
     res.json({message: 'data deleted'});
+    res.end();
 }
 
 export default handler;

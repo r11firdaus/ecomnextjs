@@ -18,6 +18,7 @@ const handler = async (req, res) => {
     res.status(200);
     if (!reqBarang) res.json({data: {}});
     res.json({data: reqBarang});
+    res.end();
 }
 
 export default handler;

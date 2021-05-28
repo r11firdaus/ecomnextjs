@@ -18,6 +18,7 @@ const handler = async (req, res) => {
         const reqSubCategory = await db()('tb_subcategory').where({id_category: reqCategory.id_category})
         res.json({data: reqSubCategory})
     } else res.json({data: []})
+    res.end();
 }
 
 export default handler

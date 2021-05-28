@@ -8,14 +8,7 @@ const FormPesan = (props) => {
         const input = document.getElementById('msg-input');
         if (props.person.length > 0) {
             if (input.value) {
-                await postReq('chat/message/create', props.token, {
-                    id_chat: props.id_chat,
-                    id_user: props.id_userMe,
-                    receiver_user: props.lawan,
-                    message: input.value,
-                    status_message: 'unread'
-                })
-                socket.emit('chat message', input.value, props.id_chat, props.lawan, props.id_userMe);
+                postMsg(input.value);
                 input.value = '';
             }
         } else {
@@ -27,18 +20,22 @@ const FormPesan = (props) => {
                     id_user1: pisahIdUser[0],
                     id_user2: pisahIdUser[1]
                 })
-
-                await postReq('chat/message/create', props.token, {
-                    id_chat: props.id_chat,
-                    id_user: props.id_userMe,
-                    receiver_user: props.lawan,
-                    message: input.value,
-                    status_message: 'unread'
-                })
-                socket.emit('chat message', input.value, props.id_chat, props.lawan, props.id_userMe);
+                postMsg(input.value);
                 input.value = '';
             }
         }
+    }
+
+    const postMsg = async (input) => {
+        await postReq('chat/message/create', props.token, {
+            id_chat: props.id_chat,
+            id_user: props.id_userMe,
+            receiver_user: props.lawan,
+            message: input,
+            status_message: 'unread'
+        })
+        socket.emit('chat message', input, props.id_chat, props.lawan, props.id_userMe);
+        
     }
 
     return (<>

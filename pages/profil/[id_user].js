@@ -40,9 +40,17 @@ const index = props => {
     const {sort, cod} = useSelector(state => state)
 
     useEffect(async () => {
-        const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
-        setdata(res)
+        const barangUserLocal = localStorage.getItem('barang_user_id');
+        const barangLocal = localStorage.getItem('barang_user');
+        barangUserLocal == props.id_userReq && barangLocal ? setdata(JSON.parse(barangLocal)):getBarang()
     }, [sort, cod])
+    
+    const getBarang = async () => {
+        const { res } = await getReq('barang/user', props.id_userReq, props.token, sort)
+        localStorage.setItem('barang_user', JSON.stringify(res))
+        localStorage.setItem('barang_user_id', props.id_userReq)
+        setdata(res)
+    }
     
     return (<>
         <Nav title="Profile" />

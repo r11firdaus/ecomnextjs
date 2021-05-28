@@ -19,16 +19,14 @@ const BottomNav = (props) => {
             if (getId !== null | undefined && token) getFromDB(getId, token, 'msg&notif')
         })
 
-        if (getId === null | undefined) {
+        if (id_user === null|undefined && getId && token) {
             dispatch({ type: 'ID_USER', payload: getId })
 
             const getLocalMsg = localStorage.getItem('unread_message');
-            if (getLocalMsg) dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocalMsg) })
-            else getFromDB(getId, token, 'message')
+            getLocalMsg ? dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocalMsg) }) : getFromDB(getId, token, 'message')
 
             const getLocaNotif = localStorage.getItem('unread_message');
-            if (getLocaNotif) dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocaNotif) })
-            else getFromDB(getId, token, 'notification')
+            getLocaNotif ? dispatch({ type: 'UNREAD_MESSAGE', payload: parseInt(getLocaNotif) }) : getFromDB(getId, token, 'notification')
         }
     }, [])
 

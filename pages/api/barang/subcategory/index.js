@@ -13,6 +13,7 @@ const handler = async (req, res) => {
     res.status(200);
     // console.log(req.headers)
     res.json({data: reqsubcategory})
+    res.end();
 }
 
 export default handler

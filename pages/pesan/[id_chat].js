@@ -36,6 +36,7 @@ export const getServerSideProps = async (ctx) => {
 const index = (props) => {
     const [person, setperson] = useState(props.result)
     const [lawan, setlawan] = useState({ nama_user: '', id_user: 0 })
+    const [msgLoad, setmsgLoad] = useState(false)
 
     socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
         if (props.id_chat === id_chat) {
@@ -49,23 +50,47 @@ const index = (props) => {
         }
     });
 
+    
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
+
+        socket.on('loadDB', () => {
+            loadMsg()
+            setmsgLoad(true)
+        })
+        loadMsg()
         window.scrollTo(0, document.body.scrollHeight);
 
-        let id_user2 = []
-        const pisahIdUser = props.id_chat.split('$')
-        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
-
-        await getReq('chat/with', props.id_chat, props.token).then(res => setperson(res.res))
-
-        const { res } = await getReq('user', id_user2[0], props.token)
-        setlawan(res)
         // buat fungsi 'pesan dibaca'
         await putReq('chat/message/read', props.id_userMe, props.token, {
             id_chat: props.id_chat
         }).then(res => null)
+        
+        let id_user2 = []
+        const pisahIdUser = props.id_chat.split('$')
+        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
+        for (let i = 0; i < person.length; i++) {
+            if (person[i].id_user === id_user2[0]) {
+                person[i].nama_user && setlawan({nama_user: person[i].nama_user, id_user: person[i].id_user})
+                break;
+            }
+        }
+        if (!lawan || lawan===null || lawan.id_user === 0) {
+            const { res } = await getReq('user', id_user2[0], props.token)
+            setlawan({nama_user: res.nama_user, id_user: res.id_user})
+        }
     }, [])
+    
+    const loadMsg = async () => {
+        if (!msgLoad) {
+            await getReq('chat/with', props.id_chat, props.token).then(res => setperson(res.res))
+            setmsgLoad(true)
+            setTimeout(() => {
+                setmsgLoad(false)
+            }, 6000);
+        }
+        
+    }
 
     return (<>
         <Nav2 title={lawan.nama_user && lawan.nama_user}>

@@ -26,7 +26,7 @@ const optionBtnBarang = (props) => {
     const deleteHandler = async (e,id) => {
         e.preventDefault()
         const {res} = await deleteReq('barang/delete', id, myprops.token)
-        Router.reload()
+        Router.back()
     }
 
     const addToCartHandler = async (e, id) => {
@@ -54,7 +54,7 @@ const optionBtnBarang = (props) => {
                     id_barang: id,
                     total: 1,
                 }).then(res => ask('', '', 'Added to Cart!'))
-                localStorage.setItem('cart_length', cart + 1)
+                localStorage.removeItem('cart_data');
                 dispatch({type: 'CART', payload: cart + 1})
             }
         } else ask('', '', 'Out of stock!')

@@ -50,6 +50,7 @@ const handler = async (req, res) => {
 
     res.status(200);
     res.json({data: reqBarangUser})
+    res.end();
 }
 
 export default handler

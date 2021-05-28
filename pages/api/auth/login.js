@@ -31,6 +31,7 @@ const handler = async (req, res) => {
             id_user: chkUser.id_user,
         }
     });
+    res.end();
 }
 
 export default handler;

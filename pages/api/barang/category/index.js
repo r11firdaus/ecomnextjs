@@ -12,6 +12,7 @@ const handler = async (req, res) => {
     const reqcategory = await db()('tb_category')
     res.status(200);
     res.json({data: reqcategory})
+    res.end();
 }
 
 export default handler

@@ -17,11 +17,11 @@ const Nav = () => {
         if (getId && id_user === null) dispatch({ type: 'ID_USER', payload: getId })
 
         if (getId) {
-            const cartLength = localStorage.getItem('cart_length');
-            if (cartLength) dispatch({ type: 'CART', payload: parseInt(cartLength) })
+            const cartData = localStorage.getItem('cart_data');
+            if (cartData) dispatch({ type: 'CART', payload: JSON.parse(cartData).length })
             else {
                 const {res} = await getReq('cart', getId, token)
-                localStorage.setItem('cart_length', res.length)
+                localStorage.setItem('cart_data', JSON.stringify(res))
                 dispatch({ type: 'CART', payload: res.length })
             }
         }

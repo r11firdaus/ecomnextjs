@@ -30,6 +30,7 @@ const handler = async (req, res) => {
         // }
         res.json({data: reqBarang})
     } else res.json({data: []})
+    res.end();
 }
 
 export default handler

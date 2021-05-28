@@ -2,40 +2,50 @@ import Router from "next/router"
 import Modal from './modal'
 import { memo, useEffect, useState } from "react"
 import { getReq } from '../function/API'
+import Cookie from 'js-cookie'
 
 const Cart = (props) => {
-    const [cart, setcart] = useState([])
-    const [all, setall] = useState(false)
-    const [modal, setmodal] = useState({show: false, message: '', cancelOnly: false})
-    let arr = []
+    const [cart, setcart] = useState([]);
+    const [all, setall] = useState(false);
+    const [modal, setmodal] = useState({show: false, message: '', cancelOnly: false});
+    let arr = [];
 
-    useEffect(async () => {
-        const { res } = await getReq('cart', props.id_userMe, props.token)
+
+    useEffect(() => {
+        const id_user = Cookie.get('id_user');
+        !props.id_userMe || props.id_userMe === null && Router.push('/login');
+        const cartData = localStorage.getItem('cart_cart');
+        cartData && id_user == props.id_userMe ? setcart(JSON.parse(cartData)) : getData();
+    }, [])
+    
+    const getData = async () => {
+        const { res } = await getReq('cart', props.id_userMe, props.token);
         let newRes = [];
         await res.map(data => {
-            if (data.total > data.stok_barang) data.total = data.stok_barang
-            if (data.total == 0) data.checked = false
-            newRes.push(data)
+            if (data.total > data.stok_barang) data.total = data.stok_barang;
+            if (data.total == 0) data.checked = false;
+            newRes.push(data);
         })
-        setcart(newRes)
-    }, [])
+        setcart(newRes);
+        localStorage.setItem('cart_data', JSON.stringify(newRes));
+    }
 
     const selectHandlerAll = () => {
-        const seller = document.getElementsByName('sellerChk')
-        let sellers = Array.from(seller)
+        const seller = document.getElementsByName('sellerChk');
+        let sellers = Array.from(seller);
         const newItems = [...cart]; // clone the array 
         newItems.map((item, index) => {
             if (newItems[index]['stok_barang'] > 0) {
-                newItems[index]['checked'] = !all // set the new value 
+                newItems[index]['checked'] = !all; // set the new value 
             }
         });
-        sellers.map(sell => sell.checked = !all)
+        sellers.map(sell => sell.checked = !all);
         setcart(newItems); // set new state
-        setall(!all) // true or false
+        setall(!all); // true or false
     }
 
     const sellerClick = async (e, id) => {
-        const parentVal = e.target.checked
+        const parentVal = e.target.checked;
         const newItems = [...cart]; // clone the array 
 
         newItems.map((item, index) => {
@@ -48,25 +58,25 @@ const Cart = (props) => {
 
     const childClick = (index, value) => {
         const newItems = [...cart]; // clone the array
-        const id_seller = newItems[index]['id_seller']
-        const seller = document.getElementById(id_seller)
+        const id_seller = newItems[index]['id_seller'];
+        const seller = document.getElementById(id_seller);
 
         if (newItems[index]['stok_barang'] != 0) {
             if (value) { // if checked true
-                newItems[index]['checked'] = false
-                seller.checked = false
-                setall(false)
+                newItems[index]['checked'] = false;
+                seller.checked = false;
+                setall(false);
             } else {
-                newItems[index]['checked'] = true // set the new value
-                let chkAll = []
-                let chk = []
+                newItems[index]['checked'] = true; // set the new value
+                let chkAll = [];
+                let chk = [];
                 for (let i = 0; i < newItems.length; i++) {
-                    chkAll.push(newItems[i].checked)
-                    newItems[i].id_seller == id_seller && chk.push(newItems[i].checked)
+                    chkAll.push(newItems[i].checked);
+                    newItems[i].id_seller == id_seller && chk.push(newItems[i].checked);
                 }
-                chkAll.includes(false) ? setall(false) : setall(true)
-                if (chk.includes(false)) seller.checked = false
-                else seller.checked = true
+                chkAll.includes(false) ? setall(false) : setall(true);
+                if (chk.includes(false)) seller.checked = false;
+                else seller.checked = true;
             }
             setcart(newItems); // set new state
         }
@@ -94,12 +104,12 @@ const Cart = (props) => {
 
     const nextHandler = e => {
         e.preventDefault()
-        const check = document.getElementsByTagName('input')
-        let fill = []
+        const check = document.getElementsByTagName('input');
+        let fill = [];
         for (let i = 0; i < check.length; i++) {
-            fill.push(check[i].checked)
+            fill.push(check[i].checked);
         }
-        fill.includes(true) ? alert('lanjut !') : setmodal({show: true, message: `Please choose 1 to continue.`, cancelOnly: true})
+        fill.includes(true) ? alert('lanjut !') : setmodal({show: true, message: `Please choose 1 to continue.`, cancelOnly: true});
     }
 
     return (<>

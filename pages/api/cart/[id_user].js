@@ -17,6 +17,7 @@ const handler = async (req, res) => {
 
     res.status(200);
     res.json({data: reqBarang});
+    res.end();
 }
 
 export default handler;
