@@ -7,7 +7,7 @@ const initialState = {
   loading: false,
   cart: 0,
   modalFilter: false,
-  dbConnection: false
+  page: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -52,11 +52,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         modalFilter: action.payload
       }
-    case 'DB_CONNECTION':
+    case 'SITE_PAGE':
       return {
         ...state,
-        dbConnection: action.payload
+        page: action.payload
       }
+    
     default:
       return state
   }

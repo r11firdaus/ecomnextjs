@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 import { memo } from 'react'
+import { useDispatch } from 'react-redux'
 import Cart from '../../components/cart'
-import Nav2 from '../../components/navigasi/nav2'
 import { authPage } from '../../middleware/authrizationPage'
 
 export const getServerSideProps = async ctx => {
@@ -15,8 +16,12 @@ export const getServerSideProps = async ctx => {
 }
 
 const index = props => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: 'cart'})
+    }, [])
     return (<>
-        <Nav2 title="Cart" />
         <br /><br />
         <Cart id_userMe={props.id_userMe} token={props.token} />
     </>)

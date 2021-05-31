@@ -39,6 +39,9 @@ const index = (props) => {
     const [msgLoad, setmsgLoad] = useState(false)
 
     // sepertinya chat terlalu banyak menggunakan koneksi db, kurangi !
+    // mungkin untuk status message (read, unread, sent) cukup pakai websocket (tanpa connect ke db)
+    // kedepannya bisa dicoba message juga hanya menggunakan websocket tanpa db
+    // atau tetap konek de db hanya jika ada pesan baru (pesan yg bulum dibaca)
 
     socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
         if (props.id_chat === id_chat) {

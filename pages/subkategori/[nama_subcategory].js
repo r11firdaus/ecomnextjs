@@ -1,4 +1,3 @@
-import Nav from '../../components/navigasi/nav'
 import ListBarang from '../../components/listBarang'
 import { memo, useEffect, useState } from 'react';
 import cookies from 'next-cookies';
@@ -44,7 +43,6 @@ const index = props => {
 
     return(<>
         <Head><title>Category for '{props.nama_subcategory}'</title></Head>
-        <Nav />
         <div style ={{margin: '4rem 0'}}>
             <strong style={{marginLeft: '10px'}}>Category for '{props.nama_subcategory}'</strong>
             <ListBarang data={data} />

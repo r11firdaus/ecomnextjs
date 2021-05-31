@@ -14,7 +14,7 @@ const DetailProfile = props => {
             const myData = localStorage.getItem('mydata');
             if (myData) setdata(JSON.parse(myData))
             else {
-                const {res} = await getReq('user', props.id_user, props.token)
+                const {res} = await getReq('user', props.id_userReq, props.token)
                 localStorage.setItem('mydata', JSON.stringify(res))
                 setdata(res)
             }

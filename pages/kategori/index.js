@@ -1,10 +1,16 @@
+import { useEffect } from 'react'
 import { memo } from 'react'
+import { useDispatch } from 'react-redux'
 import ListCategory from '../../components/listCategory'
-import Nav2 from '../../components/navigasi/nav2'
 
-const index  = props => {
+const index  = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: 'kategori'})    
+    }, [])
+    
     return (<>
-    <Nav2 title="Category" />
     <div style ={{margin: '4rem 0'}}>
         <ListCategory />
     </div>

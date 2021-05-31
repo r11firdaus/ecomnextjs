@@ -1,10 +1,10 @@
-import Nav from "../components/navigasi/nav";
-import BottomNav from "../components/navigasi/bottomNav";
 import Saldo from "../components/profil/saldo";
 import PromoBanner from "../components/home/promoBanner";
 import TilesMenu from "../components/home/tilesMenu";
 import { memo } from "react";
 import cookies from 'next-cookies'
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export const getServerSideProps = async ctx => {
   // id_user_Req = halaman profil user yg dituju
@@ -26,14 +26,18 @@ export const getServerSideProps = async ctx => {
 }
 
 const Home = (props) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'SITE_PAGE', payload: 'home'})
+  }, [])
+
   return (<>
-    <Nav type="home" title="Jwallin" />
     <div style={{margin: '4.2rem 0'}}>
       <PromoBanner />
       <Saldo id_user={props.id_userMe} token={props.token} />
-      <TilesMenu />    
+      <TilesMenu />
     </div>
-    <BottomNav hal="home" />
   </>)
 }
 

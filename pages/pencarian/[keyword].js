@@ -1,9 +1,9 @@
-import Nav from '../../components/navigasi/nav'
 import ListBarang from '../../components/listBarang'
 import { memo, useEffect, useState } from 'react';
 import { getReq } from '../../function/API';
 import { useSelector } from 'react-redux';
 import Head from 'next/head'
+import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ctx => {
     const {keyword} = ctx.query;
@@ -18,8 +18,10 @@ export const getServerSideProps = async ctx => {
 const index = props => {
     const [data, setdata] = useState([])
     const {sort, cod} = useSelector(state => state)
+    const dispatch = useDispatch()
 
     useEffect(async () => {
+        dispatch({type: 'SITE_PAGE', payload: 'pencarian'})
         const {res} = await getReq('search', props.keyword, '', sort)
         setdata(res)
     }, [props.keyword, sort, cod])
@@ -28,7 +30,6 @@ const index = props => {
         <Head>
             <title>Result for '{props.judul}' | Jwallin</title>
         </Head>
-        <Nav />
         <div style ={{margin: '4rem 0'}}>
             <strong style={{marginLeft: '10px'}}>Result for '{props.judul}'</strong>
             <ListBarang data={data} />

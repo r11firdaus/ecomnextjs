@@ -3,16 +3,23 @@ import Cookie from "js-cookie";
 import Router from "next/router";
 import Link from 'next/link';
 import { unauthPage } from "../../middleware/authrizationPage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export async function getServerSideProps(context) {
     await unauthPage(context);
-
     return {props: {}}
 }
 
 export default function index() {
     const [fields, setfields] = useState({email_user: '', password_user: ''})
     const [status, setstatus] = useState('')
+    const dispatch = useDispatch()
+    
+    useEffect(() => {
+        const url = Router.pathname.split('/')[1]
+        dispatch({type: 'SITE_PAGE', payload: url})
+    }, [])
 
     const fieldsHandler = e => {
         const name = e.target.getAttribute('name');
@@ -37,6 +44,7 @@ export default function index() {
         Cookie.set('token', loginRes.data.token)
         Cookie.set('username', loginRes.data.username)
         Cookie.set('id_user', loginRes.data.id_user)
+        localStorage.clear()
         setstatus('success, redirecting...')
         Router.push('/')
     }

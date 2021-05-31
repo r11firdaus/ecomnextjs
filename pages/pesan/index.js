@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { getReq } from '../../function/API';
 import Nav2 from '../../components/navigasi/nav2';
-import BottomNav from '../../components/navigasi/bottomNav';
 import Link from 'next/link';
 import {authPage} from '../../middleware/authrizationPage'
 import { useDispatch, useSelector } from "react-redux";
@@ -23,31 +22,33 @@ const index = (props) => {
     const dispatch = useDispatch()
 
     const getMsg = async () => {
-        const { res } = await getReq('chat', props.id_user, props.token)
-        let arr = []
-        let newMsg = []
-    
-        await res.map(re => {
-            !arr.includes(re.id_chat) && newMsg.push(re)
-            arr.push(re.id_chat)
-        })
-        setperson(newMsg)
+        if (props.id_user) {
+            const { res } = await getReq('chat', props.id_user, props.token)
+            let arr = []
+            let newMsg = []
+            
+            await res.map(re => {
+                !arr.includes(re.id_chat) && newMsg.push(re)
+                arr.push(re.id_chat)
+            })
+            setperson(newMsg)
+        }
     }
-
+        
     socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
         if (receiver_user == props.id_user) {
             dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
-            getMsg()  
+            getMsg()
         }
     })
 
     useEffect(() => {
+        dispatch({ type: 'SITE_PAGE', payload: 'pesan'})
         getMsg()
     }, [])
 
     return (
         <>
-            <Nav2 title="Messages" />
             <ul id="messages" style={{margin: '3rem 0'}}>
                 {
                     person.map(per => (
@@ -65,7 +66,6 @@ const index = (props) => {
                     ))
                 }
             </ul>
-            <BottomNav hal="pesan" />
         </>
     )
 }
