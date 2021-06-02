@@ -1,11 +1,10 @@
 import { memo, useEffect, useState } from "react";
-import { getReq } from '../../function/API';
-import Nav2 from '../../components/navigasi/nav2';
 import Link from 'next/link';
 import { authPage } from '../../middleware/authrizationPage'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { socket } from "../../function/socket";
-import { loadData } from "../../function/loadData";
+import { loadMsg } from "../../function/loadData";
+import { socketMsg } from "../../function/socketAction";
 
 export const getServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)
@@ -19,23 +18,35 @@ export const getServerSideProps = async ctx => {
 
 const index = (props) => {
     const [person, setperson] = useState([])
-    const { unreadMessage } = useSelector(state => state)
     const dispatch = useDispatch()
 
-    useEffect(async() => {
+    useEffect(() => {
         dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
-        const { indexMsg } = await loadData(props.id_user, props.token, "message");
-        setperson(indexMsg)
+        getData()
+
+        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
+            if (receiver_user == props.id_user) {
+                const newMsg = {id_chat, id_user: sender, receiver_user, message, status_message: 'unread'}
+                await socketMsg(newMsg, 'pesan', props.id_user, props.token)
+                getData()
+                // next = bikin status read di hal pesan/[id_chat] baik di db dan localStorage
+            }
+        })
     }, [])
 
-    socket.on('chat message', async (msg, id_chat, receiver_user, sender) => {
-        if (receiver_user == props.id_user) {
-            dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
-            localStorage.removeItem('chats')
-            const { indexMsg } = await loadData(props.id_user, props.token, "message");
-            setperson(indexMsg)
-        }
-    })
+
+    const getData = async () => {
+        const { msg } = await loadMsg(props.id_user, props.token);
+
+        let arr = []
+        let newMsg = []
+        await msg.map(pesan => {
+            !arr.includes(pesan.id_chat) && newMsg.push(pesan)
+            arr.push(pesan.id_chat)
+        })
+
+        setperson(newMsg)
+    }
 
     return (
         <>
