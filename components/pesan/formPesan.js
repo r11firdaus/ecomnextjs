@@ -6,12 +6,8 @@ const FormPesan = (props) => {
     const sendHandler = async e => {
         e.preventDefault()
         const input = document.getElementById('msg-input');
-        if (props.person.length > 0) {
-            if (input.value) {
-                postMsg(input.value);
-                input.value = '';
-            }
-        } else {
+        if (props.person.length > 0) input.value && postMsg(input.value);
+        else {
             // buat id_chat baru lalu kirim message
             if (input.value) {
                 const pisahIdUser = props.id_chat.split('$')
@@ -21,9 +17,9 @@ const FormPesan = (props) => {
                     id_user2: pisahIdUser[1]
                 })
                 postMsg(input.value);
-                input.value = '';
             }
         }
+        input.value = '';
     }
 
     const postMsg = async (input) => {

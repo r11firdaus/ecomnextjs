@@ -4,6 +4,7 @@ import cookies from 'next-cookies';
 import { getReq } from '../../function/API';
 import { useSelector } from 'react-redux';
 import Head from 'next/head';
+import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ctx => {
     const {nama_subcategory} = ctx.query;
@@ -27,10 +28,12 @@ export const getServerSideProps = async ctx => {
 const index = props => {
     const {sort, cod} = useSelector(state => state)
     const [data, setdata] = useState([])
+    const dispatch = useDispatch()
     
     useEffect(async () => {
         const subCategoryLocal = localStorage.getItem('nama_subcategory');
         const barangSubCategoryLocal = localStorage.getItem('barang_subcategory');
+        dispatch({type: 'SITE_PAGE', payload: 'subkategori'})
         subCategoryLocal == props.nama_subcategory && barangSubCategoryLocal ? setdata(JSON.parse(barangSubCategoryLocal)) : getBarang()
     }, [sort, cod])
 

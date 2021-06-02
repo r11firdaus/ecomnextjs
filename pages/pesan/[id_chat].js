@@ -7,25 +7,40 @@ import FormPesan from "../../components/pesan/formPesan";
 import Bubble from "../../components/pesan/bubble";
 import Nav2 from "../../components/navigasi/nav2";
 import { socket } from "../../function/socket";
+import { useDispatch } from "react-redux";
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
-    let id_chat = ctx.query.id_chat ? ctx.query.id_chat : null
+    let id_chat = ctx.query.id_chat && ctx.query.id_chat
     let result = []
-    const balikId = id_chat.split('$')
-    const newId_chat = `${balikId[1]}$${balikId[0]}`
+    const pisahIdUser = id_chat.split('$')
 
     const { res } = id_chat !== null && await getReq('chat/with', id_chat, token)
-    if (!res.length < 1) result = res
+    if (res.length > 0) result = res
     else {
-        id_chat = newId_chat
-        await getReq('chat/with', id_chat, token)
-            .then(json => result = json.res)
+        const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
+        await getReq('chat/with', newId_chat, token).then(json => result = json.res)
+    }
+
+    let id_user2 = []
+    let lawan={}
+    await pisahIdUser.map(id => id != id_user && id_user2.push(id))
+    if (result.length > 0) {
+        for (let i = 0; i < result.length; i++) {
+            if (result[i].id_user == id_user2[0]) {
+                lawan = { nama_user: result[i].nama_user, id_user: result[i].id_user }
+                break;
+            }
+        }
+    } else {
+        const { res } = await getReq('user', id_user2[0], token)
+        lawan = { nama_user: res.nama_user, id_user: res.id_user }
     }
 
     return {
         props: {
             id_userMe: id_user,
+            lawan,
             token,
             result,
             id_chat,
@@ -34,9 +49,10 @@ export const getServerSideProps = async (ctx) => {
 }
 
 const index = (props) => {
+    console.log(props.lawan)
     const [person, setperson] = useState(props.result)
-    const [lawan, setlawan] = useState({ nama_user: '', id_user: 0 })
     const [msgLoad, setmsgLoad] = useState(false)
+    const dispatch = useDispatch()
 
     // sepertinya chat terlalu banyak menggunakan koneksi db, kurangi !
     // mungkin untuk status message (read, unread, sent) cukup pakai websocket (tanpa connect ke db)
@@ -55,54 +71,39 @@ const index = (props) => {
         }
     });
 
-    
+
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
+        dispatch({type: 'SITE_PAGE', payload: ''})
 
-        socket.on('loadDB', () => {
-            loadMsg()
-            setmsgLoad(true)
-        })
-        loadMsg()
+        socket.on('loadDB', () => loadMsg())
         window.scrollTo(0, document.body.scrollHeight);
 
         // buat fungsi 'pesan dibaca'
         await putReq('chat/message/read', props.id_userMe, props.token, {
             id_chat: props.id_chat
         }).then(res => null)
-        
-        let id_user2 = []
-        const pisahIdUser = props.id_chat.split('$')
-        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
-        for (let i = 0; i < person.length; i++) {
-            if (person[i].id_user === id_user2[0]) {
-                person[i].nama_user && setlawan({nama_user: person[i].nama_user, id_user: person[i].id_user})
-                break;
-            }
-        }
-        if (!lawan || lawan===null || lawan.id_user === 0) {
-            const { res } = await getReq('user', id_user2[0], props.token)
-            setlawan({nama_user: res.nama_user, id_user: res.id_user})
-        }
     }, [])
-    
+
     const loadMsg = async () => {
         if (!msgLoad) {
             await getReq('chat/with', props.id_chat, props.token).then(res => setperson(res.res))
             setmsgLoad(true)
+            console.warn('msg loaded')
             setTimeout(() => {
                 setmsgLoad(false)
             }, 6000);
         }
-        
+
     }
 
     return (<>
-        <Nav2 title={lawan.nama_user && lawan.nama_user}>
-            <Link href={`/profil/${lawan.id_user}`} />
+        <Nav2 title={props.lawan.nama_user}>
+            {/* <Link href={`/profil/${props.lawan.id_user}`} /> */}
         </Nav2>
+        
         <Bubble person={person} id_userMe={props.id_userMe} />
-        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawan.id_user} />
+        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={props.lawan.id_user} />
     </>)
 }
 

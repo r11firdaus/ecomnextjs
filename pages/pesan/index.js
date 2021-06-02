@@ -2,12 +2,13 @@ import { memo, useEffect, useState } from "react";
 import { getReq } from '../../function/API';
 import Nav2 from '../../components/navigasi/nav2';
 import Link from 'next/link';
-import {authPage} from '../../middleware/authrizationPage'
+import { authPage } from '../../middleware/authrizationPage'
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../function/socket";
+import { loadData } from "../../function/loadData";
 
 export const getServerSideProps = async ctx => {
-    const {id_user, token} = await authPage(ctx)
+    const { id_user, token } = await authPage(ctx)
     return {
         props: {
             id_user,
@@ -18,46 +19,35 @@ export const getServerSideProps = async ctx => {
 
 const index = (props) => {
     const [person, setperson] = useState([])
-    const {unreadMessage} = useSelector(state => state)
+    const { unreadMessage } = useSelector(state => state)
     const dispatch = useDispatch()
 
-    const getMsg = async () => {
-        if (props.id_user) {
-            const { res } = await getReq('chat', props.id_user, props.token)
-            let arr = []
-            let newMsg = []
-            
-            await res.map(re => {
-                !arr.includes(re.id_chat) && newMsg.push(re)
-                arr.push(re.id_chat)
-            })
-            setperson(newMsg)
-        }
-    }
-        
-    socket.on('chat message', (msg, id_chat, receiver_user, sender) => {
+    useEffect(async() => {
+        dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
+        const { indexMsg } = await loadData(props.id_user, props.token, "message");
+        setperson(indexMsg)
+    }, [])
+
+    socket.on('chat message', async (msg, id_chat, receiver_user, sender) => {
         if (receiver_user == props.id_user) {
             dispatch({ type: 'UNREAD_MESSAGE', payload: unreadMessage + 1 })
-            getMsg()
+            localStorage.removeItem('chats')
+            const { indexMsg } = await loadData(props.id_user, props.token, "message");
+            setperson(indexMsg)
         }
     })
 
-    useEffect(() => {
-        dispatch({ type: 'SITE_PAGE', payload: 'pesan'})
-        getMsg()
-    }, [])
-
     return (
         <>
-            <ul id="messages" style={{margin: '3rem 0'}}>
+            <ul id="messages" style={{ margin: '3rem 0' }}>
                 {
                     person.map(per => (
                         <Link href={`/pesan/${per.id_chat}`} key={per.id_chat}>
                             <li>
                                 {per.nama_user}
-                                <p style={{fontSize: '10px', margin: '0'}}>{per.message}</p>
+                                <p style={{ fontSize: '10px', margin: '0' }}>{per.message}</p>
                                 {per.status_message !== 'read' && per.id_user != props.id_user &&
-                                    <div className="baloon-new float-right" style={{marginTop: '-25px'}}>
+                                    <div className="baloon-new float-right" style={{ marginTop: '-25px' }}>
                                         <p className="txt-baloon" />
                                     </div>
                                 }
