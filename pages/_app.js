@@ -2,9 +2,20 @@ import '../styles/mustard-ui.min.css';
 import { Provider } from 'react-redux';
 import store from '../function/context/store';
 import Navigasi from '../components/navigasi/'
-import { memo } from 'react';
+import { useEffect } from 'react';
+import { socket } from '../function/socket';
+import Cookie from 'js-cookie';
+import { socketOnConnect } from '../function/socketAction';
 
 const MyApp = ({ Component, pageProps }) => {
+
+  useEffect(() => {
+    const getId = Cookie.get('user_id')
+    const token = Cookie.get('token')
+
+    socket.on('loadDB', () => socketOnConnect(getId, token))
+  }, [])
+
   return (<>
     <Provider store={store}>
       <Navigasi />
@@ -13,4 +24,4 @@ const MyApp = ({ Component, pageProps }) => {
   </>)
 }
 
-export default memo(MyApp)
+export default MyApp

@@ -6,10 +6,10 @@ const FormPesan = (props) => {
     const sendHandler = async e => {
         e.preventDefault()
         const input = document.getElementById('msg-input');
-        if (props.person.length > 0) input.value && postMsg(input.value);
+        if (props.person.length > 0) input.value?.length > 0 && postMsg(input.value);
         else {
             // buat id_chat baru lalu kirim message
-            if (input.value) {
+            if (input.value?.length > 0) {
                 const pisahIdUser = props.id_chat.split('$')
                 await postReq('chat/create', props.token, {
                     id_chat: props.id_chat,
@@ -26,11 +26,11 @@ const FormPesan = (props) => {
         await postReq('chat/message/create', props.token, {
             id_chat: props.id_chat,
             id_user: props.id_userMe,
-            receiver_user: props.lawan,
+            receiver_user: props.lawan.id_user,
             message: input,
             status_message: 'unread'
         })
-        socket.emit('chat message', input, props.id_chat, props.lawan, props.id_userMe);
+        socket.emit('chat message', input, props.id_chat, props.lawan.id_user, props.id_userMe);
         
     }
 

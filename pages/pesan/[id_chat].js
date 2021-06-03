@@ -8,102 +8,97 @@ import Bubble from "../../components/pesan/bubble";
 import Nav2 from "../../components/navigasi/nav2";
 import { socket } from "../../function/socket";
 import { useDispatch } from "react-redux";
+import {loadMsg} from '../../function/loadData';
+import { socketMsg } from "../../function/socketAction";
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
     let id_chat = ctx.query.id_chat && ctx.query.id_chat
-    let result = []
-    const pisahIdUser = id_chat.split('$')
 
-    const { res } = id_chat !== null && await getReq('chat/with', id_chat, token)
-    if (res.length > 0) result = res
-    else {
-        const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
-        await getReq('chat/with', newId_chat, token).then(json => result = json.res)
-    }
-
-    let id_user2 = []
-    let lawan={}
-    await pisahIdUser.map(id => id != id_user && id_user2.push(id))
-    if (result.length > 0) {
-        for (let i = 0; i < result.length; i++) {
-            if (result[i].id_user == id_user2[0]) {
-                lawan = { nama_user: result[i].nama_user, id_user: result[i].id_user }
-                break;
-            }
-        }
-    } else {
-        const { res } = await getReq('user', id_user2[0], token)
-        lawan = { nama_user: res.nama_user, id_user: res.id_user }
-    }
 
     return {
         props: {
             id_userMe: id_user,
-            lawan,
             token,
-            result,
             id_chat,
         }
     }
 }
 
 const index = (props) => {
-    console.log(props.lawan)
-    const [person, setperson] = useState(props.result)
-    const [msgLoad, setmsgLoad] = useState(false)
+    const [person, setperson] = useState([])
+    const [lawanChat, setlawanChat] = useState({nama_user: '', id_user: 0})
     const dispatch = useDispatch()
-
-    // sepertinya chat terlalu banyak menggunakan koneksi db, kurangi !
-    // mungkin untuk status message (read, unread, sent) cukup pakai websocket (tanpa connect ke db)
-    // kedepannya bisa dicoba message juga hanya menggunakan websocket tanpa db
-    // atau tetap konek de db hanya jika ada pesan baru (pesan yg bulum dibaca)
-
-    socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-        if (props.id_chat === id_chat) {
-            let newPerson = [...person];
-            let newMsg = { id_user: sender, receiver_user, message }
-            newPerson.push(newMsg)
-            setperson(newPerson)
-            await putReq('chat/message/read', props.id_userMe, props.token, {
-                id_chat: props.id_chat
-            }).then(res => null)
-        }
-    });
-
 
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
-        dispatch({type: 'SITE_PAGE', payload: ''})
-
-        socket.on('loadDB', () => loadMsg())
+        dispatch({ type: 'SITE_PAGE', payload: '' })
+        await loadChat()
         window.scrollTo(0, document.body.scrollHeight);
-
+        findLawan()
+        
         // buat fungsi 'pesan dibaca'
         await putReq('chat/message/read', props.id_userMe, props.token, {
             id_chat: props.id_chat
         }).then(res => null)
+
+        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
+            if (props.id_chat === id_chat) {
+                let newMsg = {
+                    id_chat,
+                    id_user: parseInt(sender),
+                    receiver_user: receiver_user,
+                    message,
+                    status_message: 'read',
+                }
+                await socketMsg(newMsg, 'chats', props.id_userMe, props.token, id_chat)
+                await loadChat()
+            }
+        });
     }, [])
 
-    const loadMsg = async () => {
-        if (!msgLoad) {
-            await getReq('chat/with', props.id_chat, props.token).then(res => setperson(res.res))
-            setmsgLoad(true)
-            console.warn('msg loaded')
-            setTimeout(() => {
-                setmsgLoad(false)
-            }, 6000);
-        }
+    const loadChat = async () => {
+        let result = []
+        const pisahIdUser = props.id_chat.split('$')
 
+        const {msg} = await loadMsg(props.id_userMe, props.token)
+
+        if (msg.length > 0) {
+            await msg.map(cht => cht.id_chat == props.id_chat && result.push(cht))
+        } else {
+            const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
+            await msg.map(cht => cht.id_chat == newId_chat && result.push(cht))
+        }
+        setperson(result.reverse())
+    }
+
+    const findLawan = async () => {
+        const pisahIdUser = props.id_chat.split('$')
+        let id_user2 = []
+        let lawan = {}
+        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
+        if (person.length > 0) {
+            for (let i = 0; i < person.length; i++) {
+                if (person[i].id_user == parseInt(id_user2[0])) {
+                    lawan = { nama_user: person[i].nama_user, id_user: parseInt(person[i].id_user) }
+                    break;
+                }
+            }
+        }
+        if (!lawan.nama_user || !lawan.id_user) {
+            const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
+            lawan = { nama_user: res.nama_user, id_user: res.id_user }
+        }
+        setlawanChat(lawan)
     }
 
     return (<>
-        <Nav2 title={props.lawan.nama_user}>
-            {/* <Link href={`/profil/${props.lawan.id_user}`} /> */}
+        <Nav2 title={lawanChat.nama_user}>
+            <Link href={`/profil/${lawanChat.id_user}`} />
         </Nav2>
-        
+
         <Bubble person={person} id_userMe={props.id_userMe} />
-        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={props.lawan.id_user} />
+        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawanChat} />
     </>)
 }
 

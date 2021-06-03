@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { socket } from "../../function/socket";
 import { loadMsg } from "../../function/loadData";
 import { socketMsg } from "../../function/socketAction";
+import { Fragment } from "react";
 
 export const getServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)
@@ -20,20 +21,25 @@ const index = (props) => {
     const [person, setperson] = useState([])
     const dispatch = useDispatch()
 
-    useEffect(() => {
+    useEffect(async() => {
         dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
         getData()
 
-        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-            if (receiver_user == props.id_user) {
-                const newMsg = {id_chat, id_user: sender, receiver_user, message, status_message: 'unread'}
-                await socketMsg(newMsg, 'pesan', props.id_user, props.token)
-                getData()
-                // next = bikin status read di hal pesan/[id_chat] baik di db dan localStorage
-            }
-        })
     }, [])
-
+    
+    socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
+        if (receiver_user == props.id_user) {
+            const newMsg = {
+                id_chat,
+                id_user: parseInt(sender),
+                receiver_user,
+                message,
+                status_message: 'unread'
+            }
+            await socketMsg(newMsg, 'pesan', props.id_user, props.token, '')
+            await getData()
+        }
+    })
 
     const getData = async () => {
         const { msg } = await loadMsg(props.id_user, props.token);
@@ -46,14 +52,15 @@ const index = (props) => {
         })
 
         setperson(newMsg)
+        console.log(newMsg)
     }
 
     return (
         <>
             <ul id="messages" style={{ margin: '3rem 0' }}>
-                {
-                    person.map(per => (
-                        <Link href={`/pesan/${per.id_chat}`} key={per.id_chat}>
+                {person.length > 0 &&
+                    person.map((per, i) => (<Fragment key={i}>
+                        <Link href={`/pesan/${per.id_chat}`}>
                             <li>
                                 {per.nama_user}
                                 <p style={{ fontSize: '10px', margin: '0' }}>{per.message}</p>
@@ -64,7 +71,7 @@ const index = (props) => {
                                 }
                             </li>
                         </Link>
-                    ))
+                    </Fragment>))
                 }
             </ul>
         </>
