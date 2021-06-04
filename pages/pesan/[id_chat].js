@@ -15,7 +15,6 @@ export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
     let id_chat = ctx.query.id_chat && ctx.query.id_chat
 
-
     return {
         props: {
             id_userMe: id_user,
@@ -26,16 +25,17 @@ export const getServerSideProps = async (ctx) => {
 }
 
 const index = (props) => {
-    const [person, setperson] = useState([])
-    const [lawanChat, setlawanChat] = useState({nama_user: '', id_user: 0})
-    const dispatch = useDispatch()
+    const [person, setperson] = useState([]);
+    const [lawanChat, setlawanChat] = useState({nama_user: '', id_user: 0});
+    const dispatch = useDispatch();
+    let idCht = props.id_chat;
 
     useEffect(async () => {
         Router.replace(`/pesan/${props.id_chat}`);
-        dispatch({ type: 'SITE_PAGE', payload: '' })
+        dispatch({ type: 'SITE_PAGE', payload: 'chats' })
         await loadChat()
         window.scrollTo(0, document.body.scrollHeight);
-        findLawan()
+        await findLawan()
         
         // buat fungsi 'pesan dibaca'
         await putReq('chat/message/read', props.id_userMe, props.token, {
@@ -43,8 +43,8 @@ const index = (props) => {
         }).then(res => null)
 
         socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-            if (props.id_chat === id_chat) {
-                let newMsg = {
+            if (idCht === id_chat) {
+                const newMsg = {
                     id_chat,
                     id_user: parseInt(sender),
                     receiver_user: receiver_user,
@@ -64,32 +64,39 @@ const index = (props) => {
         const {msg} = await loadMsg(props.id_userMe, props.token)
 
         if (msg.length > 0) {
-            await msg.map(cht => cht.id_chat == props.id_chat && result.push(cht))
-        } else {
-            const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
-            await msg.map(cht => cht.id_chat == newId_chat && result.push(cht))
+            await msg.map(cht => cht.id_chat == idCht && result.push(cht))
+            if (result.length < 1) {
+                const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
+                Router.push(`/pesan/${props.id_chat}`, `/pesan/${newId_chat}`);
+                idCht = newId_chat;
+                await msg.map(cht => cht.id_chat == idCht && result.push(cht))
+            }
         }
         setperson(result.reverse())
     }
 
     const findLawan = async () => {
-        const pisahIdUser = props.id_chat.split('$')
+        const pisahIdUser = idCht.split('$')
         let id_user2 = []
         let lawan = {}
         await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
-        if (person.length > 0) {
-            for (let i = 0; i < person.length; i++) {
-                if (person[i].id_user == parseInt(id_user2[0])) {
-                    lawan = { nama_user: person[i].nama_user, id_user: parseInt(person[i].id_user) }
-                    break;
-                }
-            }
-        }
+        
+        // if (person.length > 0) {
+        //     for (let i = 0; i < person.length; i++) {
+        //         if (person[i].id_user == parseInt(id_user2[0]) && person[i].nama_user) {
+        //             lawan = {
+        //                 nama_user: person[i].nama_user,
+        //                 id_user: parseInt(person[i].id_user)
+        //             }
+        //             break;
+        //         }
+        //     }
+        // }
         if (!lawan.nama_user || !lawan.id_user) {
-            const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
-            lawan = { nama_user: res.nama_user, id_user: res.id_user }
-        }
-        setlawanChat(lawan)
+                const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
+                lawan = { nama_user: res.nama_user, id_user: res.id_user }
+            }
+            setlawanChat(lawan)
     }
 
     return (<>
@@ -98,7 +105,7 @@ const index = (props) => {
         </Nav2>
 
         <Bubble person={person} id_userMe={props.id_userMe} />
-        <FormPesan person={person} token={props.token} id_chat={props.id_chat} id_userMe={props.id_userMe} lawan={lawanChat} />
+        <FormPesan person={person} token={props.token} id_chat={idCht} id_userMe={props.id_userMe} lawan={lawanChat} />
     </>)
 }
 

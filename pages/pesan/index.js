@@ -22,24 +22,24 @@ const index = (props) => {
     const dispatch = useDispatch()
 
     useEffect(async() => {
+        await getData()
         dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
-        getData()
-
+        
+        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
+            if (receiver_user == props.id_user) {
+                const newMsg = {
+                    id_chat,
+                    id_user: parseInt(sender),
+                    receiver_user,
+                    message,
+                    status_message: 'unread'
+                }
+                await socketMsg(newMsg, 'pesan', props.id_user, props.token, '')
+                await getData()
+            }
+        })
     }, [])
     
-    socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-        if (receiver_user == props.id_user) {
-            const newMsg = {
-                id_chat,
-                id_user: parseInt(sender),
-                receiver_user,
-                message,
-                status_message: 'unread'
-            }
-            await socketMsg(newMsg, 'pesan', props.id_user, props.token, '')
-            await getData()
-        }
-    })
 
     const getData = async () => {
         const { msg } = await loadMsg(props.id_user, props.token);
@@ -52,7 +52,6 @@ const index = (props) => {
         })
 
         setperson(newMsg)
-        console.log(newMsg)
     }
 
     return (

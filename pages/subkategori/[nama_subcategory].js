@@ -34,7 +34,9 @@ const index = props => {
         const subCategoryLocal = localStorage.getItem('nama_subcategory');
         const barangSubCategoryLocal = localStorage.getItem('barang_subcategory');
         dispatch({type: 'SITE_PAGE', payload: 'subkategori'})
-        subCategoryLocal == props.nama_subcategory && barangSubCategoryLocal ? setdata(JSON.parse(barangSubCategoryLocal)) : getBarang()
+        if (subCategoryLocal = props.nama_subcategory) {
+            barangSubCategoryLocal ? setdata(JSON.parse(barangSubCategoryLocal)) : getBarang()
+        } else getBarang()
     }, [sort, cod])
 
     const getBarang = async () => {

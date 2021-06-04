@@ -31,7 +31,6 @@ const FormPesan = (props) => {
             status_message: 'unread'
         })
         socket.emit('chat message', input, props.id_chat, props.lawan.id_user, props.id_userMe);
-        
     }
 
     return (<>
