@@ -22,7 +22,7 @@ const index = (props) => {
     const dispatch = useDispatch()
 
     useEffect(async() => {
-        await getData()
+        getData()
         dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
         
         socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
@@ -35,7 +35,7 @@ const index = (props) => {
                     status_message: 'unread'
                 }
                 await socketMsg(newMsg, 'pesan', props.id_user, props.token, '')
-                await getData()
+                getData()
             }
         })
     }, [])

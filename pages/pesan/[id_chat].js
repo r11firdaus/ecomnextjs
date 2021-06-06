@@ -13,7 +13,12 @@ import { socketMsg } from "../../function/socketAction";
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
-    let id_chat = ctx.query.id_chat && ctx.query.id_chat
+    let id_chat = ctx.query.id_chat ? ctx.query.id_chat : ctx.res.writeHead(302, {location: '/pesan'}).end()
+
+    const pisahIdUser = id_chat.split('$')
+    let chkId = []
+    await pisahIdUser.map(id => id_user == parseInt(id) && chkId.push(id))
+    if (chkId.length < 1) ctx.res.writeHead(302, {location: '/pesan'}).end()
 
     return {
         props: {
@@ -31,16 +36,25 @@ const index = (props) => {
     let idCht = props.id_chat;
 
     useEffect(async () => {
-        Router.replace(`/pesan/${props.id_chat}`);
-        dispatch({ type: 'SITE_PAGE', payload: 'chats' })
+        console.log(Router.pathname)
         await loadChat()
+        dispatch({ type: 'SITE_PAGE', payload: 'chats' })
         window.scrollTo(0, document.body.scrollHeight);
-        await findLawan()
         
         // buat fungsi 'pesan dibaca'
-        await putReq('chat/message/read', props.id_userMe, props.token, {
-            id_chat: props.id_chat
-        }).then(res => null)
+        let unread = [];
+        person.map(psn => {
+            if (psn.id_chat == idCht && psn.receiver == props.id_userMe && psn.status_message === "unread") {
+                unread.push(psn)
+            }
+        })
+
+        if (unread.length > 0) {
+            await putReq('chat/message/read', props.id_userMe, props.token, {
+                id_chat: props.id_chat
+            })
+        }
+
 
         socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
             if (idCht === id_chat) {
@@ -52,7 +66,7 @@ const index = (props) => {
                     status_message: 'read',
                 }
                 await socketMsg(newMsg, 'chats', props.id_userMe, props.token, id_chat)
-                await loadChat()
+                loadChat()
             }
         });
     }, [])
@@ -60,43 +74,45 @@ const index = (props) => {
     const loadChat = async () => {
         let result = []
         const pisahIdUser = props.id_chat.split('$')
+        const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
 
         const {msg} = await loadMsg(props.id_userMe, props.token)
 
         if (msg.length > 0) {
             await msg.map(cht => cht.id_chat == idCht && result.push(cht))
-            if (result.length < 1) {
-                const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
-                Router.push(`/pesan/${props.id_chat}`, `/pesan/${newId_chat}`);
+            if (result.length < 1 && props.id_chat != newId_chat) {
                 idCht = newId_chat;
+                Router.replace(`/pesan/${newId_chat}`);
                 await msg.map(cht => cht.id_chat == idCht && result.push(cht))
             }
         }
         setperson(result.reverse())
+        findLawan(result.reverse())
     }
 
-    const findLawan = async () => {
+    const findLawan = async (data) => {
         const pisahIdUser = idCht.split('$')
         let id_user2 = []
         let lawan = {}
-        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(id))
+        await pisahIdUser.map(id => id != props.id_userMe && id_user2.push(parseInt(id)))
         
-        // if (person.length > 0) {
-        //     for (let i = 0; i < person.length; i++) {
-        //         if (person[i].id_user == parseInt(id_user2[0]) && person[i].nama_user) {
-        //             lawan = {
-        //                 nama_user: person[i].nama_user,
-        //                 id_user: parseInt(person[i].id_user)
-        //             }
-        //             break;
-        //         }
-        //     }
-        // }
-        if (!lawan.nama_user || !lawan.id_user) {
-                const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
-                lawan = { nama_user: res.nama_user, id_user: res.id_user }
+        if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].nama_user && data[i].id_user === id_user2[0]) {
+                    lawan = {
+                        nama_user: data[i].nama_user,
+                        id_user: data[i].id_user
+                    }
+                    break;
+                }
             }
-            setlawanChat(lawan)
+        }
+        
+        if (!lawan.nama_user || !lawan.id_user) {
+            const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
+            lawan = { nama_user: res.nama_user, id_user: res.id_user }
+        }
+        setlawanChat(lawan)
     }
 
     return (<>

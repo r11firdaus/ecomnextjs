@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import EditUser from '../../../components/profil/editUser'
 import cookies from 'next-cookies'
 import { authPage } from "../../../middleware/authrizationPage";

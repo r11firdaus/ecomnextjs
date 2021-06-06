@@ -1,25 +1,14 @@
-import { memo, useEffect, useState } from "react"
-import { getReq } from "../../function/API"
+import { memo } from "react"
+import Cookie from 'js-cookie';
 
 const Saldo = props => {
-    const [data, setdata] = useState({})
-
-    useEffect(async() => {
-        if (props.id_user && props.token) {
-            const myData = localStorage.getItem('mydata');
-            if (myData) setdata(JSON.parse(myData))
-            else {
-                const {res} = await getReq('user', props.id_user, props.token)
-                localStorage.setItem('mydata', JSON.stringify(res))
-                setdata(res)
-            }
-        }
-
-    }, [])
+    const idUser = Cookie.get('id_user');
+    const token = Cookie.get('token');
+    
     return (<>
-        {data.id_user &&
+        {idUser === props.id_userMe && token &&
             <div className="card" style={{ display: 'flex', padding: '0' }}>
-                <button className="button-small button-primary-text" style={{ fontSize: '10px', padding: '0 5px', margin: '3px auto', flex: '2' }}>Saldo Rp. {data.saldo}</button>
+                <button className="button-small button-primary-text" style={{ fontSize: '10px', padding: '0 5px', margin: '3px auto', flex: '2' }}>Saldo Rp. 1000000</button>
                 <button className="button-small button-primary" style={{ fontSize: '10px', padding: '0 5px', margin: '3px auto', flex: '1' }}>% Voucher</button>
             </div>
         }

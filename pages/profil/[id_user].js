@@ -56,8 +56,8 @@ const index = props => {
 
     return (<>
         <div style={{ margin: '4rem 0' }}>
-            <Saldo id_userMe={props.id_userMe} token={props.token} />
             <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />
+            <Saldo id_userMe={props.id_userMe} token={props.token} />
             {
                 props.id_userMe !== null &&
                 <div style={{ paddingLeft: '10px' }}>

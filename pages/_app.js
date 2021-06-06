@@ -9,12 +9,16 @@ import { socketOnConnect } from '../function/socketAction';
 
 const MyApp = ({ Component, pageProps }) => {
 
-  // useEffect(() => {
-  //   const getId = Cookie.get('user_id')
-  //   const token = Cookie.get('token')
+  useEffect(() => {
+    const getId = Cookie.get('user_id')
+    const token = Cookie.get('token')
 
-  //   socket.on('loadDB', () => socketOnConnect(getId, token))
-  // }, [])
+    socket.on('loadDB', () => socketOnConnect(getId, token))
+    
+    setInterval(() => {
+      socketOnConnect(getId, token)
+    }, 120000);
+  }, [])
 
   return (<>
     <Provider store={store}>

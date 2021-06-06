@@ -3,13 +3,13 @@ import { loadMsg, loadNotif } from "./loadData";
 
 export const socketMsg = async (data, page, id_user, token, id_chat) => {
     const localChat = localStorage.getItem('chats');
-    let jsonLocalChat = localChat && await JSON.parse(localChat);
+    let jsonLocalChat = localChat && JSON.parse(localChat);
 
     let dataNamaUser = []
     let dataIdNamaUser = []
 
     if (jsonLocalChat !== null | undefined) {
-        await jsonLocalChat.map(jlc => {
+        jsonLocalChat.map(jlc => {
             if (!dataIdNamaUser.includes(jlc.id_user)) {
                 jlc.nama_user && dataNamaUser.push({ nama: jlc.nama_user, id: jlc.id_user })
                 dataIdNamaUser.push(jlc.id_user)
@@ -42,9 +42,9 @@ export const socketMsg = async (data, page, id_user, token, id_chat) => {
         case 'chats':
             if (jsonLocalChat) {
                 let copyJson = [];
-                await jsonLocalChat.map(jsc => {
-                    if (jsc.id_chat == id_chat) {
-                        if (jsc.receiver_user == id_user) jsc.status_message = 'read'
+                jsonLocalChat.map(jsc => {
+                    if (jsc.id_chat == id_chat && jsc.receiver_user == id_user) {
+                        jsc.status_message = 'read'
                     }
                     copyJson.push(jsc)
                 })
@@ -59,12 +59,14 @@ export const socketMsg = async (data, page, id_user, token, id_chat) => {
     }
 }
 
-export const socketOnConnect = async (id, token) => {
-    localStorage.clear()
+export const socketOnConnect = (id, token) => {
+    setTimeout(async() => {
+        localStorage.clear()
 
-    if (id && token) {
-      await loadMsg(id, token)
-      await loadNotif(token, token)
-    }
-    console.log('data cleared')
+        if (id && token) {
+            await loadMsg(id, token)
+            await loadNotif(id, token)
+        }
+        console.log('data cleared')
+    }, 2000);
 }
