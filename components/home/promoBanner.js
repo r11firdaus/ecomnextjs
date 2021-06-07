@@ -20,7 +20,7 @@ const dummy = [
 
 const PromoBanner = () => {
     return (<>
-        <div className="wrapper" style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px', height: '35%'}}>
+        <div className="wrapper" style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px', height: '35%', minHeight: '130px'}}>
             {
                 dummy.map(data => (
                     <div className="card float-left" style={{minWidth: '80%', margin: '0', padding: '5px', height: '100%'}} key={data.id}>
@@ -31,6 +31,24 @@ const PromoBanner = () => {
                 ))
             }
         </div>
+        <style jsx>
+            {`
+                ::-webkit-scrollbar {
+                    width: 15px;
+                    height: 3px;
+                    background:white;
+                }
+                ::-webkit-scrollbar-track {
+                    border-radius: 5px;
+                }
+                
+                ::-webkit-scrollbar-thumb {
+                    border-radius: 5px;
+                    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+                    background:lightgray;
+                } 
+            `}
+        </style>
     </>)
 }
 

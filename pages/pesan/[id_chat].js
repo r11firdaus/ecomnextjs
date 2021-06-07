@@ -36,7 +36,6 @@ const index = (props) => {
     let idCht = props.id_chat;
 
     useEffect(async () => {
-        console.log(Router.pathname)
         await loadChat()
         dispatch({ type: 'SITE_PAGE', payload: 'chats' })
         window.scrollTo(0, document.body.scrollHeight);
@@ -55,7 +54,6 @@ const index = (props) => {
             })
         }
 
-
         socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
             if (idCht === id_chat) {
                 const newMsg = {
@@ -66,7 +64,7 @@ const index = (props) => {
                     status_message: 'read',
                 }
                 await socketMsg(newMsg, 'chats', props.id_userMe, props.token, id_chat)
-                loadChat()
+                await loadChat()
             }
         });
     }, [])

@@ -5,19 +5,26 @@ import Navigasi from '../components/navigasi/'
 import { useEffect } from 'react';
 import { socket } from '../function/socket';
 import Cookie from 'js-cookie';
-import { socketOnConnect } from '../function/socketAction';
 
 const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
-    const getId = Cookie.get('user_id')
-    const token = Cookie.get('token')
+    const cleared = Cookie.get('cleared')
 
-    socket.on('loadDB', () => socketOnConnect(getId, token))
+    socket.on('loadDB', () => {
+      if (!cleared) {
+        setTimeout(() => {
+          Cookie.set('cleared', true)
+          localStorage.clear()
+          console.log('data cleared')
+        }, 1000);
+        setTimeout(() => Cookie.remove('cleared'), 5000);
+      }
+    })
     
     setInterval(() => {
-      socketOnConnect(getId, token)
-    }, 120000);
+      localStorage.clear()
+    }, 300000);
   }, [])
 
   return (<>

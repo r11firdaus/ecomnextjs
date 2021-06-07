@@ -58,15 +58,3 @@ export const socketMsg = async (data, page, id_user, token, id_chat) => {
             break;
     }
 }
-
-export const socketOnConnect = (id, token) => {
-    setTimeout(async() => {
-        localStorage.clear()
-
-        if (id && token) {
-            await loadMsg(id, token)
-            await loadNotif(id, token)
-        }
-        console.log('data cleared')
-    }, 2000);
-}
