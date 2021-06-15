@@ -27,8 +27,7 @@ const Nav = () => {
 
     return (
         <div className="row" style={style.nav}>
-            <h6 className="col col-sm-5"><Link href="/">Jwallin</Link></h6>
-            <div className="col col-sm-7" style={{marginTop: '-20px'}}>
+            <div className="col" style={{marginTop: '-20px'}}>
                 <div className="row">
                     <SearchBox flex={1} />
                     <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
@@ -37,11 +36,11 @@ const Nav = () => {
                     </div>
                 </div>
             </div>
-            <style jsx>
+            {/* <style jsx>
                 {`
                     .row {backdrop-filter: blur(7px);}
                 `}
-            </style>
+            </style> */}
         </div>
     )
 }
@@ -52,9 +51,9 @@ const style = {
         zIndex: '2',
         position: "fixed",
         width:'100%',
-        // background: 'white',
+        background: 'white',
         margin: "0",
         padding: "7px 0 0 5px",
-        height: "60px"
+        height: "60px",
     }
 }

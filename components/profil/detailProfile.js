@@ -45,7 +45,7 @@ const DetailProfile = props => {
     return (<>
         {
             data.id_user &&
-            <div className="card" style={{ margin: "10px", padding: "20px 0px" }}>
+            <div className="card" style={{ margin: "10px", padding: "8px 0px" }}>
                 <div className="row">
                     <div className="col col-sm-4" style={{height:"100", width: "100"}}>
                         {props.id_userMe !== null &&

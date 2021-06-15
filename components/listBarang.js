@@ -10,13 +10,13 @@ const ListBarang = props => {
             {
                 props.data.map(data => {
                     return (
-                        <div className="card col col-sm-6">
+                        <div className="card col col-xs-6">
                             <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
                                 <>
                                 <div className="align-center">
                                     <Image
-                                        height='100%'
-                                        width='100%'
+                                        height='90%'
+                                        width='90%'
                                         alt={`gambar ${data.nama_barang}`}
                                         // src={data.gambar_barang}
                                         src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"

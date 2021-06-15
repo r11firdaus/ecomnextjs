@@ -8,8 +8,8 @@ const Saldo = props => {
     return (<>
         {idUser === props.id_userMe && token &&
             <div className="card row">
-                <button className="col col-sm-8 button-small button-primary-text" style={style.button}>Saldo Rp. 1000000</button>
-                <button className="col col-sm-4 button-small button-primary" style={style.button}>% Voucher</button>
+                <button className="col col-xs-8 button-small button-primary-text" style={style.button}>Saldo Rp. 1000000</button>
+                <button className="col col-xs-4 button-small button-primary" style={style.button}>% Voucher</button>
             </div>
         }
     </>)
