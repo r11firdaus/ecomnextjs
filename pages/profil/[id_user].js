@@ -5,8 +5,8 @@ import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
 import Link from 'next/link'
 import { getReq } from '../../function/API'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import Image from 'next/image';
 
 export const getServerSideProps = async ctx => {
     let usernameMe = null
@@ -55,7 +55,7 @@ const index = props => {
     }
 
     return (<>
-        <div style={{ margin: '4rem 0' }}>
+        <div style={{ margin: '4rem 0' }}>          
             <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />
             <Saldo id_userMe={props.id_userMe} token={props.token} />
             {

@@ -5,23 +5,19 @@ import FilterHandler from "./pencarian/filterHandler";
 
 const ListBarang = props => {
     return (<>
-        <div className="row" style={{ display: 'flex', padding: '5px' }}>
+        <div className="row">
             <FilterHandler />
             {
                 props.data.map(data => {
                     return (
-                        <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
-                            <div
-                                className="card float-left"
-                                style={{ margin: '0', width: '50%', padding: '2px', cursor: 'pointer'}}
-                            >
-                                <div style={{width: '100px', margin: '0 auto', display: 'relative'}}>
+                        <div className="card col col-sm-6">
+                            <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
+                                <>
+                                <div className="align-center">
                                     <Image
-                                        objectPosition="unset"
-                                        height={'100%'}
-                                        width={'100%'}
+                                        height='100%'
+                                        width='100%'
                                         alt={`gambar ${data.nama_barang}`}
-                                        className="img-thumb"
                                         // src={data.gambar_barang}
                                         src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
                                     />
@@ -41,8 +37,9 @@ const ListBarang = props => {
                                     </div>
                                     <p className="detail-mini">{data.nama_user} | {data.kota_user}</p>
                                 </div>
-                            </div>
-                        </Link>
+                                </>
+                            </Link>
+                        </div>
                     )
                 })
             }

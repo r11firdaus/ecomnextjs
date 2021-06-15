@@ -23,13 +23,13 @@ const FormPesan = (props) => {
     }
 
     const postMsg = async (input) => {
-        // await postReq('chat/message/create', props.token, {
-        //     id_chat: props.id_chat,
-        //     id_user: props.id_userMe,
-        //     receiver_user: props.lawan.id_user,
-        //     message: input,
-        //     status_message: 'unread'
-        // })
+        await postReq('chat/message/create', props.token, {
+            id_chat: props.id_chat,
+            id_user: props.id_userMe,
+            receiver_user: props.lawan.id_user,
+            message: input,
+            status_message: 'unread'
+        })
         socket.emit('chat message', input, props.id_chat, props.lawan.id_user, props.id_userMe);
     }
 

@@ -9,23 +9,23 @@ import Cookie from 'js-cookie';
 const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
+    // clear()
+    // socket.on('loadDB', () => clear())
+
+    // setInterval(() => {
+    //   localStorage.clear()
+    // }, 300000);
+  }, [])
+
+  const clear = () => {
     const cleared = Cookie.get('cleared')
 
-    socket.on('loadDB', () => {
-      if (!cleared) {
-        setTimeout(() => {
-          Cookie.set('cleared', true)
-          localStorage.clear()
-          console.log('data cleared')
-        }, 1000);
-        setTimeout(() => Cookie.remove('cleared'), 5000);
-      }
-    })
-    
-    setInterval(() => {
+    if (!cleared) {
       localStorage.clear()
-    }, 300000);
-  }, [])
+      Cookie.set('cleared', true)
+      setTimeout(() => Cookie.remove('cleared'), 5000);
+    }
+  }
 
   return (<>
     <Provider store={store}>

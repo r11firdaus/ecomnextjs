@@ -7,12 +7,20 @@ const Saldo = props => {
     
     return (<>
         {idUser === props.id_userMe && token &&
-            <div className="card" style={{ display: 'flex', padding: '0' }}>
-                <button className="button-small button-primary-text" style={{ fontSize: '10px', padding: '0 5px', margin: '3px auto', flex: '2' }}>Saldo Rp. 1000000</button>
-                <button className="button-small button-primary" style={{ fontSize: '10px', padding: '0 5px', margin: '3px auto', flex: '1' }}>% Voucher</button>
+            <div className="card row">
+                <button className="col col-sm-8 button-small button-primary-text" style={style.button}>Saldo Rp. 1000000</button>
+                <button className="col col-sm-4 button-small button-primary" style={style.button}>% Voucher</button>
             </div>
         }
     </>)
 }
 
 export default memo(Saldo)
+
+const style = {
+    button: {
+        fontSize: '10px',
+        padding: '0 5px',
+        margin: "0"
+    }
+}

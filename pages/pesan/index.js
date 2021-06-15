@@ -1,11 +1,10 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, Fragment } from "react";
 import Link from 'next/link';
-import { authPage } from '../../middleware/authrizationPage'
+import { authPage } from '../../middleware/authrizationPage';
 import { useDispatch } from "react-redux";
 import { socket } from "../../function/socket";
 import { loadMsg } from "../../function/loadData";
-import { socketMsg } from "../../function/socketAction";
-import { Fragment } from "react";
+import { getReq } from "../../function/API";
 
 export const getServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)
@@ -21,36 +20,41 @@ const index = (props) => {
     const [person, setperson] = useState([])
     const dispatch = useDispatch()
 
-    useEffect(async() => {
+    useEffect(() => {
         getData()
         dispatch({ type: 'SITE_PAGE', payload: 'pesan' })
-        
-        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-            if (receiver_user == props.id_user) {
-                const newMsg = {
-                    id_chat,
-                    id_user: parseInt(sender),
-                    receiver_user,
-                    message,
-                    status_message: 'unread'
-                }
-                await socketMsg(newMsg, 'pesan', props.id_user, props.token, '')
-                getData()
-            }
-        })
+        socket.on('chat message', async (msg, idCht, receiver) => receiver == props.id_user && getData())
     }, [])
-    
 
     const getData = async () => {
         const { msg } = await loadMsg(props.id_user, props.token);
 
-        let arr = []
+        let id = []
         let newMsg = []
-        await msg.map(pesan => {
-            !arr.includes(pesan.id_chat) && newMsg.push(pesan)
-            arr.push(pesan.id_chat)
-        })
+        msg.map(async pesan => {
+            if (!pesan.nama_user) {
+                const pisahIdUser = pesan.id_chat.split('$')
+                let id_user2 = []
+                let lawan;
+                pisahIdUser.map(id => id != props.id_user && id_user2.push(parseInt(id)))
 
+                if (msg.length > 0) {
+                    for (let i = 0; i < msg.length; i++) {
+                        if (msg[i].nama_user && msg[i].id_user === id_user2[0]) {
+                            lawan = msg[i].nama_user
+                            break;
+                        }
+                    }
+                    if (!lawan) {
+                        const { res } = await getReq('user', parseInt(id_user2[0]), props.token)
+                        lawan = res.nama_user
+                    }
+                }
+                pesan.nama_user = lawan;
+            }
+            !id.includes(pesan.id_chat) && newMsg.push(pesan)
+            id.push(pesan.id_chat)
+        })
         setperson(newMsg)
     }
 

@@ -1,15 +1,14 @@
 import { memo, useEffect, useState } from "react";
-import { getReq, putReq } from '../../function/API';
-import { authPage } from '../../middleware/authrizationPage'
+import { useDispatch } from "react-redux";
 import Link from 'next/link';
 import Router from "next/router";
+import { getReq, putReq } from '../../function/API';
+import { socket } from "../../function/socket";
+import {loadMsg} from '../../function/loadData';
+import { authPage } from '../../middleware/authrizationPage';
 import FormPesan from "../../components/pesan/formPesan";
 import Bubble from "../../components/pesan/bubble";
 import Nav2 from "../../components/navigasi/nav2";
-import { socket } from "../../function/socket";
-import { useDispatch } from "react-redux";
-import {loadMsg} from '../../function/loadData';
-import { socketMsg } from "../../function/socketAction";
 
 export const getServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
@@ -36,7 +35,7 @@ const index = (props) => {
     let idCht = props.id_chat;
 
     useEffect(async () => {
-        await loadChat()
+        loadChat()
         dispatch({ type: 'SITE_PAGE', payload: 'chats' })
         window.scrollTo(0, document.body.scrollHeight);
         
@@ -49,24 +48,21 @@ const index = (props) => {
         })
 
         if (unread.length > 0) {
-            await putReq('chat/message/read', props.id_userMe, props.token, {
-                id_chat: props.id_chat
-            })
-        }
+            let newLocalChat = [];
+            const localChat = localStorage.getItem('chats');
+            let jsonLocalChat = localChat && JSON.parse(localChat);
 
-        socket.on('chat message', async (message, id_chat, receiver_user, sender) => {
-            if (idCht === id_chat) {
-                const newMsg = {
-                    id_chat,
-                    id_user: parseInt(sender),
-                    receiver_user: receiver_user,
-                    message,
-                    status_message: 'read',
+            await putReq('chat/message/read', props.id_userMe, props.token, {id_chat: idCht})
+            
+            jsonLocalChat.map(jsc => {
+                if (jsc.id_chat == idCht && jsc.receiver_user == props.id_userMe) {
+                    jsc.status_message = 'read';
                 }
-                await socketMsg(newMsg, 'chats', props.id_userMe, props.token, id_chat)
-                await loadChat()
-            }
-        });
+                newLocalChat.push(jsc)
+            })
+            localStorage.setItem('chats', JSON.stringify(newLocalChat));
+        }    
+        socket.on('chat message', async (message, id_chat) => idCht === id_chat && loadChat());
     }, [])
 
     const loadChat = async () => {
@@ -77,11 +73,11 @@ const index = (props) => {
         const {msg} = await loadMsg(props.id_userMe, props.token)
 
         if (msg.length > 0) {
-            await msg.map(cht => cht.id_chat == idCht && result.push(cht))
+            msg.map(cht => cht.id_chat == idCht && result.push(cht))
             if (result.length < 1 && props.id_chat != newId_chat) {
                 idCht = newId_chat;
                 Router.replace(`/pesan/${newId_chat}`);
-                await msg.map(cht => cht.id_chat == idCht && result.push(cht))
+                msg.map(cht => cht.id_chat == idCht && result.push(cht))
             }
         }
         setperson(result.reverse())

@@ -11,7 +11,7 @@ const index = (props) => {
 
     return(
         <form style={{ flex: props.flex }} onSubmit={e => searchHandler(e)}>
-            <input type="text" id="search" placeholder="Search in Jwallin" />
+            <input type="search" id="search" placeholder="Search in Jwallin" style={{padding: "8px"}} />
         </form>
     )
 }

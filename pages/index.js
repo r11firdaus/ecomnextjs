@@ -35,7 +35,7 @@ const Home = (props) => {
   return (<>
     <div style={{margin: '4.2rem 0'}}>
       <PromoBanner />
-      <Saldo id_user={props.id_userMe} token={props.token} />
+      <Saldo id_userMe={props.id_userMe} token={props.token} />
       <TilesMenu />
     </div>
   </>)

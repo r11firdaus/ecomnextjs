@@ -26,16 +26,35 @@ const Nav = () => {
     }, [])
 
     return (
-        <div style={{ padding: '10px', width: '100%', position: 'fixed', background: 'white', display: 'flex', zIndex: '2' }}>
-            <Link href="/"><h6 className="float-left" style={{ flex: '1', margin: '5px 0', cursor: 'pointer' }}>Jwallin</h6></Link>
-            <div className="float-right" style={{ flex: '2', display: 'flex' }}>
-                <SearchBox flex={1} />
-                <div style={{ marginLeft: '10px', marginTop: '10px', display: 'flex' }}>
-                    <FavNav />&nbsp;&nbsp;
-                    <CartNav />
+        <div className="row" style={style.nav}>
+            <h6 className="col col-sm-5"><Link href="/">Jwallin</Link></h6>
+            <div className="col col-sm-7" style={{marginTop: '-20px'}}>
+                <div className="row">
+                    <SearchBox flex={1} />
+                    <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
+                        <FavNav />&nbsp;&nbsp;
+                        <CartNav />
+                    </div>
                 </div>
             </div>
+            <style jsx>
+                {`
+                    .row {backdrop-filter: blur(7px);}
+                `}
+            </style>
         </div>
     )
 }
 export default memo(Nav)
+
+const style = {
+    nav: {
+        zIndex: '2',
+        position: "fixed",
+        width:'100%',
+        // background: 'white',
+        margin: "0",
+        padding: "7px 0 0 5px",
+        height: "60px"
+    }
+}
