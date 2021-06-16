@@ -1,4 +1,4 @@
-import { List } from "react-bootstrap-icons"
+import { Building, GraphUp, List, Phone, ThreeDots } from "react-bootstrap-icons"
 import Link from 'next/link'
 import { memo } from "react"
 
@@ -11,27 +11,27 @@ const dummy = [
     },
     {
         id: 2,
-        icon: <List size={25} />,
-        name: 'Dummy',
-        url: '/pesan'
+        icon: <Phone size={25} />,
+        name: 'Topup',
+        url: '/'
     },
     {
         id: 3,
-        icon: <List size={25} />,
-        name: 'Dummy',
-        url: '/kategori'
+        icon: <GraphUp size={25} />,
+        name: 'Invest',
+        url: '/'
     },
     {
         id: 4,
-        icon: <List size={25} />,
-        name: 'Dummy',
-        url: '/kategori'
+        icon: <Building size={25} />,
+        name: 'Travel',
+        url: '/'
     },
     {
         id: 5,
-        icon: <List size={25} />,
-        name: 'Dummy',
-        url: '/kategori'
+        icon: <ThreeDots size={25} />,
+        name: 'Other',
+        url: '/'
     },
 ]
 

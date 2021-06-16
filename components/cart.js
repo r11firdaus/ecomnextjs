@@ -3,21 +3,21 @@ import Modal from './modal'
 import { memo, useEffect, useState } from "react"
 import { getReq } from '../function/API'
 import Cookie from 'js-cookie'
+import { Heart, Trash } from "react-bootstrap-icons"
 
 const Cart = (props) => {
     const [cart, setcart] = useState([]);
     const [all, setall] = useState(false);
-    const [modal, setmodal] = useState({show: false, message: '', cancelOnly: false});
+    const [modal, setmodal] = useState({ show: false, message: '', cancelOnly: false });
     let arr = [];
-
 
     useEffect(() => {
         const id_user = Cookie.get('id_user');
-        !props.id_userMe || props.id_userMe === null && Router.push('/login');
+        props.id_userMe === null | undefined && Router.push('/login');
         const cartData = localStorage.getItem('cart_cart');
         cartData && id_user == props.id_userMe ? setcart(JSON.parse(cartData)) : getData();
     }, [])
-    
+
     const getData = async () => {
         const { res } = await getReq('cart', props.id_userMe, props.token);
         let newRes = [];
@@ -93,6 +93,7 @@ const Cart = (props) => {
         }
 
         setcart(newItems); // set new state
+        localStorage.setItem('cart_data', JSON.stringify(newItems))
     }
 
     const subtotalPrice = () => {
@@ -109,7 +110,7 @@ const Cart = (props) => {
         for (let i = 0; i < check.length; i++) {
             fill.push(check[i].checked);
         }
-        fill.includes(true) ? alert('lanjut !') : setmodal({show: true, message: `Please choose 1 to continue.`, cancelOnly: true});
+        fill.includes(true) ? alert('lanjut !') : setmodal({ show: true, message: `Please choose 1 to continue.`, cancelOnly: true });
     }
 
     return (<>
@@ -121,7 +122,7 @@ const Cart = (props) => {
                             arr.includes(item.id_seller) ? null : arr.push(item.id_seller) &&
                                 <>
                                     <div style={{ display: 'flex' }}>
-                                        <input type="checkbox" id={item.id_seller} name="sellerChk" style={{ marginTop: '3px' }} onClick={(e)=>sellerClick(e, item.id_seller)} />
+                                        <input type="checkbox" id={item.id_seller} name="sellerChk" style={{ marginTop: '3px' }} onClick={(e) => sellerClick(e, item.id_seller)} />
                                         <div style={{ display: "flex" }}>
                                             <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={() => Router.push(`/profil/${item.id_seller}`)}>{item.nama_user}&nbsp;</p>
                                             <strong style={{ fontSize: '13px' }}>|&nbsp;{item.kota_user}</strong><br />
@@ -135,18 +136,17 @@ const Cart = (props) => {
                                 type="checkbox"
                                 onClick={() => childClick(i, item.checked)}
                                 style={{ marginTop: '13px' }}
-                                checked={item.checked == "0" ? false:true}
+                                checked={item.checked == "0" ? false : true}
                             />
                             <div>
-                                <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={()=>Router.push(`/barang/${item.id_barang}`)}>{item.nama_barang}</p>
+                                <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={() => Router.push(`/barang/${item.id_barang}`)}>{item.nama_barang}</p>
                                 <strong style={{ fontSize: '13px' }}>Rp. {item.harga_barang}</strong><br />
                             </div>
                         </div>
-                        {/* <input type="text" placeholder="add notes..." style={{ fontSize: '12px', border: '1px 0', padding: '3px 5px', width: '70%' }} /> */}
                         <div className="card-action" style={{ marginTop: '10px' }}>
-                            <div className="float-left">
-                                <button className="button-primary-text button-small" style={{ padding: '0', fontSize: '8px' }}>+ Favourite</button>
-                                <button className="button-primary-text button-small" style={{ padding: '0', fontSize: '8px' }}>Hapus</button>
+                            <div className="float-left" style={{marginTop: '7px'}}>
+                                <Heart size={17} color="#4b3832" />&nbsp;&nbsp;
+                                <Trash size={17} color="#4b3832" />
                             </div>
                             <div className="float-right" style={{ display: 'flex' }}>
                                 <button onClick={() => quantityHandler('less', i)} className="button-primary-outline button-small">-</button>

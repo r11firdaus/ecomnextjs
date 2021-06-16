@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 
 const index = () => {
     const {page, id_user} = useSelector(state => state)
-    // const
+    
     return(<>
         {
             id_user !== null ?

@@ -1,11 +1,12 @@
 import cookies from 'next-cookies'
 import { getReq } from '../../function/API';
-import Nav from '../../components/navigasi/nav'
 import OptionBtnBarang from '../../components/optionBtnBarang'
 import Head from 'next/head'
 import { ChatDots } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import Image from 'next/image'
+import { useEffect, memo } from 'react';
+import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ctx => {
     const {id_barang} = ctx.query;
@@ -34,20 +35,23 @@ export const getServerSideProps = async ctx => {
 }
 
 const index = (props) => {
+    const dispatch = useDispatch();
+    useEffect(() => dispatch({type: 'SITE_PAGE', payload: 'barang'}), []);
+
     return (<>
         <Head>
             <title>{`${props.data.nama_barang} | Jwallin`}</title>
          </Head>
-        <Nav />
 
         <div style={{margin: '4rem 0'}}>
-            <div style={{minHeight: '300px', width: '100%', maxHeight: '500px', maxWidth: '700px', border: '1px solid grey', margin: 'auto'}}>
+            <div className="align-center" style={style.image}>
                 <Image
-                    height={'100%'}
-                    width={'100%'}
+                    height={'275'}
+                    width={'300'}
+                    // layout="responsive"
                     alt={`gambar ${props.data.nama_barang}`}
                     className="img-thumb"
-                    src={props.data.gambar_barang ? props.data.gambar_barang : '/../../img.png'}
+                    src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
                 />
             </div>
             <div style={{margin: '10px'}}>
@@ -84,4 +88,13 @@ const index = (props) => {
     </>)
 }
 
-export default index
+export default memo(index)
+
+const style = {
+    image: {
+        border: '1px solid',
+        maxHeight: '500px',
+        maxWidth: '700px',
+        margin: '0 auto'
+    }
+}

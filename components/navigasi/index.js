@@ -6,7 +6,6 @@ import BottomNav from "./bottomNav";
 import { socket } from "../../function/socket";
 import { loadMsg } from "../../function/loadData";
 import Cookie from "js-cookie"
-import { getReq } from "../../function/API";
 import Router from 'next/router'
 
 const index = () => {
@@ -38,16 +37,18 @@ const index = () => {
         });
     }, [])
 
-
-    if (page === 'kategori') return <Nav2 />;
-    if (page === 'cart') return <Nav2 />;
-    if (page === 'pesan') return <><Nav2 /><BottomNav /></>;
-    if (page === 'notifikasi') return <><Nav2 /><BottomNav /></>;
-    if (page === 'subkategori') return <Nav />;
-    if (page === 'pencarian') return <Nav />;
-    if (page === 'home') return <><Nav /><BottomNav /></>;
-    if (page === 'profil') return <><Nav /><BottomNav /></>;
-    else return null;
+    switch (page) {
+        case 'kategori': return <Nav2 />
+        case 'cart': return <Nav2 />
+        case 'pesan': return <><Nav2 /><BottomNav /></>
+        case 'notifikasi': return <><Nav2 /><BottomNav /></>
+        case 'subkategori': return <Nav />
+        case 'barang': return <Nav />
+        case 'pencarian': return <Nav />
+        case 'home': return <><Nav /><BottomNav /></>
+        case 'profil': return <><Nav /><BottomNav /></> 
+        default: return null
+    }
 }
 
 export default memo(index)

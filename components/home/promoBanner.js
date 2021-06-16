@@ -4,29 +4,29 @@ const dummy = [
     {
         id: 1,
         judul: 'Title 1',
-        konten: 'content 1'
+        konten: 'Example Promo Banner'
     },
     {
         id: 2,
         judul: 'Title 2',
-        konten: 'content 2'
+        konten: 'Example Promo Banner'
     },
     {
         id: 3,
         judul: 'Title 3',
-        konten: 'content 3'
+        konten: 'Example Promo Banner'
     }
 ]
 
 const PromoBanner = () => {
     return (<>
-        <div style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px', height: '35%', minHeight: '130px'}}>
+        <div style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px'}}>
             {
                 dummy.map(data => (
-                    <div className="card float-left" style={{minWidth: '80%', padding: '5px', height: '100%'}} key={data.id}>
+                    <div className="card float-left" style={{minWidth: '80%', padding: '5px', minHeight: '150px'}} key={data.id}>
                         <strong>{data.judul}</strong>
-                        <p>Sampai 15 September 2069</p>
                         <p>{data.konten}</p>
+                        <small>Expired on September 15, 2069</small>
                     </div>
                 ))
             }

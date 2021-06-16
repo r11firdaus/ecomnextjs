@@ -4,6 +4,7 @@ import Router from "next/router"
 import { getReq } from "../../function/API"
 import { useDispatch } from "react-redux"
 import Link from "next/link"
+import { PencilSquare } from "react-bootstrap-icons"
 
 const DetailProfile = props => {
     const [data, setdata] = useState({})
@@ -59,7 +60,10 @@ const DetailProfile = props => {
                         }
                     </div>
                     <div className="col col-sm-6">
-                        <p><strong>{data.nama_user}</strong></p>
+                        <div className="row">
+                            <p className="col-xs-10"><strong>{data.nama_user}</strong></p>
+                            <PencilSquare className="col-xs-2" size={20} color="#be9b7b" onClick={e => editHandler(e, data.id_userMe)}/>
+                        </div>
                         <p>Email: {data.email_user}</p>
                         <p>Address: {`${data.alamat_user}, ${data.kota_user}, ${data.provinsi_user}`}</p>
                         <p>Phone: {data.telepon_user}</p>
@@ -68,10 +72,6 @@ const DetailProfile = props => {
                 {
                     data.id_user == props.id_userMe &&
                     <div className="card-action float-right">
-                        <button
-                            className="button-small button-primary"
-                            onClick={e => editHandler(e, data.id_userMe)}
-                        >Edit</button>
                         <button
                             className="button-small button-primary-text"
                             onClick={logoutHandler}
