@@ -13,7 +13,7 @@ const dummy = [
         id: 2,
         icon: <List size={25} />,
         name: 'Dummy',
-        url: '/kategori'
+        url: '/pesan'
     },
     {
         id: 3,
@@ -40,14 +40,12 @@ const TilesMenu = () => {
         <div className="row">
             {
                 dummy.map(data => (
-                    <div className="col col-xs-3" style={style.tile} key={data.id}>
-                        <Link href={data.url}>
-                            <>
-                                <p className="align-center">{data.icon}</p>
-                                <p className="align-center" style={{marginTop: "-10px", fontSize: "12px"}}>{data.name}</p>
-                            </>
-                        </Link>
-                    </div>
+                    <Link href={data.url} key={data.id}>
+                        <div className="col col-xs-3" style={style.tile}>
+                            <p className="align-center">{data.icon}</p>
+                            <p className="align-center" style={{ marginTop: "-10px", fontSize: "12px" }}>{data.name}</p>
+                        </div>
+                    </Link>
                 ))
             }
         </div>

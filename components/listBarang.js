@@ -10,36 +10,36 @@ const ListBarang = props => {
             {
                 props.data.map(data => {
                     return (
-                        <div className="card col col-xs-6">
-                            <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
+                        <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
+                            <div className="card col col-xs-6">
                                 <>
-                                <div className="align-center">
-                                    <Image
-                                        height='90%'
-                                        width='90%'
-                                        alt={`gambar ${data.nama_barang}`}
-                                        // src={data.gambar_barang}
-                                        src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
-                                    />
-                                </div>
-
-                                <div style={{ margin: '10px' }}>
-                                    <p style={{ margin: '0' }}>{data.nama_barang}</p>
-                                    <strong>{data.harga_barang}</strong>
-                                    <div style={{ display: 'flex' }}>
-                                        {data.terjual_barang > 0 ?
-                                            <>
-                                                <p className="detail-mini">Sold: {data.terjual_barang} | </p>
-                                                <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
-                                            </> :
-                                            <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
-                                        }
+                                    <div className="align-center">
+                                        <Image
+                                            height='90%'
+                                            width='90%'
+                                            alt={`gambar ${data.nama_barang}`}
+                                            // src={data.gambar_barang}
+                                            src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
+                                        />
                                     </div>
-                                    <p className="detail-mini">{data.nama_user} | {data.kota_user}</p>
-                                </div>
+
+                                    <div style={{ margin: '10px' }}>
+                                        <p style={{ margin: '0' }}>{data.nama_barang}</p>
+                                        <strong>{data.harga_barang}</strong>
+                                        <div style={{ display: 'flex' }}>
+                                            {data.terjual_barang > 0 ?
+                                                <>
+                                                    <p className="detail-mini">Sold: {data.terjual_barang} | </p>
+                                                    <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
+                                                </> :
+                                                <p className="detail-mini">Ratings: {data.rating_barang}/5</p>
+                                            }
+                                        </div>
+                                        <p className="detail-mini">{data.nama_user} | {data.kota_user}</p>
+                                    </div>
                                 </>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     )
                 })
             }
