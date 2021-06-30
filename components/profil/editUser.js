@@ -86,10 +86,9 @@ const EditUser = props => {
         Router.back()
     }
 
-    const showComponent = () => {
-        if (loaded) {
-            return (
-            <form className="card" onSubmit={e => submitHandler(e)}>
+    return (<>
+            {loaded ?
+                <form className="card" onSubmit={e => submitHandler(e)}>
                 <p>Name</p>
                 <input type="text" defaultValue={field.nama_user} id="nama_user" placeholder="Name" required /><br />
                 <p>Phone (Format: +621212121212)</p>
@@ -134,12 +133,8 @@ const EditUser = props => {
                     }
                 </select><br />
                 <button type='submit' className="show-modal button-primary">Proceed</button>
-            </form>
-        )} else return <h5 style={{textAlign: 'center'}}>Loading...</h5>
-    }
-
-return (<>
-        {showComponent()}
+            </form> : <div className="dots-4" />
+            }
     </>)
 
 }

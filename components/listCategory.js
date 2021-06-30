@@ -17,12 +17,12 @@ const ListCategory = props => {
     return (<>
         <ul className="row" style={{ display: 'flex', padding: '5px' }}>
             {
-                data.map(data => (
+                data.map((data, i) => (
                     data.id_subcategory ?
-                        <div className="col card" key={data.id_subcategory} style={{ margin: '2px' }}>
+                        <div className="col card" key={i} style={{ margin: '2px' }}>
                             <Link href={`/subkategori/${data.nama_subcategory}`}>{data.nama_subcategory}</Link>
                         </div> :
-                        <div className="col card" key={data.id_category} style={{ margin: '2px' }}>
+                        <div className="col card" key={i} style={{ margin: '2px' }}>
                             <Link href={`/kategori/${data.nama_category}`}>{data.nama_category}</Link>
                         </div>
                 ))

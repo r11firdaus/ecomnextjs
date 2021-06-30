@@ -49,11 +49,11 @@ export default memo(Nav)
 const style = {
     nav: {
         zIndex: '2',
-        position: "fixed",
+        position: 'fixed',
         width:'100%',
         background: 'white',
-        margin: "0",
-        padding: "7px 0 0 5px",
-        height: "60px",
+        margin: '0',
+        padding: '7px 0 0 5px',
+        height: '60px',
     }
 }

@@ -11,7 +11,7 @@ const ListBarang = props => {
                 props.data.map(data => {
                     return (
                         <Link href={`/barang/${data.id_barang}`} key={data.id_barang}>
-                            <div className="card col col-xs-6">
+                            <div className="card col col-xs-6 col-sm-6 col-md-4 col-lg-3">
                                 <>
                                     <div className="align-center">
                                         <Image

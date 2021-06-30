@@ -1,4 +1,5 @@
 import '../styles/mustard-ui.min.css';
+import '../styles/globals.css'
 import { Provider } from 'react-redux';
 import store from '../function/context/store';
 import Navigasi from '../components/navigasi/'

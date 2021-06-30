@@ -41,9 +41,11 @@ const index = (props) => {
     return (<>
         <Head>
             <title>{`${props.data.nama_barang} | Jwallin`}</title>
+            <meta name="Keywords" content={`${props.data.nama_barang}, ${props.data.deskripsi_barang}`} />
+            <meta name="description" content="Cari barang termurah dan terpercaya hanya di Jwallin" />
          </Head>
 
-        <div style={{margin: '4rem 0'}}>
+        <div style={{margin: '4.3rem 0 4rem 0'}}>
             <div className="align-center" style={style.image}>
                 <Image
                     height={'275'}
@@ -65,7 +67,7 @@ const index = (props) => {
             </div>
             <div style={{margin: '10px'}}>
                 <strong>Deskripsi</strong>
-                <p>{props.deskripsi_barang}</p>
+                <p>{props.data.deskripsi_barang}</p>
             </div>
         </div>
         

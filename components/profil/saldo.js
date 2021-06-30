@@ -8,8 +8,8 @@ const Saldo = props => {
     return (<>
         {idUser === props.id_userMe && token &&
             <div className="card row">
-                <button className="col col-xs-8 button-small button-primary-text" style={style.button}>Saldo Rp. 1000000</button>
-                <button className="col col-xs-4 button-small button-primary" style={style.button}>% Voucher</button>
+                <button className="col col-xs-8 button-small button-primary-text" style={style.btn}>Saldo Rp. 1000000</button>
+                <button className="col col-xs-4 button-small button-primary" style={style.btn}>% Voucher</button>
             </div>
         }
     </>)
@@ -18,7 +18,7 @@ const Saldo = props => {
 export default memo(Saldo)
 
 const style = {
-    button: {
+    btn: {
         fontSize: '10px',
         padding: '0 5px',
         margin: "0"

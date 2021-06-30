@@ -40,6 +40,7 @@ const index = () => {
     switch (page) {
         case 'kategori': return <Nav2 />
         case 'cart': return <Nav2 />
+        case 'Edit': return <Nav2 />
         case 'pesan': return <><Nav2 /><BottomNav /></>
         case 'notifikasi': return <><Nav2 /><BottomNav /></>
         case 'subkategori': return <Nav />

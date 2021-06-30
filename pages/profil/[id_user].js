@@ -1,12 +1,11 @@
 import { memo, useEffect, useState } from 'react'
 import DetailProfile from '../../components/profil/detailProfile'
-import ListBarang from '../../components/listBarang'
 import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
 import Link from 'next/link'
 import { getReq } from '../../function/API'
 import { useDispatch, useSelector } from 'react-redux'
-import Image from 'next/image';
+import dynamic from 'next/dynamic'
 
 export const getServerSideProps = async ctx => {
     let usernameMe = null
@@ -35,16 +34,18 @@ export const getServerSideProps = async ctx => {
 }
 
 const index = props => {
-    console.log('hal profil dimuat')
     const [data, setdata] = useState([])
+    const [loaded, setloaded] = useState(false)
     // const { sort, cod } = useSelector(state => state)
     const dispatch = useDispatch();
+    const ListBarang = dynamic(() => import('../../components/listBarang'))
 
     useEffect(async () => {
         dispatch({ type: 'SITE_PAGE', payload: 'profil' })
         const barangUserLocal = localStorage.getItem('barang_user_id');
         const barangLocal = localStorage.getItem('barang_user');
         barangUserLocal == props.id_userReq && barangLocal ? setdata(JSON.parse(barangLocal)) : getBarang()
+        setloaded(true)
     }, [])
 
     const getBarang = async () => {
@@ -53,18 +54,22 @@ const index = props => {
         localStorage.setItem('barang_user_id', props.id_userReq)
         setdata(res)
     }
-
+    
     return (<>
-        <div style={{ margin: '4rem 0' }}>          
-            <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />
-            <Saldo id_userMe={props.id_userMe} token={props.token} />
-            {
-                props.id_userMe !== null &&
-                <div style={{ paddingLeft: '10px' }}>
-                    <Link href="/barang/create">+ Tambah Barang</Link>
-                </div>
+        <div style={{ margin: '4.2rem 0' }}>
+            {loaded ?
+                <>
+                    <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />
+                    <Saldo id_userMe={props.id_userMe} token={props.token} />
+                    {
+                        props.id_userMe !== null &&
+                        <div style={{ paddingLeft: '10px' }}>
+                            <Link href="/barang/create">+ Tambah Barang</Link>
+                        </div>
+                    }
+                    <ListBarang data={data} />
+                </> : <div className="dots-4" />
             }
-            <ListBarang data={data} />
         </div>
     </>)
 }

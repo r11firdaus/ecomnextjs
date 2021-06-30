@@ -19,25 +19,29 @@ const index = props => {
     const [data, setdata] = useState([])
     const {sort, cod} = useSelector(state => state)
     const dispatch = useDispatch()
+    const [loaded, setloaded] = useState(false)
 
     useEffect(async () => {
         dispatch({type: 'SITE_PAGE', payload: 'pencarian'})
-        const {res} = await getReq('search', props.keyword, '', sort)
+        const {res} = await getReq('search', props.keyword.trim(), '', sort)
         setdata(res)
+        setloaded(true)
     }, [props.keyword, sort, cod])
 
     return(<>
         <Head>
-            <title>Result for '{props.judul}' | Jwallin</title>
+            <title>Result for '{props.judul.trim()}' | Jwallin</title>
         </Head>
         <div style ={{margin: '4rem 0'}}>
-            <strong style={{marginLeft: '10px'}}>Result for '{props.judul}'</strong>
-            <ListBarang data={data} />
+            {loaded ?
+                <>
+                    <strong style={{marginLeft: '10px'}}>Result for '{props.judul.trim()}'</strong>
+                    <ListBarang data={data} />
+                </> :
+                <div className="dots-4" />
+            }
         </div>
     </>)
 }
 
 export default memo(index)
-
-// next
-// perbaiki listBarang di page subcategory, api subcategory, dan api barang by id_user

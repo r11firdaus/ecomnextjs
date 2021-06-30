@@ -62,7 +62,9 @@ const DetailProfile = props => {
                     <div className="col col-sm-6">
                         <div className="row">
                             <p className="col-xs-10"><strong>{data.nama_user}</strong></p>
-                            <PencilSquare className="col-xs-2" size={20} color="#be9b7b" onClick={e => editHandler(e, data.id_userMe)}/>
+                            {data.id_user == props.id_userMe &&
+                                <PencilSquare className="col-xs-2" size={20} color="#be9b7b" onClick={e => editHandler(e, data.id_userMe)}/>
+                            }
                         </div>
                         <p>Email: {data.email_user}</p>
                         <p>Address: {`${data.alamat_user}, ${data.kota_user}, ${data.provinsi_user}`}</p>

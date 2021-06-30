@@ -1,7 +1,8 @@
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import EditUser from '../../../components/profil/editUser'
 import cookies from 'next-cookies'
 import { authPage } from "../../../middleware/authrizationPage";
+import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ctx => {
     const {token} = await authPage(ctx)
@@ -18,6 +19,12 @@ export const getServerSideProps = async ctx => {
 }
 
 const index = (props) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({type: "SITE_PAGE", payload: 'Edit'})
+    }, [])
+
     return (
         <div style={{margin: '4rem 10px'}}>
             <EditUser id_userMe={props.id_userMe} token={props.token} />

@@ -15,15 +15,25 @@ const dummy = [
         id: 3,
         judul: 'Title 3',
         konten: 'Example Promo Banner'
+    },
+    {
+        id: 4,
+        judul: 'Title 4',
+        konten: 'Example Promo Banner'
+    },
+    {
+        id: 5,
+        judul: 'Title 5',
+        konten: 'Example Promo Banner'
     }
 ]
 
 const PromoBanner = () => {
     return (<>
-        <div style={{display: 'flex', overflow: 'auto', whiteSpace: 'nowrap', margin: '10px 0 10px 10px'}}>
+        <div style={style.container}>
             {
                 dummy.map(data => (
-                    <div className="card float-left" style={{minWidth: '80%', padding: '5px', minHeight: '150px'}} key={data.id}>
+                    <div className="card float-left" style={style.card} key={data.id}>
                         <strong>{data.judul}</strong>
                         <p>{data.konten}</p>
                         <small>Expired on September 15, 2069</small>
@@ -53,3 +63,17 @@ const PromoBanner = () => {
 }
 
 export default memo(PromoBanner)
+
+const style = {
+    container: {
+        display: 'flex',
+        overflow: 'auto',
+        whiteSpace: 'nowrap',
+        margin: '10px 0 10px 10px'
+    },
+    card: {
+        minWidth: '320px',
+        padding: '5px',
+        minHeight: '150px'
+    }
+}

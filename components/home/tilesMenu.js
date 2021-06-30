@@ -41,7 +41,7 @@ const TilesMenu = () => {
             {
                 dummy.map(data => (
                     <Link href={data.url} key={data.id}>
-                        <div className="col col-xs-3" style={style.tile}>
+                        <div className="col col-xs-3 col-sm-3 col-md-3 col-lg-2" style={style.tile}>
                             <p className="align-center">{data.icon}</p>
                             <p className="align-center" style={{ marginTop: "-10px", fontSize: "12px" }}>{data.name}</p>
                         </div>

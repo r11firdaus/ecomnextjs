@@ -1,6 +1,6 @@
+import { memo, useEffect, useState } from "react"
 import Router from "next/router"
 import Modal from './modal'
-import { memo, useEffect, useState } from "react"
 import { getReq } from '../function/API'
 import Cookie from 'js-cookie'
 import { Heart, Trash } from "react-bootstrap-icons"
@@ -9,6 +9,7 @@ const Cart = (props) => {
     const [cart, setcart] = useState([]);
     const [all, setall] = useState(false);
     const [modal, setmodal] = useState({ show: false, message: '', cancelOnly: false });
+    const [loaded, setloaded] = useState(false)
     let arr = [];
 
     useEffect(() => {
@@ -16,6 +17,7 @@ const Cart = (props) => {
         props.id_userMe === null | undefined && Router.push('/login');
         const cartData = localStorage.getItem('cart_cart');
         cartData && id_user == props.id_userMe ? setcart(JSON.parse(cartData)) : getData();
+        setloaded(true)
     }, [])
 
     const getData = async () => {
@@ -115,7 +117,8 @@ const Cart = (props) => {
 
     return (<>
         <div style={{ marginBottom: "4rem" }}>
-            {cart && cart.map((item, i) => {
+
+            {loaded ? cart?.map((item, i) => {
                 return (
                     <div className="card" style={{ padding: '7px 10px', margin: '0 10px' }} key={i}>
                         {
@@ -144,7 +147,7 @@ const Cart = (props) => {
                             </div>
                         </div>
                         <div className="card-action" style={{ marginTop: '10px' }}>
-                            <div className="float-left" style={{marginTop: '7px'}}>
+                            <div className="float-left" style={{ marginTop: '7px' }}>
                                 <Heart size={17} color="#4b3832" />&nbsp;&nbsp;
                                 <Trash size={17} color="#4b3832" />
                             </div>
@@ -156,7 +159,7 @@ const Cart = (props) => {
                         </div>
                     </div>
                 )
-            })
+            }) : <div className="dots-4" />
             }
         </div>
 
