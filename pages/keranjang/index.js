@@ -22,7 +22,6 @@ const index = props => {
         dispatch({type: 'SITE_PAGE', payload: 'cart'})
     }, [])
     return (<>
-        <br /><br />
         <Cart id_userMe={props.id_userMe} token={props.token} />
     </>)
 }

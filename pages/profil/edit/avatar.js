@@ -47,8 +47,7 @@ const index = () => {
 
   const {currentFile,previewImage,progress,message,imageInfos} = state;
 
-  return (
-    <div style={{margin: "4rem 0"}}>
+  return (<>
       <div className="row">
         <div className="col">
           <input type="file" accept="image/*" onChange={(e) => selectFile(e)} multiple />
@@ -92,7 +91,6 @@ const index = () => {
         onClick={() => upload()}
       >Upload
       </button>
-    </div>
-  );
+  </>);
 }
 export default memo(index);

@@ -6,13 +6,13 @@ export const getServerSideProps = async ctx => {
     const { nama_category } = ctx.query;
 
     return {
-        props: {nama_category}
+        props: { nama_category }
     }
 }
 
 const index = props => {
     return (<>
-        <div style={{ margin: '4rem 0'}}>
+        <div style={{ marginTop: '-1.5rem' }}>
             <Breadcumbs />
             <ListCategory nama_category={props.nama_category} />
         </div>

@@ -57,7 +57,7 @@ const index = props => {
     }
     
     return (<>
-        <div style={{ margin: '4.2rem 0' }}>
+        <div style={{ margin: '-1rem 0 2.5rem 0'}}>
             {loaded ?
                 <>
                     <DetailProfile id_userReq={props.id_userReq} token={props.token} id_userMe={props.id_userMe} />

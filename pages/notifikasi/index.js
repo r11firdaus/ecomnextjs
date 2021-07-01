@@ -25,7 +25,7 @@ const index = () => {
 
     const cardNotif = () => (<>
         {notif.length > 0 &&
-            <div style={{ margin: '3.4rem 0' }}>
+            <>
                 {notif.map((noti, i) => {
                     // noti.judul_notification dibuat mationx 20 char
                     // noti.isi_notification dibuat max 100 char
@@ -37,7 +37,7 @@ const index = () => {
                         </div>
                     </>)
                 })}
-            </div>
+            </>
         }
     </>)
 

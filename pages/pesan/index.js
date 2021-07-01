@@ -60,7 +60,7 @@ const index = (props) => {
 
     return (
         <>
-            <ul id="messages" style={{ margin: '3rem 0' }}>
+            <ul id="messages" style={{ margin: '-1.5rem 0 3rem 0' }}>
                 {person.length > 0 &&
                     person.map((per, i) => (<Fragment key={i}>
                         <Link href={`/pesan/${per.id_chat}`}>

@@ -110,9 +110,11 @@ const index = (props) => {
     }
 
     return (<>
-        <Nav2 title={lawanChat.nama_user}>
-            <Link href={`/profil/${lawanChat.id_user}`} />
-        </Nav2>
+        <div style={{marginTop: '-4.5rem', position: 'fixed', left: '0'}}>
+            <Nav2 title={lawanChat.nama_user}>
+                <Link href={`/profil/${lawanChat.id_user}`} />
+            </Nav2>
+        </div>
 
         <Bubble person={person} id_userMe={props.id_userMe} />
         <FormPesan person={person} token={props.token} id_chat={idCht} id_userMe={props.id_userMe} lawan={lawanChat} />

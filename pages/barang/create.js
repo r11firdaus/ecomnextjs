@@ -1,17 +1,17 @@
 import { memo } from 'react'
 import FormBarang from '../../components/formBarang'
 import Nav2 from '../../components/navigasi/nav2'
-import {authPage} from '../../middleware/authrizationPage'
+import { authPage } from '../../middleware/authrizationPage'
 import cookies from 'next-cookies';
 
 export const getServerSideProps = async ctx => {
-    const {token} = await authPage(ctx)
+    const { token } = await authPage(ctx)
     const cookie = cookies(ctx)
     let id_userMe;
-    if(cookie.id_user) id_userMe = cookie.id_user
+    if (cookie.id_user) id_userMe = cookie.id_user
 
     return {
-        props : {
+        props: {
             id_userMe,
             token
         }
@@ -21,13 +21,11 @@ export const getServerSideProps = async ctx => {
 const index = props => {
 
     return (<>
-        <Nav2 title = 'Create Barang' />
-        <div style ={{margin: '4rem 0'}}>
-            <FormBarang
-                id_userMe = {props.id_userMe}
-                token = {props.token}
-            />
-        </div>
+        <Nav2 title='Create Barang' />
+        <FormBarang
+            id_userMe={props.id_userMe}
+            token={props.token}
+        />
     </>)
 }
 

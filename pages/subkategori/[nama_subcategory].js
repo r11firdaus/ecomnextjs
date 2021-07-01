@@ -8,7 +8,7 @@ import Head from 'next/head';
 import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ctx => {
-    const {nama_subcategory} = ctx.query;
+    const { nama_subcategory } = ctx.query;
     let id_userIn = null
     let token = null
     const cookie = cookies(ctx)
@@ -27,14 +27,14 @@ export const getServerSideProps = async ctx => {
 }
 
 const index = props => {
-    const {sort, cod} = useSelector(state => state)
+    const { sort, cod } = useSelector(state => state)
     const [data, setdata] = useState([])
     const dispatch = useDispatch()
-    
+
     useEffect(async () => {
         const subCategoryLocal = localStorage.getItem('nama_subcategory');
         const barangSubCategoryLocal = localStorage.getItem('barang_subcategory');
-        dispatch({type: 'SITE_PAGE', payload: 'subkategori'})
+        dispatch({ type: 'SITE_PAGE', payload: 'subkategori' })
         if (subCategoryLocal == props.nama_subcategory) {
             barangSubCategoryLocal ? setdata(JSON.parse(barangSubCategoryLocal)) : getBarang()
         } else getBarang()
@@ -47,13 +47,11 @@ const index = props => {
         setdata(res)
     }
 
-    return(<>
+    return (<>
         <Head><title>Category for '{props.nama_subcategory}'</title></Head>
-        <div style ={{margin: '4rem 0'}}>
-            <strong style={{marginLeft: '10px'}}>Category for '{props.nama_subcategory}'</strong>
-            <FilterHandler />
-            <ListBarang data={data} />
-        </div>
+        <strong style={{ marginLeft: '10px' }}>Category for '{props.nama_subcategory}'</strong>
+        <FilterHandler />
+        <ListBarang data={data} />
     </>)
 }
 

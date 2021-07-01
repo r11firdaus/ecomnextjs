@@ -2,7 +2,7 @@ import { Fragment, memo } from "react"
 
 const Bubble = (props) => {
     return (<>
-        <ul className="row" id="message" style={{ margin: '3rem 0', listStyle: 'none' }}>
+        <ul className="row" id="message" style={{ margin: '-20px 0 3rem 0', listStyle: 'none' }}>
             {props.person.length > 0 &&
                 props.person.map((per, index) => (
                     <Fragment key={index}>

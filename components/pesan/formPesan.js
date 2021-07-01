@@ -34,7 +34,7 @@ const FormPesan = (props) => {
     }
 
     return (<>
-        <form id="form" onSubmit={e => sendHandler(e)}>
+        <form id="form" className="col-lg-offset-3" onSubmit={e => sendHandler(e)}>
             <input id="msg-input" autoComplete="off" />
             <button>Send</button>
         </form>

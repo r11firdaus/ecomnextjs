@@ -11,7 +11,7 @@ const index = () => {
     }, [])
 
     return (<>
-        <div style={{ margin: '4rem 0' }}>
+        <div style={{ marginTop: '-1.5rem' }}>
             <Breadcumbs />
             <ListCategory />
         </div>

@@ -26,7 +26,7 @@ const index = (props) => {
     }, [])
 
     return (
-        <div style={{margin: '4rem 10px'}}>
+        <div style={{margin: '0 10px'}}>
             <EditUser id_userMe={props.id_userMe} token={props.token} />
         </div>
     )

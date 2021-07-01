@@ -41,28 +41,15 @@ const Home = (props) => {
   }, [])
 
   return (<>
-    <div className="row row-reverse" style={{ margin: '4.2rem 10px' }}>
-      <div className="col col-lg-9">
-        <PromoBanner />
-        <Saldo id_userMe={props.id_userMe} token={props.token} />
-        <TilesMenu />
-        {lastView.length > 0 &&
-          <>
-            <strong>Last Viewed</strong>
-            <ListBarang data={lastView} />
-          </>
-        }
-      </div>
-      <div className="col col-lg-3 display-lg-up">
-        <Sidebar />
-        <div style={{margin: '30px 20px'}}>
-          <h6>Jwallin</h6>
-          <small>PT. Jwallin Tbk.</small><br />
-          <small>Jl. Cipageran no 69</small>
-        </div>
-      </div>
-    </div>
-    
+    <PromoBanner />
+    <Saldo id_userMe={props.id_userMe} token={props.token} />
+    <TilesMenu />
+    {lastView.length > 0 &&
+      <>
+        <strong>Last Viewed</strong>
+        <ListBarang data={lastView} />
+      </>
+    }
   </>)
 }
 

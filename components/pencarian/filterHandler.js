@@ -11,7 +11,7 @@ const FilterHandler = () => {
     }
 
     return (<>
-        <div className="col" style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div className="col" style={{ display: 'flex', justifyContent: 'space-around', position: 'sticky' }}>
             <div>
                 <button className="button-small button-primary-text" onClick={()=>btnFilterHandler()}>Filter</button>
             </div>
