@@ -1,4 +1,5 @@
 import ListBarang from '../../components/listBarang'
+import FilterHandler from '../../components/pencarian/filterHandler'
 import { memo, useEffect, useState } from 'react';
 import cookies from 'next-cookies';
 import { getReq } from '../../function/API';
@@ -50,6 +51,7 @@ const index = props => {
         <Head><title>Category for '{props.nama_subcategory}'</title></Head>
         <div style ={{margin: '4rem 0'}}>
             <strong style={{marginLeft: '10px'}}>Category for '{props.nama_subcategory}'</strong>
+            <FilterHandler />
             <ListBarang data={data} />
         </div>
     </>)

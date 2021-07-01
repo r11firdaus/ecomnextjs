@@ -1,10 +1,8 @@
 import { getReq } from '../../function/API';
-import Link from 'next/link';
 import { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Cookie from 'js-cookie';
-import CartNav from './childTopNav/CartNav';
-import FavNav from './childTopNav/FavNav';
+import {CartNav, FavNav, HomeNav} from "./childNav"
 import SearchBox from '../pencarian/searchBox';
 
 const Nav = () => {
@@ -31,6 +29,7 @@ const Nav = () => {
                 <div className="row">
                     <SearchBox flex={1} />
                     <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
+                        <HomeNav />&nbsp;&nbsp;
                         <FavNav />&nbsp;&nbsp;
                         <CartNav />
                     </div>

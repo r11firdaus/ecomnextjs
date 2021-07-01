@@ -31,9 +31,10 @@ const Sidebar = () => {
         <style jsx>
             {`
                 aside {
-                overflow-y:scroll;
-                flex-grow: 1;
-                height: 500px;
+                    overflow-y:scroll;
+                    flex-grow: 1;
+                    height: 500px;
+                    border-bottom: 1px solid #e0e0e0;
                 }
             `}
         </style>

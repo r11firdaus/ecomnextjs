@@ -36,12 +36,12 @@ const dummy = [
 ]
 
 const TilesMenu = () => {
-    return (
+    return (<>
         <div className="row">
             {
                 dummy.map(data => (
                     <Link href={data.url} key={data.id}>
-                        <div className="col col-xs-3 col-sm-3 col-md-3 col-lg-2" style={style.tile}>
+                        <div className="col col-xs-3 col-sm-3 col-md-3 col-lg-2" id="tile">
                             <p className="align-center">{data.icon}</p>
                             <p className="align-center" style={{ marginTop: "-10px", fontSize: "12px" }}>{data.name}</p>
                         </div>
@@ -49,15 +49,16 @@ const TilesMenu = () => {
                 ))
             }
         </div>
-    )
+        <style jsx>
+            {`
+                #tile {
+                    margin: 5px 0,
+                    cursor: pointer,
+                    color: #854442
+                }
+            `}
+        </style>
+    </>)
 }
 
 export default memo(TilesMenu)
-
-const style = {
-    tile: {
-        margin: '5px 0',
-        cursor: 'pointer',
-        color: '#854442'
-    }
-}

@@ -12,6 +12,7 @@ const handler = async (req, res) => {
 
     const reqBarang = await db()('tb_barang')
     .join('tb_subcategory', 'tb_subcategory.id_subcategory', 'tb_barang.id_subcategory')
+    .join('tb_user', 'tb_user.id_user', 'tb_barang.id_seller')
     .select('*')
     .where({'tb_barang.id_barang': id_barang }).first()
     

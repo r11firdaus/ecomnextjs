@@ -4,8 +4,11 @@ import TilesMenu from "../components/home/tilesMenu";
 import { memo } from "react";
 import cookies from 'next-cookies'
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
+import dynamic from 'next/dynamic';
+
+const ListBarang = dynamic(() => import("../components/listBarang"))
 
 export const getServerSideProps = async ctx => {
   // id_user_Req = halaman profil user yg dituju
@@ -28,21 +31,31 @@ export const getServerSideProps = async ctx => {
 
 const Home = (props) => {
   const dispatch = useDispatch();
+  const [lastView, setlastView] = useState([])
 
   useEffect(() => {
     dispatch({ type: 'SITE_PAGE', payload: 'home' })
+    const getLastView = localStorage.getItem('last_view');
+    let jsonLastView = getLastView && JSON.parse(getLastView);
+    jsonLastView !== null && setlastView(jsonLastView)
   }, [])
 
   return (<>
-    <div className="row row-reverse" style={{ margin: '4.2rem 0' }}>
+    <div className="row row-reverse" style={{ margin: '4.2rem 10px' }}>
       <div className="col col-lg-9">
         <PromoBanner />
         <Saldo id_userMe={props.id_userMe} token={props.token} />
         <TilesMenu />
+        {lastView.length > 0 &&
+          <>
+            <strong>Last Viewed</strong>
+            <ListBarang data={lastView} />
+          </>
+        }
       </div>
       <div className="col col-lg-3 display-lg-up">
         <Sidebar />
-        <div style={{margin: '25% 20px'}}>
+        <div style={{margin: '30px 20px'}}>
           <h6>Jwallin</h6>
           <small>PT. Jwallin Tbk.</small><br />
           <small>Jl. Cipageran no 69</small>

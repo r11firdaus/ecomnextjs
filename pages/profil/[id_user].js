@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { getReq } from '../../function/API'
 import { useDispatch, useSelector } from 'react-redux'
 import dynamic from 'next/dynamic'
+import FilterHandler from '../../components/pencarian/filterHandler'
 
 export const getServerSideProps = async ctx => {
     let usernameMe = null
@@ -67,6 +68,7 @@ const index = props => {
                             <Link href="/barang/create">+ Tambah Barang</Link>
                         </div>
                     }
+                    <FilterHandler />
                     <ListBarang data={data} />
                 </> : <div className="dots-4" />
             }

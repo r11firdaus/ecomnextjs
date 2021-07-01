@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react"
 import Cookie from 'js-cookie'
 import { useDispatch } from "react-redux";
-import {NotifNav, MsgNav, HomeNav, ProfilNav} from "./childBottomNav"
+import {NotifNav, MsgNav, HomeNav, ProfilNav} from "./childNav"
 import {loadMsg, loadNotif} from '../../function/loadData'
 
 // netxt => buat koneksi ke db seminimal mungkin

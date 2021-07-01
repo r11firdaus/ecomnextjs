@@ -1,4 +1,5 @@
 import ListBarang from '../../components/listBarang'
+import FilterHandler from '../../components/pencarian/filterHandler'
 import { memo, useEffect, useState } from 'react';
 import { getReq } from '../../function/API';
 import { useSelector } from 'react-redux';
@@ -36,6 +37,7 @@ const index = props => {
             {loaded ?
                 <>
                     <strong style={{marginLeft: '10px'}}>Result for '{props.judul.trim()}'</strong>
+                    <FilterHandler />
                     <ListBarang data={data} />
                 </> :
                 <div className="dots-4" />

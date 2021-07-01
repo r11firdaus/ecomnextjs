@@ -36,7 +36,26 @@ export const getServerSideProps = async ctx => {
 
 const index = (props) => {
     const dispatch = useDispatch();
-    useEffect(() => dispatch({type: 'SITE_PAGE', payload: 'barang'}), []);
+    useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: 'barang'});
+        const getLastView = localStorage.getItem('last_view');
+        let jsonLastView = getLastView ? JSON.parse(getLastView) : [];
+
+        if (props.id_userMe != props.data.id_seller) {
+            if (getLastView) {
+                if (jsonLastView.length < 5) {
+                    for (let i = 0; i < jsonLastView.length; i++) {
+                        if (jsonLastView[i].id_barang == props.data.id_barang) {
+                            jsonLastView.splice(i, 1)
+                            break;
+                        }
+                    }
+                } else jsonLastView.pop()
+                jsonLastView.unshift(props.data)
+            }
+            localStorage.setItem('last_view', JSON.stringify(jsonLastView))
+        }
+    }, []);
 
     return (<>
         <Head>
