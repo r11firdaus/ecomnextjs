@@ -6,16 +6,19 @@ const FormBarang = props => {
     const [namaSubCat, setnamaSubCat] = useState([])
     const [field, setfield] = useState({})
 
-    useEffect(async () => {
-        const { res } = await getReq('barang/subcategory', '', '')
+    const loadData = async () => {
         if (props.id_barang && props.token) {
             await getReq('barang', props.id_barang, props.token)
-                .then(async res => {
-                    await res.res.id_seller == props.id_userMe ?
-                        setfield(res.res) : Router.push('/')
-                })
+            .then(async (res) => {
+                await res.id_seller == props.id_userMe ?
+                setfield(res) : Router.push('/')
+            })
         }
-        setnamaSubCat(res)
+        await getReq('barang/subcategory', '', '').then((res) => setnamaSubCat(res))
+    }
+
+    useEffect(() => {
+        loadData()
     }, [])
 
     const submitHandler = async e => {

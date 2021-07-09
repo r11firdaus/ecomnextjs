@@ -1,3 +1,9 @@
+.card-promo {
+    min-width: 320px;
+    padding: 5px;
+    min-height: 150px;
+}
+
 .leaflet-container {
   height: 420px;
 }

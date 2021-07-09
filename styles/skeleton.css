@@ -1,0 +1,113 @@
+/* skeleton for profile data */
+.skel-prof {
+    width: 95%;
+    height: 140px;
+    border-radius: 20px;
+    padding: 15px 10px;
+    margin: 0 auto;
+}
+  
+.skel-prof-head {
+    display: flex;
+    margin-bottom: 15px;
+}
+  
+.skel-prof-avatar {
+    height: 50px;
+    width: 60px;
+    border-radius: 50px;
+    background-color: rgb(209, 209, 209);
+}
+  
+.skel-prof-datauser {
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    margin: 0 10px;
+}
+  
+.skel-prof-name {
+    height: 10px;
+    width: 50%;
+    background-color: rgb(209, 209, 209);
+    margin-bottom: 10px;
+}
+  
+.skel-prof-detail {
+    height: 8px;
+    width: 30%;
+    background-color: rgb(209, 209, 209);
+}
+  
+.skel-prof-article {
+    height: 7px;
+    background-color: rgb(209, 209, 209);
+}
+  
+.skel-prof-article:not(:last-child) {
+    margin-bottom: 5px;
+}
+  
+.skel-prof-article:nth-child(1) {
+    width: 100%;
+}
+.skel-prof-article:nth-child(2) {
+    width: 60%;
+}
+.skel-prof-article:nth-child(3) {
+    width: 30%;
+}
+
+/* skeleton for promo */
+
+.skel-promo-title {
+    height: 15px;
+    width: 40%;
+    background-color: rgb(209, 209, 209);
+}
+
+.skel-promo-body {
+    height: 70px;
+    width: 60%;
+    background-color: rgb(209, 209, 209);
+    margin: 20px 0;
+}
+
+.skel-promo-date {
+    height: 10px;
+    width: 50%;
+    background-color: rgb(209, 209, 209);
+    bottom: 0;
+}
+
+/* skeleton for pesan */
+
+.skel-pesan-name {
+    height: 16px;
+    width: 40%;
+    background-color: rgb(209, 209, 209);
+}
+.skel-pesan-message {
+    height: 10px;
+    width: 80%;
+    background-color: rgb(209, 209, 209);
+    margin: 10px 0;
+}
+
+.skel-prof-avatar,
+.skel-prof-name,
+.skel-prof-detail,
+.skel-prof-article,
+.skel-promo-title,
+.skel-promo-body,
+.skel-promo-date,
+.skel-pesan-name,
+.skel-pesan-message {
+    animation: skel 2s infinite;
+}
+  
+@keyframes skel {
+    0% {opacity: 1;}
+    50% {opacity: 0.5;}
+    100% {opacity: 1;}
+}
