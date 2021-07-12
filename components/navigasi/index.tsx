@@ -43,14 +43,14 @@ const index = (props: {page: string, newTitle?: string}): JSX.Element => {
         case '/kategori/[nama_category]': return <Nav2 title='Category' />
         case '/keranjang': return <Nav2 title='Cart' />
         case '/profil/edit': return <Nav2 title='Edit' />
-        case '/pesan': return <><Nav2 title='Chats' /><BottomNav /></>
+        case '/pesan': return <><Nav2 title='Chats' /><BottomNav page={props.page} /></>
         case '/pesan/[id_chat]': return <></>
-        case '/notifikasi': return <><Nav2 title='Notification' /><BottomNav /></>
+        case '/notifikasi': return <><Nav2 title='Notification' /><BottomNav page={props.page} /></>
         case '/subkategori/[nama_subcategory]': return <Nav />
         case '/barang/[id_barang]': return <Nav />
         case '/pencarian/[keyword]': return <Nav />
-        case '/': return <><Nav /><BottomNav /></>
-        case '/profil/[id_user]': return <><Nav /><BottomNav /></> 
+        case '/': return <><Nav page={props.page} /><BottomNav page={props.page} /></>
+        case '/profil/[id_user]': return <><Nav /><BottomNav page={props.page} /></> 
         default: return null
     }
 }

@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { memo } from "react";
 import { HouseFill } from "react-bootstrap-icons";
-import { RootStateOrAny, useSelector } from "react-redux";
-import { GlobalState } from "../../../type";
 
-const index = (): JSX.Element => {
-    const { page }: GlobalState = useSelector((state: RootStateOrAny) => state)
+const index = (props: {page: string}): JSX.Element => {
     return(<>
-        {page == 'home' ?
+        {props.page == '/' ?
             <HouseFill color="#4b3832" /> :
             <Link href="/"><HouseFill color="#be9b7b" /></Link>
         }

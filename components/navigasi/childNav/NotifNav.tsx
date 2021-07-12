@@ -5,11 +5,11 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import { GlobalState } from "../../../type";
 import Baloon from '../../baloon';
 
-const index = (): JSX.Element => {
-    const { notification, page }: GlobalState = useSelector((state: RootStateOrAny) => state)
+const index = (props: {page: string}): JSX.Element => {
+    const { notification }: GlobalState = useSelector((state: RootStateOrAny) => state)
    
     return(<>
-        {page == 'notifikasi' ?
+        {props.page == '/notifikasi' ?
             <BellFill color="#4b3832" /> :
             <Link href="/notifikasi">
                 <div style={{ display: 'flex' }}>

@@ -6,7 +6,7 @@ import {CartNav, FavNav, HomeNav} from "./childNav"
 import SearchBox from '../pencarian/searchBox';
 import { StylesDictionary } from '../../type';
 
-const Nav = (): JSX.Element => {
+const Nav = (props: {page?: string}): JSX.Element => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const Nav = (): JSX.Element => {
                 <div className="row">
                     <SearchBox flex={1} />
                     <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
-                        <HomeNav />&nbsp;&nbsp;
+                        {!props.page && <><HomeNav page={props.page || null} />&nbsp;&nbsp;</>}
                         <FavNav />&nbsp;&nbsp;
                         <CartNav />
                     </div>

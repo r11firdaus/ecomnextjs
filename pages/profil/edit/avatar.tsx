@@ -40,7 +40,7 @@ const index = (): JSX.Element => {
     try {
       setstate({ ...state,progress: 50 })
       await resizeFile(state.currentFile).then((uri: any) => {
-        localStorage.setItem("avatar", uri)
+        localStorage.setItem("avatar", uri.uri)
       })
       setstate({ ...state,progress: 100 })
       setstate({ ...state,currentFile: undefined, previewImage: undefined, message: "success" })

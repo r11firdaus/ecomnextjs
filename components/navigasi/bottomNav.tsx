@@ -5,7 +5,7 @@ import {NotifNav, MsgNav, HomeNav, ProfilNav} from "./childNav"
 import {loadMsg, loadNotif} from '../../function/loadData'
 
 // netxt => buat koneksi ke db seminimal mungkin
-const BottomNav = (): JSX.Element => {
+const BottomNav = (props:{page: string}): JSX.Element => {
     console.warn('bottomNav dimuat')
     const dispatch = useDispatch();
 
@@ -37,10 +37,10 @@ const BottomNav = (): JSX.Element => {
     // next => bikin socket.on('get notified')
     return (
         <div className="navbar-wrapper" style={{zIndex: 2}}>
-            <HomeNav />
-            <NotifNav />
-            <MsgNav />
-            <ProfilNav />
+            <HomeNav page={props.page}/>
+            <NotifNav page={props.page} />
+            <MsgNav page={props.page} />
+            <ProfilNav page={props.page} />
         </div>
     )
 }

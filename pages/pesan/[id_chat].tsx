@@ -83,7 +83,7 @@ const index = (props: Props): JSX.Element => {
 
             await putReq('chat/message/read', props.id_user, props.token, {id_chat: idCht})
             
-            jsonLocalChat.map((jsc: any) => {
+            await jsonLocalChat.map((jsc: any) => {
                 if (jsc.id_chat == idCht && jsc.receiver_user == props.id_user) {
                     jsc.status_message = 'read';
                 }
