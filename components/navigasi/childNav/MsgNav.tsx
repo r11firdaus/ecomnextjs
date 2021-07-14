@@ -6,8 +6,8 @@ import { socket } from "../../../function/socket"
 import { GlobalState } from "../../../type"
 import Baloon from '../../baloon'
 
-const index = (props: {page: string}): JSX.Element =>  {
-    const {unreadMessage, id_user}: GlobalState = useSelector((state: RootStateOrAny) => state)
+const index = (): JSX.Element =>  {
+    const {unreadMessage, id_user, page}: GlobalState = useSelector((state: RootStateOrAny) => state)
     const dispatch = useDispatch()
 
     socket.on('chat message', (msg: string, id_chat: string, receiver_user: number|string, sender: number|string) => {
@@ -15,7 +15,7 @@ const index = (props: {page: string}): JSX.Element =>  {
     })
 
     return(<>
-        {props.page == '/pesan' ?
+        {page == '/pesan' ?
             <ChatFill color="#4b3832" /> :
             <Link href="/pesan">
                 <div style={{ display: 'flex' }}>

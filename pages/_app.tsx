@@ -8,29 +8,32 @@ import Sidebar from '../components/sidebar';
 import { useEffect, useState } from 'react';
 import Cookie from 'js-cookie';
 import Router from 'next/router'
-// import { socket } from '../function/socket';
+import { socket } from '../function/socket';
 
 const MyApp = ({ Component, pageProps }) => {
   const [page, setpage] = useState<string>('')
-
+  
+  useEffect(() => {
+    clear()
+    socket.on('loadDB', () => clear())
+  }, [])
+  
   useEffect(() => {
     const halaman = Router.pathname;
     setpage(halaman)
-    // clear()
-    // socket.on('loadDB', () => clear())
-
-    // setInterval(() => {
-    //   localStorage.clear()
-    // }, 300000);
   }, [Component])
 
   const clear = () => {
-    const cleared = JSON.parse(Cookie.get('cleared'))
-
+    const cleared = Cookie.get('cleared')
+    
     if (!cleared) {
       localStorage.clear()
       Cookie.set('cleared', JSON.stringify(true))
-      setTimeout(() => Cookie.remove('cleared'), 5000);
+      console.log(`cleared is ${cleared}`);
+      setTimeout(() => {
+        Cookie.remove('cleared')
+        console.log(cleared)
+      }, 5000);
     }
   }
 

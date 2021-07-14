@@ -1,12 +1,13 @@
 import { getReq } from '../../function/API';
 import { memo, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import Cookie from 'js-cookie';
 import {CartNav, FavNav, HomeNav} from "./childNav"
 import SearchBox from '../pencarian/searchBox';
-import { StylesDictionary } from '../../type';
+import { GlobalState, StylesDictionary } from '../../type';
 
-const Nav = (props: {page?: string}): JSX.Element => {
+const Nav = (): JSX.Element => {
+    const { page }: GlobalState = useSelector((state: RootStateOrAny) => state)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -35,7 +36,7 @@ const Nav = (props: {page?: string}): JSX.Element => {
                 <div className="row">
                     <SearchBox flex={1} />
                     <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
-                        {!props.page && <><HomeNav page={props.page || null} />&nbsp;&nbsp;</>}
+                        {page !== '/' && <><HomeNav />&nbsp;&nbsp;</>}
                         <FavNav />&nbsp;&nbsp;
                         <CartNav />
                     </div>

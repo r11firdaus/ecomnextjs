@@ -1,13 +1,11 @@
 import { memo } from "react"
 import Router from "next/router"
 import { ArrowLeft } from "react-bootstrap-icons"
-import { useSelector } from "react-redux"
 import { StylesDictionary } from "../../type"
 
 interface Props { title: string }
 
 const Nav2 = (props: React.PropsWithChildren<Props>): JSX.Element => {
-    // const {page} = useSelector(state => state)
     return (<>
         <div style={style.wrapper}>
             <ArrowLeft size={20} color="white" style={style.arrow} onClick={() => Router.back()} />
