@@ -24,12 +24,12 @@ const EditUser = (props: MyIdAndToken) => {
                     localStorage.setItem('mydata', JSON.stringify(res))
                 })
             }
-            setloaded(true)
         }
     
         const req = await fetch('https://dev.farizdotid.com/api/daerahindonesia/provinsi')
         const res = await req.json()
         setprovinsi(res.provinsi)
+        setloaded(true)
     
         const prov = (document.getElementById('provinsi_user') as HTMLSelectElement)
         const provId = prov.options[prov.selectedIndex].id
@@ -59,15 +59,19 @@ const EditUser = (props: MyIdAndToken) => {
     }
 
     const provinsiHandler = () => {
+        setloaded(false)
         const prov = (document.getElementById('provinsi_user') as HTMLSelectElement)
         const provId = prov.options[prov.selectedIndex].id
         getKota(provId)
+        setloaded(true)
     }
 
     const kotaHandler = () => {
+        setloaded(false)
         const kota = (document.getElementById('kota_user') as HTMLSelectElement)
         const kotaId = kota.options[kota.selectedIndex].id
         getKecamatan(kotaId)
+        setloaded(true)
     }
 
     const submitHandler = async (e: HTMLFormElement) => {

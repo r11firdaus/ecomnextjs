@@ -27,21 +27,25 @@ export default function index(): JSX.Element {
     const loginHandler = async (e: any): Promise<void> => {
         e.preventDefault();
         setstatus('loading...')
-        const loginReq = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(fields)
-        })
-        if(!loginReq.ok) return setstatus(loginReq.statusText)
-        const loginRes = await loginReq.json()
-        Cookie.set('token', loginRes.data.token)
-        Cookie.set('username', loginRes.data.username)
-        Cookie.set('id_user', loginRes.data.id_user)
-        localStorage.clear()
-        setstatus('success, redirecting...')
-        Router.push('/')
+        try {
+            const loginReq = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fields)
+            })
+            if(!loginReq.ok) return setstatus(loginReq.statusText)
+            const loginRes = await loginReq.json()
+            Cookie.set('token', loginRes.data.token)
+            Cookie.set('username', loginRes.data.username)
+            Cookie.set('id_user', loginRes.data.id_user)
+            localStorage.clear()
+            setstatus('success, redirecting...')
+            Router.push('/')
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

@@ -1,7 +1,9 @@
 import { GetServerSideProps } from 'next'
-import { memo } from 'react'
+import Router from 'next/router'
+import { memo, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import FormBarang from '../../../components/formBarang'
-import Nav2 from '../../../components/navigasi/nav2'
+import { getReq } from '../../../function/API'
 import { authPage } from '../../../middleware/authrizationPage'
 import { MyIdAndToken } from '../../../type'
 
@@ -21,17 +23,35 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 interface Props extends MyIdAndToken { id_barang: string | number }
 
 const index = (props: Props): JSX.Element => {
+    const [field, setfield] = useState<any>({})
+    const [namaSubCat, setnamaSubCat] = useState([])
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
+        loadData()
+    }, [])
+
+    const loadData = async () => {
+        if (props.id_barang && props.token) {
+            await getReq('barang', props.id_barang, props.token)
+            .then(async (res: any) => {
+                await res.id_seller == props.id_user ?
+                setfield(res) : Router.push('/')
+            })
+            await getReq('barang/subcategory', '', '').then((res: any[]) => setnamaSubCat(res))
+        }
+    }
+
     return (<>
-        <div style={{ margin: '-4.5rem 0 0 0' }}>
-            <Nav2 title="Update Barang" />
-        </div>
-        <div style={{ marginTop: '4rem' }}>
+        {field.id_seller && namaSubCat.length > 0 ?
             <FormBarang
-                id_barang={props.id_barang}
-                id_userMe={props.id_user}
+                id_user={props.id_user}
                 token={props.token}
-            />
-        </div>
+                field={field}
+                subCat={namaSubCat}
+            /> : <div className="dots-4" />
+        }
     </>)
 }
 

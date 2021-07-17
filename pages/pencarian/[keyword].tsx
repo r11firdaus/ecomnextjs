@@ -2,10 +2,11 @@ import ListBarang from '../../components/listBarang'
 import FilterHandler from '../../components/pencarian/filterHandler'
 import { memo, useEffect, useState } from 'react';
 import { getReq } from '../../function/API';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head'
 import { GetServerSideProps } from 'next';
 import { MyIdAndToken } from '../../type';
+import Router from 'next/router';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { keyword } = ctx.query;
@@ -23,18 +24,18 @@ interface Props extends MyIdAndToken {
 }
 
 const index = (props: Props): JSX.Element => {
-    const [data, setdata] = useState([])
+    const [data, setdata] = useState<any[]>(null)
     const { sort, cod } = useSelector((state: RootStateOrAny) => state)
-    const [loaded, setloaded] = useState<boolean>(false)
+    const dispatch = useDispatch()
 
     const loadData = async () => {
         await getReq('search', props.keyword.trim(), '', sort).then((res: any) => {
             setdata(res)
         })
-        return setloaded(true)
     }
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         loadData()
     }, [props.keyword, sort, cod])
 
@@ -42,13 +43,12 @@ const index = (props: Props): JSX.Element => {
         <Head>
             <title>Result for '{props.judul.trim()}' | Jwallin</title>
         </Head>
-        {loaded ?
-            <>
-                <strong style={{ marginLeft: '10px' }}>Result for '{props.judul.trim()}'</strong>
+        {data ? 
+            data.length > 0 ? <>
                 <FilterHandler />
                 <ListBarang data={data} />
-            </> :
-            <div className="dots-4" />
+                </> : <h5 style={{margin: '20px', color: 'gray'}}>Not Found</h5>
+            : <div className="dots-4" />
         }
     </>)
 }

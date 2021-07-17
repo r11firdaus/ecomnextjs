@@ -5,11 +5,14 @@ import { getReq, putReq } from '../../function/API';
 import { socket } from "../../function/socket";
 import {loadMsg} from '../../function/loadData';
 import { authPage } from '../../middleware/authrizationPage';
-import FormPesan from "../../components/pesan/formPesan";
-import Bubble from "../../components/pesan/bubble";
 import Nav2 from "../../components/navigasi/nav2";
 import { GetServerSideProps } from "next";
 import { MyIdAndToken } from "../../type";
+import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
+
+const FormPesan = dynamic(() => import("../../components/pesan/formPesan"), {ssr: false})
+const Bubble = dynamic(() => import("../../components/pesan/bubble"), {ssr: false})
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { token, id_user } = await authPage(ctx)
@@ -35,9 +38,11 @@ type LawanChat = { id_user: string|number, nama_user: string }
 const index = (props: Props): JSX.Element => {
     const [person, setperson] = useState([]);
     const [lawanChat, setlawanChat] = useState<LawanChat>(null);
+    const dispatch = useDispatch()
     let idCht = props.id_chat;
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         loadChat()
         window.scrollTo(0, document.body.scrollHeight);
         
@@ -50,7 +55,7 @@ const index = (props: Props): JSX.Element => {
         })
         processMessage(unread)
            
-        socket.on('chat message', async (message: string, id_chat: string) => {
+        socket.on('chat message', (message: string, id_chat: string) => {
             idCht === id_chat && loadChat();
         })
     }, [])

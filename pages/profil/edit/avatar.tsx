@@ -1,5 +1,7 @@
-import { useState, memo } from 'react';
+import Router from 'next/router';
+import { useState, memo, useEffect } from 'react';
 import Resizer from "react-image-file-resizer";
+import { useDispatch } from 'react-redux';
 
 type Img = {
   currentFile: any,
@@ -20,6 +22,12 @@ const index = (): JSX.Element => {
     message: "",
     imageInfos: undefined,
   })
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch({type: 'SITE_PAGE', payload: Router.pathname})
+  }, [])
 
   const selectFile = (e: any): void => {
     const newInfo = {

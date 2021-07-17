@@ -39,8 +39,8 @@ const FormPesan = (props: Props): JSX.Element => {
             status_message: 'unread'
         }
         await postReq('chat/message/create', props.token, data)
-        // const getMsg = localStorage.getItem('chats');
-        // const msgToJSON = getMsg && JSON.parse(getMsg);
+        const getMsg = localStorage.getItem('chats');
+        const msgToJSON = getMsg && JSON.parse(getMsg);
         socket.emit('chat message', input, props.id_chat, props.lawan.id_user, props.id_userMe);
         // localStorage.setItem('chats', JSON.stringify([data, ...msgToJSON]))
     }

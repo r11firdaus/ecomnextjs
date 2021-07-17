@@ -8,6 +8,8 @@ import Image from 'next/image'
 import { useEffect, memo } from 'react';
 import { GetServerSideProps } from 'next';
 import { MyIdAndToken, StylesDictionary } from '../../type';
+import { useDispatch } from 'react-redux';
+import Router from 'next/router';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_barang } = ctx.query;
@@ -36,8 +38,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 interface Props extends MyIdAndToken { data: any }
 
 const index = (props: Props) => {
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         const getLastView = localStorage.getItem('last_view');
         let jsonLastView = getLastView ? JSON.parse(getLastView) : [];
 

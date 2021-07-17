@@ -1,6 +1,5 @@
 import { memo, useEffect, useState } from 'react'
 import DetailProfile from '../../components/profil/detailProfile'
-import Saldo from '../../components/profil/saldo'
 import cookies from 'next-cookies';
 import Link from 'next/link'
 import { getReq } from '../../function/API'
@@ -9,7 +8,10 @@ import dynamic from 'next/dynamic'
 import FilterHandler from '../../components/pencarian/filterHandler'
 import { GetServerSideProps } from 'next';
 import { MyIdAndToken } from '../../type';
-const ListBarang = dynamic(() => import('../../components/listBarang'))
+import { useDispatch } from 'react-redux';
+import Router from 'next/router';
+const ListBarang = dynamic(() => import('../../components/listBarang'), {ssr: false})
+const Saldo = dynamic(() => import('../../components/profil/saldo'), {ssr: false})
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     let usernameMe: string = null;
@@ -45,9 +47,11 @@ interface Props extends MyIdAndToken {
 const index = (props: Props): JSX.Element => {
     const [data, setdata] = useState([])
     const [loaded, setloaded] = useState<boolean>(false)
+    const dispatch = useDispatch()
     // const { sort, cod } = useSelector(state => state)
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         const barangUserLocal = localStorage.getItem('barang_user_id');
         const barangLocal = localStorage.getItem('barang_user');
         barangUserLocal == props.id_userReq && barangLocal ? setdata(JSON.parse(barangLocal)) : getBarang()

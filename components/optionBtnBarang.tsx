@@ -26,7 +26,8 @@ const optionBtnBarang = (props: any): JSX.Element => {
 
     const deleteHandler = async (e: any, id: string|number) => {
         e.preventDefault()
-        await deleteReq('barang/delete', id, myprops.token)
+        await deleteReq('barang/delete', id, props.token)
+        localStorage.removeItem('barang_user')
         Router.back()
     }
 

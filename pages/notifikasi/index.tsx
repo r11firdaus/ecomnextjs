@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from 'react'
 import { getReq } from '../../function/API'
 import cookie from 'js-cookie'
 import Router from 'next/router'
+import { useDispatch } from 'react-redux'
 
 type Notif = {
     id_notification: number|string,
@@ -12,6 +13,7 @@ type Notif = {
 
 const index = (): JSX.Element => {
     const [notif, setnotif] = useState<Notif[]>([])
+    const dispatch = useDispatch()
 
     const loadData = async (): Promise<void> => {
         const id_user = cookie.get('id_user')
@@ -31,6 +33,7 @@ const index = (): JSX.Element => {
     }
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         loadData()
     }, [])
 

@@ -5,23 +5,15 @@ import { Provider } from 'react-redux';
 import store from '../function/context/store';
 import Navigasi from '../components/navigasi';
 import Sidebar from '../components/sidebar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Cookie from 'js-cookie';
-import Router from 'next/router'
 import { socket } from '../function/socket';
 
 const MyApp = ({ Component, pageProps }) => {
-  const [page, setpage] = useState<string>('')
-  
   useEffect(() => {
     clear()
     socket.on('loadDB', () => clear())
   }, [])
-  
-  useEffect(() => {
-    const halaman = Router.pathname;
-    setpage(halaman)
-  }, [Component])
 
   const clear = () => {
     const cleared = Cookie.get('cleared')
@@ -29,17 +21,13 @@ const MyApp = ({ Component, pageProps }) => {
     if (!cleared) {
       localStorage.clear()
       Cookie.set('cleared', JSON.stringify(true))
-      console.log(`cleared is ${cleared}`);
-      setTimeout(() => {
-        Cookie.remove('cleared')
-        console.log(cleared)
-      }, 5000);
+      setTimeout(() => Cookie.remove('cleared'), 5000);
     }
   }
 
   return (<>
     <Provider store={store}>
-      <Navigasi page= {page} />
+      <Navigasi />
       <div className="row row-reverse" style={{ marginTop: '4.2rem' }}>
         <div className="col col-lg-9">
           <Component {...pageProps} />

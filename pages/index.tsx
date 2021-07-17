@@ -3,6 +3,8 @@ import { GetServerSideProps } from "next";
 import cookies from 'next-cookies'
 import dynamic from 'next/dynamic';
 import { MyIdAndToken, StylesDictionary } from "../type";
+import { useDispatch } from "react-redux";
+import Router from "next/router";
 
 const PromoBanner = dynamic(() => import("../components/home/promoBanner"), { ssr: false })
 const TilesMenu = dynamic(() => import("../components/home/tilesMenu"), { ssr: false })
@@ -56,8 +58,10 @@ const dummy = [
 const Home = (props: MyIdAndToken): JSX.Element => {
   const [lastView, setlastView] = useState([])
   const [promo, setpromo] = useState<any[]>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch({type: 'SITE_PAGE', payload: Router.pathname})
     const getLastView = localStorage.getItem('last_view');
     let jsonLastView = getLastView && JSON.parse(getLastView);
     jsonLastView !== null && setlastView(jsonLastView)

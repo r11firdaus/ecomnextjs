@@ -7,6 +7,8 @@ import { getReq } from "../../function/API";
 import { GetServerSideProps } from "next";
 import { MyIdAndToken } from "../../type";
 import SkelPesan from "../../components/skeleton/skel-pesan";
+import { useDispatch } from "react-redux";
+import Router from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)
@@ -20,8 +22,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
 const index = (props: MyIdAndToken): JSX.Element => {
     const [person, setperson] = useState<any[]>(null)
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         getData()
         socket.on('chat message', (msg: string, idCht: string, receiver: string|number) => {
             receiver == props.id_user && getData()
