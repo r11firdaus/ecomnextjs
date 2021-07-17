@@ -4,6 +4,7 @@ import Router from "next/router";
 import Link from 'next/link';
 import { unauthPage } from "../../middleware/authrizationPage";
 import { GetServerSideProps } from "next";
+import { useDispatch } from "react-redux";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     await unauthPage(context);
@@ -15,6 +16,8 @@ type dataReg = { email_user: string, password_user: string }
 export default function index(): JSX.Element {
     const [fields, setfields] = useState<dataReg>(null)
     const [status, setstatus] = useState<string>(null)
+
+    const dispatch = useDispatch()
 
     const fieldsHandler = (e: any): void => {
         const name = e.target.getAttribute('name');
@@ -41,6 +44,7 @@ export default function index(): JSX.Element {
             Cookie.set('username', loginRes.data.username)
             Cookie.set('id_user', loginRes.data.id_user)
             localStorage.clear()
+            dispatch({type: 'ID_USER', payload: loginRes.data.id_user})
             setstatus('success, redirecting...')
             Router.push('/')
         } catch (error) {

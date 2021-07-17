@@ -10,16 +10,16 @@ import Cookie from 'js-cookie';
 import { socket } from '../function/socket';
 
 const MyApp = ({ Component, pageProps }) => {
-  useEffect(() => {
-    clear()
-    socket.on('loadDB', () => clear())
-  }, [])
+  useEffect(() => socket.on('loadDB', () => clear()), [])
 
   const clear = () => {
     const cleared = Cookie.get('cleared')
     
     if (!cleared) {
-      localStorage.clear()
+      localStorage.removeItem('chats')
+      localStorage.removeItem('notification')
+      localStorage.removeItem('barang_user_id')
+      localStorage.removeItem('barang_user')
       Cookie.set('cleared', JSON.stringify(true))
       setTimeout(() => Cookie.remove('cleared'), 5000);
     }
@@ -34,11 +34,6 @@ const MyApp = ({ Component, pageProps }) => {
         </div>
         <div className="col col-lg-3 display-lg-up">
           <Sidebar />
-          <div style={{ margin: '30px 20px' }}>
-            <h6>Jwallin</h6>
-            <small>PT. Jwallin Tbk.</small><br />
-            <small>Jl. Cipageran no 69</small>
-          </div>
         </div>
       </div>
     </Provider>

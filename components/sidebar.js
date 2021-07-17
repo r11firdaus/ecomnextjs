@@ -35,6 +35,11 @@ const Sidebar = () => {
                 }
             </ul>
         </aside>
+        <div style={{ margin: '30px 20px' }}>
+            <h6>Jwallin</h6>
+            <small>PT. Jwallin Tbk.</small><br />
+            <small>Jl. Cipageran no 69</small>
+          </div>
         <style jsx>
             {`
                 aside {

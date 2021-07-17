@@ -5,6 +5,7 @@ import { getReq } from '../function/API'
 import Cookie from 'js-cookie'
 import { Heart, Trash } from "react-bootstrap-icons"
 import { MyIdAndToken } from "../type"
+import Image from "next/image"
 
 const Cart = (props: MyIdAndToken): JSX.Element => {
     const [cart, setcart] = useState<any[]>(null);
@@ -36,7 +37,7 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
 
     const selectHandlerAll = (): void => {
         const seller: any = document.getElementsByName('sellerChk')
-        let sellers:any[] = Array.from(seller);
+        let sellers: any[] = Array.from(seller);
         const newItems = [...cart]; // clone the array 
         newItems.map((item, index) => {
             if (newItems[index]['stok_barang'] > 0) {
@@ -48,7 +49,7 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
         setall(!all); // true or false
     }
 
-    const sellerClick = async (e: any, id: string|number): Promise<void> => {
+    const sellerClick = async (e: any, id: string | number): Promise<void> => {
         const parentVal = e.target.checked;
         const newItems = [...cart]; // clone the array 
 
@@ -98,14 +99,14 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
 
         setcart(newItems); // set new state
         localStorage.setItem('cart_data', JSON.stringify(newItems))
-    },[cart])
+    }, [cart])
 
     const subtotalPrice = useCallback((): number => {
         if (cart) {
             return cart.reduce((sum, item) => sum + (item.checked ? item.total * item.harga_barang : 0), 0);
         }
         return 0;
-    },[cart])
+    }, [cart])
 
     const nextHandler = (e: any): void => {
         e.preventDefault()
@@ -143,6 +144,15 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
                                 style={{ marginTop: '13px' }}
                                 checked={item.checked == "0" ? false : true}
                             />
+                            <div className="align-center" style={{ paddingTop: '5px', marginRight: '10px' }}>
+                                <Image
+                                    height='30%'
+                                    width='30%'
+                                    alt={`gambar ${item.nama_barang}`}
+                                    // src={item.gambar_barang}
+                                    src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
+                                />
+                            </div>
                             <div>
                                 <p style={{ marginBottom: '-5px', fontSize: '13px' }} onClick={() => Router.push(`/barang/${item.id_barang}`)}>{item.nama_barang}</p>
                                 <strong style={{ fontSize: '13px' }}>Rp. {item.harga_barang}</strong><br />

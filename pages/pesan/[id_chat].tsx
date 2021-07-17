@@ -43,17 +43,17 @@ const index = (props: Props): JSX.Element => {
 
     useEffect(() => {
         dispatch({type: 'SITE_PAGE', payload: Router.pathname})
-        loadChat()
-        window.scrollTo(0, document.body.scrollHeight);
-        
-        // buat fungsi 'pesan dibaca'
-        let unread = [];
-        person.map(psn => {
-            if (psn.id_chat == idCht && psn.receiver == props.id_user && psn.status_message === "unread") {
-                unread.push(psn)
-            }
+        loadChat().then(() => {
+            window.scrollTo(0, document.body.scrollHeight)
+            // cek pesan belum dibaca
+            let unread = [];
+            person.map(psn => {
+                if (psn.id_chat == idCht && psn.receiver_user == props.id_user && psn.status_message === "unread") {
+                    unread.push(psn)
+                }
+            })
+            processMessage(unread)
         })
-        processMessage(unread)
            
         socket.on('chat message', (message: string, id_chat: string) => {
             idCht === id_chat && loadChat();
