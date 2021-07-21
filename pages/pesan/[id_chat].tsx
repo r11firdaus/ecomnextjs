@@ -74,10 +74,10 @@ const index = (props: Props): JSX.Element => {
                     res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
                 }
             }
+        }).then(() => {
+            setperson(result.reverse())
+            findLawan(result.reverse())
         })
-
-        setperson(result.reverse())
-        findLawan(result.reverse())
     }
 
     const processMessage = async (data: any[]) => {

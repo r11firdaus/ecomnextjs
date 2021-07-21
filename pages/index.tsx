@@ -2,12 +2,12 @@ import { useEffect, useState, memo } from "react";
 import { GetServerSideProps } from "next";
 import cookies from 'next-cookies'
 import dynamic from 'next/dynamic';
-import { MyIdAndToken, StylesDictionary } from "../type";
+import { MyIdAndToken } from "../type";
 import { useDispatch } from "react-redux";
 import Router from "next/router";
 
-const PromoBanner = dynamic(() => import("../components/home/promoBanner"), { ssr: false })
-const TilesMenu = dynamic(() => import("../components/home/tilesMenu"), { ssr: false })
+const PromoBanner = dynamic(() => import("../components/promoBanner"), { ssr: false })
+const TilesMenu = dynamic(() => import("../components/tilesMenu"), { ssr: false })
 const ListBarang = dynamic(() => import("../components/listBarang"), { ssr: false })
 const Saldo = dynamic(() => import("../components/profil/saldo"), { ssr: false })
 
@@ -71,9 +71,9 @@ const Home = (props: MyIdAndToken): JSX.Element => {
   }, [])
 
   return (<>
-    <div style={style.container}>
+    {/* <div style={style.container}> */}
       <PromoBanner data={promo} />
-    </div>
+    {/* </div> */}
     <Saldo id_user={props.id_user} token={props.token} />
     <TilesMenu />
     {lastView.length > 0 &&
@@ -105,11 +105,11 @@ const Home = (props: MyIdAndToken): JSX.Element => {
 
 export default memo(Home)
 
-const style: StylesDictionary = {
-  container: {
-    display: 'flex',
-    overflow: 'auto',
-    whiteSpace: 'nowrap',
-    margin: '10px 0 10px 10px'
-  },
-}
+// const style: StylesDictionary = {
+//   container: {
+//     display: 'flex',
+//     overflow: 'auto',
+//     whiteSpace: 'nowrap',
+//     margin: '10px 0 10px 10px'
+//   },
+// }

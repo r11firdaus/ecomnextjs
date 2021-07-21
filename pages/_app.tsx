@@ -10,21 +10,6 @@ import Cookie from 'js-cookie';
 import { socket } from '../function/socket';
 
 const MyApp = ({ Component, pageProps }) => {
-  useEffect(() => socket.on('loadDB', () => clear()), [])
-
-  const clear = () => {
-    const cleared = Cookie.get('cleared')
-    
-    if (!cleared) {
-      localStorage.removeItem('chats')
-      localStorage.removeItem('notification')
-      localStorage.removeItem('barang_user_id')
-      localStorage.removeItem('barang_user')
-      Cookie.set('cleared', JSON.stringify(true))
-      setTimeout(() => Cookie.remove('cleared'), 5000);
-    }
-  }
-
   return (<>
     <Provider store={store}>
       <Navigasi />
