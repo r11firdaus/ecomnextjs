@@ -39,14 +39,18 @@ const PromoBanner = (props: { data: any[], interval?: boolean }): JSX.Element =>
         {props.data.length > 0 &&
             <div className="slideshow-container card">
                 {
-                    props.data.map((data, i) => (
-                        <div className="mySlides fade" key={i}>
-                            <div className="numbertext">{`${i + 1} / ${props.data.length}`}</div>
-                            <div className="mySlides-image">
-                                <Image height={'100'} width={'100'} src={`/${data.image}`} />
+                    props.data.map((data, i) => {
+                        let imgSrc = data.image;
+                        if (data.image.search('https://' || 'http://') < 0) imgSrc = `/${data.image}`
+                        return (
+                            <div className="mySlides fade" key={i}>
+                                <div className="numbertext">{`${i + 1} / ${props.data.length}`}</div>
+                                <div className="mySlides-image">
+                                    <Image height={'100%'} width={'100%'} src={imgSrc} />
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        )
+                    })
                 }
 
                 <a className="prev" onClick={() => plusSlides(-1)}>&#10094;</a>
