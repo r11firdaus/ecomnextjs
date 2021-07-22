@@ -27,9 +27,11 @@ const index = (props: MyIdAndToken): JSX.Element => {
     useEffect(() => {
         dispatch({type: 'SITE_PAGE', payload: Router.pathname})
         getData()
-        socket.on('chat message', (msg: string, idCht: string, receiver: string|number) => {
+        let sockMsg = socket.on('chat message', (msg: string, idCht: string, receiver: string|number) => {
             receiver == props.id_user && getData()
         })
+
+        return () => sockMsg = null
     }, [])
 
     const getData = async (): Promise<void> => {

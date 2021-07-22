@@ -55,9 +55,11 @@ const index = (props: Props): JSX.Element => {
             processMessage(unread)
         })
            
-        socket.on('chat message', (message: string, id_chat: string) => {
+        let sockMsg = socket.on('chat message', (message: string, id_chat: string) => {
             idCht === id_chat && loadChat();
         })
+
+        return () => sockMsg = null;
     }, [])
 
     const loadChat = async (): Promise<void> => {

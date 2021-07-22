@@ -1,12 +1,14 @@
+import Image from "next/image"
 import { memo, useEffect } from "react"
-import SkelPromoBanner from "./skeleton/skel-promoBanner"
 
-const PromoBanner = (props: { data: any[] }): JSX.Element => {
+const PromoBanner = (props: { data: any[], interval?: boolean }): JSX.Element => {
     let slideIndex = 1
 
-    useEffect(() => {
-        props.data && showSlides(slideIndex)
-    }, [props.data])
+    useEffect((): any => {
+        showSlides(slideIndex)
+        const autoSlide = props.interval && setInterval(() => plusSlides(1), 8000);
+        return () => clearInterval(autoSlide)
+    }, [])
 
     const showSlides = (n: number) => {
         const slides = (document.getElementsByClassName("mySlides") as any);
@@ -27,39 +29,30 @@ const PromoBanner = (props: { data: any[] }): JSX.Element => {
         slideIndex += pos
         showSlides(slideIndex);
     }
+
     const currentSlide = (pos: number) => {
         slideIndex = pos
         showSlides(slideIndex);
     }
+
     return (<>
-        {props.data && props.data.length > 0 ?
-        <div className="slideshow-container card">
-            {
-                props.data.map((data, i) => (
-                    <div className="mySlides fade" key={i}>
-                        <div className="numbertext">{`${i + 1} / ${props.data.length}`}</div>
-                        {/* <div style={{ width: '100%', height: '220px'}}> */}
-                        <div style={{ width: '100%', height: '220px'}}>
-                            <h6 className="align-center">{data.judul}</h6>
-                            <div style={{height: '80px', marginTop: '10px'}}>
-                                <p style={{marginBottom: 0, fontSize: '13px'}}>{data.konten}</p>
-                                <p style={{marginBottom: 0, fontSize: '13px'}}>{data.konten}</p>
-                                <p style={{marginBottom: 0, fontSize: '13px'}}>{data.konten}</p>
+        {props.data.length > 0 &&
+            <div className="slideshow-container card">
+                {
+                    props.data.map((data, i) => (
+                        <div className="mySlides fade" key={i}>
+                            <div className="numbertext">{`${i + 1} / ${props.data.length}`}</div>
+                            <div className="mySlides-image">
+                                <Image height={'100'} width={'100'} src={`/${data.image}`} />
                             </div>
-                            <small style={{bottom: 0}}>Expired on September 15, 2069</small>
                         </div>
-                    </div>
-    
-                ))
+                    ))
+                }
 
-            }
-
-            <a className="prev" onClick={() => plusSlides(-1)}>&#10094;</a>
-            <a className="next" onClick={() => plusSlides(1)}>&#10095;</a>
-        </div> :
-        <>
-            <SkelPromoBanner />
-        </>}
+                <a className="prev" onClick={() => plusSlides(-1)}>&#10094;</a>
+                <a className="next" onClick={() => plusSlides(1)}>&#10095;</a>
+            </div>
+        }
 
         <div className="align-center">
             {props.data?.map((img, i) => (

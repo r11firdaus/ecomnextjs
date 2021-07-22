@@ -1,15 +1,15 @@
-import cookies from 'next-cookies'
-import { getReq } from '../../function/API';
-import OptionBtnBarang from '../../components/optionBtnBarang'
-import Head from 'next/head'
-import { ChatDots } from 'react-bootstrap-icons';
-import Link from 'next/link';
-import Image from 'next/image'
 import { useEffect, memo } from 'react';
 import { GetServerSideProps } from 'next';
-import { MyIdAndToken, StylesDictionary } from '../../type';
-import { useDispatch } from 'react-redux';
+import cookies from 'next-cookies'
+import Head from 'next/head'
+import Link from 'next/link';
 import Router from 'next/router';
+import { ChatDots } from 'react-bootstrap-icons';
+import { useDispatch } from 'react-redux';
+import { getReq } from '../../function/API';
+import OptionBtnBarang from '../../components/optionBtnBarang'
+import PromoBanner from '../../components/promoBanner';
+import { MyIdAndToken, StylesDictionary } from '../../type';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_barang } = ctx.query;
@@ -39,6 +39,10 @@ interface Props extends MyIdAndToken { data: any }
 
 const index = (props: Props) => {
     const dispatch = useDispatch()
+    let ProductImage = [
+        { image: "https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png" },
+        { image: "https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png" },
+    ]
 
     useEffect(() => {
         dispatch({type: 'SITE_PAGE', payload: Router.pathname})
@@ -69,16 +73,8 @@ const index = (props: Props) => {
         </Head>
 
         <div>
-            <div className="align-center" style={style.image}>
-                <Image
-                    height={'275'}
-                    width={'300'}
-                    // layout="responsive"
-                    alt={`gambar ${props.data.nama_barang}`}
-                    className="img-thumb"
-                    src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"
-                />
-            </div>
+            <PromoBanner data={ProductImage} />
+            
             <div style={{ margin: '10px' }}>
                 <p style={{ margin: '0' }}>{props.data.nama_barang}</p>
                 <strong>Rp.{props.data.harga_barang}</strong>

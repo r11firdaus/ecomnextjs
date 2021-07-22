@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+/function/API.ts
+/function/socket.ts
 
 # next.js
 /.next/

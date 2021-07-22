@@ -14,8 +14,10 @@ const index = (): JSX.Element => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        const idUser = Cookie.get('id_user');
+        !id_user && idUser && dispatch({ type: 'ID_USER', payload: idUser })
+
         socket.on('chat message', async (message: string, id_chat: string, receiver_user: string | number, sender: string | number) => {
-            const idUser = Cookie.get('id_user');
 
             if (idUser == receiver_user || idUser == sender) {
                 const token = Cookie.get('token')
@@ -40,15 +42,16 @@ const index = (): JSX.Element => {
 
     useEffect(() => {
         if (id_user) {
-            localStorage.clear()
+            localStorage.removeItem('chats')
+            localStorage.removeItem('notification')
+            localStorage.removeItem('cart')
             loadData()
         }
     }, [id_user])
 
     const loadData = async (): Promise<void> => {
         const token = Cookie.get('token')
-        dispatch({ type: 'ID_USER', payload: id_user })
-
+       
         await loadMsg(id_user, token).then(async (res: any) => {
             let unread = [];
             await res.msg?.map((psn: any) => {
@@ -61,7 +64,6 @@ const index = (): JSX.Element => {
             dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.notif.length })
         })
     }
-
 
     switch (page) {
         case '/kategori': return <Nav2 title='Category' />
