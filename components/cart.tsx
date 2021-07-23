@@ -144,10 +144,11 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
                                 style={{ marginTop: '13px' }}
                                 checked={item.checked == "0" ? false : true}
                             />
-                            <div className="align-center" style={{ paddingTop: '5px', marginRight: '10px' }}>
+                            <div className="align-center" style={{ margin: '5px 10px 5px 0', width: '27px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                                 <Image
-                                    height='30%'
-                                    width='30%'
+                                    layout='fill'
+                                    sizes='1vw'
+                                    quality={1}
                                     alt={`gambar ${item.nama_barang}`}
                                     // src={item.gambar_barang}
                                     src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"

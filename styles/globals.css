@@ -80,10 +80,10 @@
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 900px;
+  max-width: 500px;
   position: relative;
   margin: auto;
-  min-height: 50px;
+  min-height: 200px;
 }
 
 /* Hide the images by default */
@@ -93,7 +93,7 @@
 
 /* Image Slide */
 .mySlides-image {
-  height: 200px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
