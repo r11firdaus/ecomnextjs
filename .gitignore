@@ -7,8 +7,6 @@
 
 # testing
 /coverage
-/function/API.ts
-/function/socket.js
 
 # next.js
 /.next/
@@ -37,3 +35,5 @@ yarn-error.log*
 .vercel
 /pages/tes
 
+function/API.ts
+function/socket.js

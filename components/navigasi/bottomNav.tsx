@@ -36,7 +36,7 @@ const BottomNav = (): JSX.Element => {
 
     // next => bikin socket.on('get notified')
     return (
-        <div className="navbar-wrapper" style={{zIndex: 2}}>
+        <div className="navbar-wrapper" style={{zIndex: 1}}>
             <HomeNav />
             <NotifNav  />
             <MsgNav  />

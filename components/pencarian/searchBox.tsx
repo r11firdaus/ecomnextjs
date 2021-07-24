@@ -5,8 +5,10 @@ const index = (props: any): JSX.Element => {
     const searchHandler = (e: any) => {
         e.preventDefault()
         const input = (document.getElementById('search') as HTMLInputElement)
-        const keyword = `s=${input.value.replace(/ /g, "_")}`
-        Router.push(`/pencarian/${keyword}`)
+        if (input.value !== '') {
+            const keyword = `s=${input.value.replace(/ /g, "_")}`
+            Router.push(`/pencarian/${keyword}`)
+        }
     }
 
     return(

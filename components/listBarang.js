@@ -14,7 +14,7 @@ const ListBarang = props => {
                                     <Image
                                         layout='fill'
                                         alt={`gambar ${data.nama_barang}`}
-                                        sizes='3vw'
+                                        sizes='5.5vw'
                                         // src={data.gambar_barang}
                                         quality={1}
                                         src="https://chelseakrost.com/wp-content/uploads/2018/06/Super_Angry_Face_Emoji_ios10_large.png"

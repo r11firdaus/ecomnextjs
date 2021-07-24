@@ -46,7 +46,7 @@ const PromoBanner = (props: { data: any[], interval?: boolean }): JSX.Element =>
                             <div className="mySlides fade" key={i}>
                                 <div className="numbertext">{`${i + 1} / ${props.data.length}`}</div>
                                 <div className="mySlides-image">
-                                    <Image layout='fill' sizes='10vw' src={imgSrc} quality={1} />
+                                    <Image layout='fill' sizes='8vw' src={imgSrc} quality={1} />
                                 </div>
                             </div>
                         )

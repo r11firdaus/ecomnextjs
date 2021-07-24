@@ -1,14 +1,16 @@
 import { memo, useEffect, useState, Fragment } from "react";
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { authPage } from '../../middleware/authrizationPage';
 import { socket } from "../../function/socket";
 import { loadMsg } from "../../function/loadData";
 import { getReq } from "../../function/API";
 import { GetServerSideProps } from "next";
 import { MyIdAndToken } from "../../type";
-import SkelPesan from "../../components/skeleton/skel-pesan";
 import { useDispatch } from "react-redux";
 import Router from "next/router";
+
+const SkelPesan = dynamic(() => import('../../components/skeleton/skel-pesan'), {ssr: false});
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)

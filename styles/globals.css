@@ -1,10 +1,14 @@
-.back-arrow {
+.center-xy {
   display: flex;
-  height: 100%;
   align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  height: 100%;
+  width: 30px;
   color: white;
-  margin-left: 10px;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .back-arrow:hover {
@@ -19,6 +23,10 @@
   background: #3c2f2f;
   width: 100%;
   border-bottom: 1px solid grey
+}
+
+.nav2-title {
+  color: white
 }
 
 .card-promo {
@@ -178,4 +186,10 @@
 @keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
+}
+
+.mini-thumb {
+  position: relative;
+  width: 27px;
+  margin: 5px;
 }

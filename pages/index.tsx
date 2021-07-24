@@ -64,7 +64,7 @@ const Home = (props: MyIdAndToken): JSX.Element => {
     dispatch({type: 'SITE_PAGE', payload: Router.pathname})
     const getLastView = localStorage.getItem('last_view');
     let jsonLastView = getLastView && JSON.parse(getLastView);
-    jsonLastView !== null && setlastView(jsonLastView)
+    jsonLastView && setlastView(jsonLastView)
     
     const getPromo = setTimeout(() => setpromo(dummy), 3000);
     return () => {
@@ -78,7 +78,7 @@ const Home = (props: MyIdAndToken): JSX.Element => {
       
     <Saldo id_user={props.id_user} token={props.token} />
     <TilesMenu />
-    {lastView.length > 0 &&
+    {lastView?.length > 0 &&
       <>
         <strong>Last Viewed</strong>
         <ListBarang data={lastView} />

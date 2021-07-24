@@ -1,15 +1,17 @@
 import { useEffect, memo } from 'react';
 import { GetServerSideProps } from 'next';
-import cookies from 'next-cookies'
-import Head from 'next/head'
+import dynamic from 'next/dynamic';
+import cookies from 'next-cookies';
+import Head from 'next/head';
 import Link from 'next/link';
 import Router from 'next/router';
 import { ChatDots } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
 import { getReq } from '../../function/API';
-import OptionBtnBarang from '../../components/optionBtnBarang'
-import PromoBanner from '../../components/promoBanner';
 import { MyIdAndToken, StylesDictionary } from '../../type';
+
+const OptionBtnBarang = dynamic(() => import('../../components/optionBtnBarang'), {ssr: false});
+const PromoBanner = dynamic(() => import('../../components/promoBanner'), {ssr: false});
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_barang } = ctx.query;
@@ -114,18 +116,12 @@ const index = (props: Props) => {
 export default memo(index)
 
 const style: StylesDictionary = {
-    image: {
-        border: '1px solid',
-        maxHeight: '500px',
-        maxWidth: '700px',
-        margin: '0 auto'
-    },
     bottom: {
         bottom: '0',
         left: '0',
         right: '0',
         position: 'fixed',
-        borderTop: '1px  rgba(224,224,224,1) solid',
+        borderTop: '1px rgba(224,224,224,1) solid',
         background: 'white'
     },
     chatBtn: {

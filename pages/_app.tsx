@@ -5,9 +5,6 @@ import { Provider } from 'react-redux';
 import store from '../function/context/store';
 import Navigasi from '../components/navigasi';
 import Sidebar from '../components/sidebar';
-import { useEffect } from 'react';
-import Cookie from 'js-cookie';
-import { socket } from '../function/socket';
 
 const MyApp = ({ Component, pageProps }) => {
   return (<>

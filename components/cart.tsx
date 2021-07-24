@@ -138,13 +138,14 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
                         }
 
                         <div style={{ display: 'flex' }}>
-                            <input
-                                type="checkbox"
-                                onClick={() => childClick(i, item.checked)}
-                                style={{ marginTop: '13px' }}
-                                checked={item.checked == "0" ? false : true}
-                            />
-                            <div className="align-center" style={{ margin: '5px 10px 5px 0', width: '27px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                            <div className="center-xy">
+                                <input
+                                    type="checkbox"
+                                    onClick={() => childClick(i, item.checked)}
+                                    checked={item.checked == "0" ? false : true}
+                                />
+                            </div>
+                            <div className="mini-thumb center-xy">
                                 <Image
                                     layout='fill'
                                     sizes='1vw'
@@ -176,26 +177,23 @@ const Cart = (props: MyIdAndToken): JSX.Element => {
             }
         </div>
 
-        <div style={{ height: '4rem', bottom: '0', width: '100%', borderTop: '1px solid green', position: 'fixed', background: 'white' }}>
-            <div className="float-left" style={{ margin: '6px 10px' }}>
-                <h6 style={{ fontSize: '12px', margin: '0' }}>Total: </h6>
-                <h6 style={{ fontSize: '15px', marginTop: '-13px' }}>Rp.{subtotalPrice()}</h6>
+        <div style={{ height: '4rem', bottom: '0', width: '100%', borderTop: '1px solid gray', position: 'fixed', background: 'white' }}>
+            <div className="float-left center-xy" style={{ height: '100%' }}>
+                <strong style={{ fontSize: '15px' }}>Rp. {subtotalPrice()}</strong>
             </div>
-            <div className="float-right">
-                <div style={{ display: 'flex' }}>
-                    <input
-                        type="checkbox"
-                        onClick={() => selectHandlerAll()}
-                        style={{ marginTop: '23px' }}
-                        checked={all}
-                    />
-                    <p style={{ marginTop: '18px' }}>All</p>
-                    <button
-                        className="button-primary button-small"
-                        style={{ margin: '15px 10px' }}
-                        onClick={e => nextHandler(e)}
-                    >Next</button>
-                </div>
+
+            <div className="float-right center-xy" style={{ height: '100%' }}>
+                <input
+                    type="checkbox"
+                    onClick={() => selectHandlerAll()}
+                    checked={all}
+                />
+                <span>All</span>
+                <button
+                    className="button-primary button-small"
+                    style={{ margin: '0 10px' }}
+                    onClick={e => nextHandler(e)}
+                >Next</button>
             </div>
         </div>
         <Modal data={modal} />

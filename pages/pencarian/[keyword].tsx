@@ -1,5 +1,3 @@
-import ListBarang from '../../components/listBarang'
-import FilterHandler from '../../components/pencarian/filterHandler'
 import { memo, useEffect, useState } from 'react';
 import { getReq } from '../../function/API';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
@@ -7,6 +5,10 @@ import Head from 'next/head'
 import { GetServerSideProps } from 'next';
 import { MyIdAndToken } from '../../type';
 import Router from 'next/router';
+import dynamic from 'next/dynamic';
+
+const ListBarang = dynamic(() => import('../../components/listBarang'), {ssr: false});
+const FilterHandler = dynamic(() => import('../../components/pencarian/filterHandler'), {ssr: false});
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { keyword } = ctx.query;

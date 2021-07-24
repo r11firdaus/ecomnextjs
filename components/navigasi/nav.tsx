@@ -34,8 +34,8 @@ const Nav = (): JSX.Element => {
         <div className="row" style={style.nav}>
             <div className="col" style={{marginTop: '-20px'}}>
                 <div className="row">
-                    <SearchBox flex={1} />
-                    <div style={{ marginLeft: '10px', marginTop: '13px', display: 'flex' }}>
+                    <SearchBox flex={1} />&nbsp;&nbsp;
+                    <div className="center-xy">
                         {page !== '/' && <><HomeNav />&nbsp;&nbsp;</>}
                         <FavNav />&nbsp;&nbsp;
                         <CartNav />
@@ -54,7 +54,7 @@ export default memo(Nav)
 
 const style: StylesDictionary = {
     nav: {
-        zIndex: 2,
+        zIndex: 1,
         position: 'fixed',
         width:'100%',
         background: 'white',

@@ -1,17 +1,18 @@
 import { memo, useEffect, useState } from 'react'
-import DetailProfile from '../../components/profil/detailProfile'
 import cookies from 'next-cookies';
 import Link from 'next/link'
 import { getReq } from '../../function/API'
 // import { useSelector } from 'react-redux'
 import dynamic from 'next/dynamic'
-import FilterHandler from '../../components/pencarian/filterHandler'
 import { GetServerSideProps } from 'next';
 import { MyIdAndToken } from '../../type';
 import { useDispatch } from 'react-redux';
 import Router from 'next/router';
-const ListBarang = dynamic(() => import('../../components/listBarang'), {ssr: false})
+
 const Saldo = dynamic(() => import('../../components/profil/saldo'), {ssr: false})
+const DetailProfile = dynamic(() => import('../../components/profil/detailProfile'), {ssr: false})
+const ListBarang = dynamic(() => import('../../components/listBarang'), {ssr: false})
+const FilterHandler = dynamic(() => import('../../components/pencarian/filterHandler'), {ssr: false})
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     let usernameMe: string = null;
