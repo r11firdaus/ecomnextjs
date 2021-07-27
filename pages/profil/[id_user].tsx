@@ -9,14 +9,14 @@ import { MyIdAndToken } from '../../type';
 import { useDispatch } from 'react-redux';
 import Router from 'next/router';
 
-const Saldo = dynamic(() => import('../../components/profil/saldo'), {ssr: false})
-const DetailProfile = dynamic(() => import('../../components/profil/detailProfile'), {ssr: false})
-const ListBarang = dynamic(() => import('../../components/listBarang'), {ssr: false})
-const FilterHandler = dynamic(() => import('../../components/pencarian/filterHandler'), {ssr: false})
+const Saldo = dynamic(() => import('../../components/profil/saldo'), { ssr: false })
+const DetailProfile = dynamic(() => import('../../components/profil/detailProfile'), { ssr: false })
+const ListBarang = dynamic(() => import('../../components/listBarang'), { ssr: false })
+const FilterHandler = dynamic(() => import('../../components/pencarian/filterHandler'), { ssr: false })
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     let usernameMe: string = null;
-    let id_user: string|number = null;
+    let id_user: string | number = null;
     let tokenIn: string = null;
     const cookie = cookies(ctx);
     const id_userReq = ctx.query.id_user;
@@ -41,22 +41,20 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 }
 
 interface Props extends MyIdAndToken {
-    usernameMe: string|undefined,
-    id_userReq: string|number
+    usernameMe: string | undefined,
+    id_userReq: string | number
 }
 
 const index = (props: Props): JSX.Element => {
-    const [data, setdata] = useState([])
-    const [loaded, setloaded] = useState<boolean>(false)
+    const [data, setdata] = useState<any[]>(null)
     const dispatch = useDispatch()
     // const { sort, cod } = useSelector(state => state)
 
     useEffect(() => {
-        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
+        dispatch({ type: 'SITE_PAGE', payload: Router.pathname })
         const barangUserLocal = localStorage.getItem('barang_user_id');
         const barangLocal = localStorage.getItem('barang_user');
         barangUserLocal == props.id_userReq && barangLocal ? setdata(JSON.parse(barangLocal)) : getBarang()
-        setloaded(true)
     }, [])
 
     const getBarang = async (): Promise<void> => {
@@ -66,10 +64,10 @@ const index = (props: Props): JSX.Element => {
             setdata(res)
         })
     }
-    
+
     return (<>
-        <div style={{ margin: '-1rem 0 2.5rem 0'}}>
-            {loaded ?
+        <div style={{ margin: '-1rem 0 2.5rem 0' }}>
+            {data ?
                 <>
                     <DetailProfile id_userReq={props.id_userReq} token={props.token} id_user={props.id_user} />
                     <Saldo id_user={props.id_user} token={props.token} />

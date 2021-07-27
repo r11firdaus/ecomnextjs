@@ -44,16 +44,10 @@ const index = (props: Props): JSX.Element => {
 
     useEffect(() => {
         dispatch({type: 'SITE_PAGE', payload: Router.pathname})
-        loadChat().then(() => {
+        loadChat().then(async() => {
             window.scrollTo(0, document.body.scrollHeight)
             // cek pesan belum dibaca
-            let unread = [];
-            person.map(psn => {
-                if (psn.id_chat == idCht && psn.receiver_user == props.id_user && psn.status_message === "unread") {
-                    unread.push(psn)
-                }
-            })
-            processMessage(unread)
+            await putReq('chat/message/read', props.id_user, props.token, {id_chat: idCht})
         })
            
         let sockMsg = socket.on('chat message', (message: string, id_chat: string) => {
@@ -70,37 +64,45 @@ const index = (props: Props): JSX.Element => {
 
         await loadLocalMsg().then(res => {
             if (res?.msg.length > 0) {
-                res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                res.msg.map((cht: any) => cht.id_chat == idCht && result.unshift(cht))
                 if (result.length < 1 && props.id_chat != newId_chat) {
                     idCht = newId_chat;
                     Router.replace(`/pesan/${newId_chat}`);
-                    res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                    res.msg.map((cht: any) => cht.id_chat == idCht && result.unshift(cht))
                 }
             }
         }).catch(async() => {
             await loadMsg(props.id_user, props.token).then((res: any) => {
                 if (res.msg.length > 0) {
-                    res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                    res.msg.map((cht: any) => cht.id_chat == idCht && result.unshift(cht))
                     if (result.length < 1 && props.id_chat != newId_chat) {
                         idCht = newId_chat;
                         Router.replace(`/pesan/${newId_chat}`);
-                        res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                        res.msg.map((cht: any) => cht.id_chat == idCht && result.unshift(cht))
                     }
                 }
             })
         }).then(() => {
-            setperson(result.reverse())
-            findLawan(result.reverse())
+            setperson(result)
+            findLawan(result)
+            processMessage(result)
         })
     }
 
-    const processMessage = async (data: any[]) => {
-        if (data.length > 0) {
+    const processMessage = async (res: any) => {
+        let unread = [];
+        await res.map((psn: any) => {
+            if (psn.id_chat == idCht && psn.receiver_user == props.id_user && psn.status_message == "unread") {
+                unread.push(psn)
+            }
+        })
+            
+        if (unread.length > 0) {
             let newLocalChat = [];
             const localChat = localStorage.getItem('chats');
             let jsonLocalChat = localChat && JSON.parse(localChat);
 
-            await putReq('chat/message/read', props.id_user, props.token, {id_chat: idCht})
+            
             
             await jsonLocalChat.map((jsc: any) => {
                 if (jsc.id_chat == idCht && jsc.receiver_user == props.id_user) {
