@@ -22,7 +22,8 @@ export interface GlobalState extends MyIdAndToken {
     cart?: number,
     notification?: number,
     cod?: boolean,
-    modalFilter?: boolean
+    modalFilter?: boolean,
+    dbloaded?: boolean
 }
 
 export interface UserData extends MyIdAndToken {

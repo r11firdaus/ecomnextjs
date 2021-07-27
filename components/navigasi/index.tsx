@@ -8,8 +8,12 @@ import { loadMsg, loadNotif } from "../../function/loadData";
 import Cookie from "js-cookie"
 import Router from 'next/router'
 import { GlobalState } from "../../type";
+import { loadLocalMsg, loadLocalNotif } from "../../function/loadDataLocal";
+import { TruckFlatbed } from "react-bootstrap-icons";
+
 
 const index = (): JSX.Element => {
+    let dbLoaded = false;
     const { page, id_user }: GlobalState = useSelector(state => state)
     const dispatch = useDispatch()
 
@@ -38,31 +42,41 @@ const index = (): JSX.Element => {
                 } else await loadMsg(idUser, token)
             }
         });
+
+        socket.on('loadDB', async () => await loadFromDB());
     }, [])
 
     useEffect(() => {
-        if (id_user) {
-            localStorage.removeItem('chats')
-            localStorage.removeItem('notification')
-            localStorage.removeItem('cart')
-            loadData()
-        }
+        id_user && loadFromDB()
     }, [id_user])
 
-    const loadData = async (): Promise<void> => {
-        const token = Cookie.get('token')
-       
-        await loadMsg(id_user, token).then(async (res: any) => {
-            let unread = [];
-            await res.msg?.map((psn: any) => {
-                psn.status_message === "unread" && psn.receiver == id_user && unread.push(psn)
+    const loadFromDB = async () => {
+        const token = Cookie.get('token');
+        const idUser = Cookie.get('id_user');
+        if (!dbLoaded && token && idUser) {
+            dbLoaded = true
+    
+            await loadMsg(idUser, token).then((res: any) => processMsg(res))
+            .catch(async() => await loadLocalMsg().then(res => processMsg(res)))
+    
+            await loadNotif(idUser, token).then((res: any) => {
+                dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.notif.length })
+            }).catch(async err => {
+                await loadLocalNotif().then((res: any) => {
+                    res.notif && dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.notif.length })
+                });
             })
-            dispatch({ type: 'UNREAD_MESSAGE', payload: unread.length })
-        })
 
-        await loadNotif(id_user, token).then((res: any) => {
-            dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.notif.length })
+            setTimeout(() => dbLoaded = false, 3000);
+        }
+    }
+
+    const processMsg = async (res: any) => {
+        let unread = [];
+        await res.msg?.map((psn: any) => {
+            psn.status_message === "unread" && psn.receiver == id_user && unread.push(psn)
         })
+        dispatch({ type: 'UNREAD_MESSAGE', payload: unread.length })
     }
 
     switch (page) {

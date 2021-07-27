@@ -9,8 +9,9 @@ import { GetServerSideProps } from "next";
 import { MyIdAndToken } from "../../type";
 import { useDispatch } from "react-redux";
 import Router from "next/router";
+import { loadLocalMsg } from "../../function/loadDataLocal";
 
-const SkelPesan = dynamic(() => import('../../components/skeleton/skel-pesan'), {ssr: false});
+const SkelPesan = dynamic(() => import('../../components/skeleton/skel-pesan'), { ssr: false });
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
     const { id_user, token } = await authPage(ctx)
@@ -27,9 +28,9 @@ const index = (props: MyIdAndToken): JSX.Element => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch({type: 'SITE_PAGE', payload: Router.pathname})
+        dispatch({ type: 'SITE_PAGE', payload: Router.pathname })
         getData()
-        let sockMsg = socket.on('chat message', (msg: string, idCht: string, receiver: string|number) => {
+        let sockMsg = socket.on('chat message', (msg: string, idCht: string, receiver: string | number) => {
             receiver == props.id_user && getData()
         })
 
@@ -37,17 +38,17 @@ const index = (props: MyIdAndToken): JSX.Element => {
     }, [])
 
     const getData = async (): Promise<void> => {
-        let id = []
-        let newMsg = []
+        await loadLocalMsg().then(msg => {
+            let id = []
+            let newMsg = []
 
-        await loadMsg(props.id_user, props.token).then((msg: any) => {
-            msg.msg.map(async (pesan: {nama_user: string, id_chat: string}) => {
+            msg.msg.map(async (pesan: { nama_user: string, id_chat: string }) => {
                 if (!pesan.nama_user) {
                     const pisahIdUser = pesan.id_chat.split('$')
                     let id_user2 = []
                     let lawan: string;
                     pisahIdUser.map(id => id != props.id_user && id_user2.push(parseInt(id)))
-    
+
                     if (msg.msg.length > 0) {
                         for (let i = 0; i < msg.msg.length; i++) {
                             if (msg.msg[i].nama_user && msg.msg[i].id_user === id_user2[0]) {
@@ -66,9 +67,9 @@ const index = (props: MyIdAndToken): JSX.Element => {
                 !id.includes(pesan.id_chat) && newMsg.push(pesan)
                 id.push(pesan.id_chat)
             })
-        });
 
-        setperson(newMsg)
+            setperson(newMsg)
+        })
     }
 
     return (
@@ -76,26 +77,26 @@ const index = (props: MyIdAndToken): JSX.Element => {
             <ul id="messages" style={{ margin: '-1.5rem 0 3rem 0' }}>
                 {person !== null ?
                     person.length > 0 &&
-                        person.map((per, i) => (<Fragment key={i}>
-                            <Link href={`/pesan/${per.id_chat}`}>
-                                <li>
-                                    {per.nama_user}
-                                    <p style={{ fontSize: '10px', margin: '0' }}>{per.message}</p>
-                                    {per.status_message !== 'read' && per.id_user != props.id_user &&
-                                        <div className="baloon-new float-right" style={{ marginTop: '-25px' }}>
-                                            <p className="txt-baloon" />
-                                        </div>
-                                    }
-                                </li>
-                            </Link>
-                        </Fragment>)) :
-                        <ul id="messages" style={{ margin: '-1.5rem 0 3rem 0' }}>
-                            <SkelPesan />
-                            <SkelPesan />
-                            <SkelPesan />
-                            <SkelPesan />
-                            <SkelPesan />
-                        </ul>
+                    person.map((per, i) => (<Fragment key={i}>
+                        <Link href={`/pesan/${per.id_chat}`}>
+                            <li>
+                                {per.nama_user}
+                                <p style={{ fontSize: '10px', margin: '0' }}>{per.message}</p>
+                                {per.status_message !== 'read' && per.id_user != props.id_user &&
+                                    <div className="baloon-new float-right" style={{ marginTop: '-25px' }}>
+                                        <p className="txt-baloon" />
+                                    </div>
+                                }
+                            </li>
+                        </Link>
+                    </Fragment>)) :
+                    <ul id="messages" style={{ margin: '-1.5rem 0 3rem 0' }}>
+                        <SkelPesan />
+                        <SkelPesan />
+                        <SkelPesan />
+                        <SkelPesan />
+                        <SkelPesan />
+                    </ul>
                 }
             </ul>
         </>
