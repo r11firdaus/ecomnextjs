@@ -11,6 +11,7 @@ export const getReq = (path: string, id: string|number, token: string, sort?: st
                 'Authorization': `Bearer ${token} ${apiKey}`
             }
         }).then(res => res.json()).then(json => resolve(json.data))
+        .catch(err => reject(err))
     })
 }
 
@@ -22,6 +23,7 @@ export const deleteReq = (path: string, id: string|number, token: string) => {
                 'Authorization': `Bearer ${token} ${apiKey}`
             }
         }).then(res => res.json()).then(json => resolve(json))
+        .catch(err => reject(err))
     })
 }
 
@@ -35,6 +37,7 @@ export const putReq = (path: string, id: string|number, token: string, data: obj
             },
             body: JSON.stringify(data)
         }).then(res => res.json()).then(json => resolve(json))
+        .catch(err => reject(err))
     })
 }
 
@@ -48,6 +51,7 @@ export const postReq = (path: string, token: string, data: object) => {
             },
             body: JSON.stringify(data)
         }).then(res => res.json()).then(json => resolve(json))
+        .catch(err => reject(err))
     })
 }
 

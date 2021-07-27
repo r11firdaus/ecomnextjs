@@ -10,6 +10,7 @@ import { GetServerSideProps } from "next";
 import { MyIdAndToken } from "../../type";
 import { useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
+import { loadLocalMsg } from "../../function/loadDataLocal";
 
 const FormPesan = dynamic(() => import("../../components/pesan/formPesan"), {ssr: false})
 const Bubble = dynamic(() => import("../../components/pesan/bubble"), {ssr: false})
@@ -67,8 +68,8 @@ const index = (props: Props): JSX.Element => {
         const pisahIdUser = props.id_chat.split('$')
         const newId_chat = `${pisahIdUser[1]}$${pisahIdUser[0]}`
 
-        await loadMsg(props.id_user, props.token).then((res: any) => {
-            if (res.msg.length > 0) {
+        await loadLocalMsg().then(res => {
+            if (res?.msg.length > 0) {
                 res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
                 if (result.length < 1 && props.id_chat != newId_chat) {
                     idCht = newId_chat;
@@ -76,6 +77,17 @@ const index = (props: Props): JSX.Element => {
                     res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
                 }
             }
+        }).catch(async() => {
+            await loadMsg(props.id_user, props.token).then((res: any) => {
+                if (res.msg.length > 0) {
+                    res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                    if (result.length < 1 && props.id_chat != newId_chat) {
+                        idCht = newId_chat;
+                        Router.replace(`/pesan/${newId_chat}`);
+                        res.msg.map((cht: any) => cht.id_chat == idCht && result.push(cht))
+                    }
+                }
+            })
         }).then(() => {
             setperson(result.reverse())
             findLawan(result.reverse())

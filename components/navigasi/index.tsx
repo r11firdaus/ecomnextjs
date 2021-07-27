@@ -42,12 +42,18 @@ const index = (): JSX.Element => {
                 } else await loadMsg(idUser, token)
             }
         });
-
-        socket.on('loadDB', async () => await loadFromDB());
     }, [])
 
     useEffect(() => {
-        id_user && loadFromDB()
+        if (id_user) {
+            async () => {
+                await loadLocalMsg().then(res => processMsg(res))
+                await loadLocalNotif().then((res: any) => {
+                    res.notif && dispatch({ type: 'UNREAD_NOTIFICATION', payload: res.notif.length })
+                });
+            }
+            socket.on('loadDB', async () => await loadFromDB());
+        }
     }, [id_user])
 
     const loadFromDB = async () => {
